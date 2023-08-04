@@ -1,17 +1,20 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Request } from '@nestjs/common';
 import { ManillasService } from './manillas.service';
 import { CreateManillaDto } from './dto/create-manilla.dto';
 import { UpdateManillaDto } from './dto/update-manilla.dto';
 import { ApiTags } from '@nestjs/swagger';
+import { JwtAuthAccessGuard } from '../iam/guards/jwt-auth.guard';
 
 @ApiTags("manillas")
 @Controller('manillas')
 export class ManillasController {
   constructor(private readonly manillasService: ManillasService) {}
 
-  @Post()
-  create(@Body() createManillaDto: CreateManillaDto) {
-    return this.manillasService.create(createManillaDto);
+  @Post('solicitar')
+  @UseGuards(JwtAuthAccessGuard)
+  create(@Body() createManillaDto: CreateManillaDto,  @Request() req) {   
+   
+    return this.manillasService.createManilla(createManillaDto, req.user.id);
   }
 
   @Get()

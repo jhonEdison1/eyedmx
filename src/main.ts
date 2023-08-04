@@ -8,8 +8,8 @@ async function bootstrap() {
   app.setGlobalPrefix("eyedmx");
   app.useGlobalPipes(new ValidationPipe(
     {
-      whitelist: true,
-      forbidNonWhitelisted: true,
+      //whitelist: true,
+      //forbidNonWhitelisted: true,
       transformOptions: {
         enableImplicitConversion: true,
       }

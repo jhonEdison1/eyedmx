@@ -15,9 +15,8 @@ export class UsersService {
   constructor(
     @InjectModel(User.name) private readonly userModel: Model<User>,
     private readonly hashingService: HashingService,
-    private readonly errorService: ErrorsService,
-    private readonly manillasService: ManillasService
-
+    private readonly errorService: ErrorsService
+  
 
   ) {
 
@@ -38,13 +37,7 @@ export class UsersService {
 
       payload.password = await this.hashingService.hash(payload.password.trim());
       const newRecord = new this.userModel(payload);
-      payload.datosAdicionales.userId = newRecord._id;
-      payload.datosAdicionales.tipo = payload.tipo[0]
-
-
-
-      const newuser = await newRecord.save();
-      await this.crearManilla(payload.datosAdicionales, payload.tipo);
+      const newuser = await newRecord.save();     
       return newuser;
 
 
@@ -56,37 +49,7 @@ export class UsersService {
   }
 
 
-  async crearManilla(datosAdicionales, type) {
-    enum usertype {
-      Motero = 'Motero',
-      Niño = 'Niño',
-      Adulto_Mayor = 'Adulto_Mayor',
-      Mascota = 'Mascota',
-    }
-
-
-    switch (type[0]) {
-      case usertype.Motero:
-        await this.manillasService.createManillaMotero(datosAdicionales);
-        break;
-      case usertype.Niño:
-        await this.manillasService.createManillaNiño(datosAdicionales);
-        break;
-      case usertype.Adulto_Mayor:
-        await this.manillasService.createManillaAdultoMayor(datosAdicionales);
-        break;
-      case usertype.Mascota:
-        await this.manillasService.createManillaMascota(datosAdicionales);
-        break;
-      default:
-        break;
-    }
-
-
-
-
-  }
-
+  
   findAll() {
     return `This action returns all users`;
   }

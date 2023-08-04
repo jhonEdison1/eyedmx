@@ -5,14 +5,6 @@ import { ManillaAdulto_MayorDto, ManillaMascotaDto, ManillaMoteroDto, ManillaNi�
 
 
 
-enum type {
-    Motero = 'Motero',
-    Niño = 'Niño',
-    Adulto_Mayor = 'Adulto_Mayor',
-    Mascota = 'Mascota',
-  }
-
-
 export class CreateUserDto {
 
     
@@ -62,14 +54,14 @@ export class CreateUserDto {
     @ApiProperty({description: "Fecha de nacimiento del usuario", type: Date})
     fecha_nacimiento: Date;
 
-    @IsArray()
-    @ArrayNotEmpty()
-    @IsEnum(['Motero', 'Niño', 'Adulto_Mayor', 'Mascota'], { each: true })
-    tipo: string[];
+    // @IsArray()
+    // @ArrayNotEmpty()
+    // @IsEnum(['Motero', 'Niño', 'Adulto_Mayor', 'Mascota'], { each: true })
+    // tipo: string[];
     
-    @IsNotEmpty()
-    //@ValidateNested()
-    datosAdicionales: ManillaMoteroDto | ManillaNiñoDto | ManillaAdulto_MayorDto | ManillaMascotaDto;
+    // @IsNotEmpty()
+    // //@ValidateNested()
+    // datosAdicionales: ManillaMoteroDto | ManillaNiñoDto | ManillaAdulto_MayorDto | ManillaMascotaDto;
 
 
 

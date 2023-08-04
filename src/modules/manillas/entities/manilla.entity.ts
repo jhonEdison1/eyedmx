@@ -1,23 +1,24 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import { Document, Types } from "mongoose";
 import { User } from "src/modules/users/entities/user.entity";
+import { Tipos } from "src/modules/iam/authentication/authentication.common.service";
+
+
+
+export enum estadoManilla {
+    Solicitada = 'Solicitada',
+    Aceptada = 'Aceptada',
+    Rechazada = 'Rechazada',
+    Entregada = 'Entregada',
+}
 
 @Schema({ timestamps: true })
-export class Manilla extends Document {
+export class Manilla extends Document {   
 
-    //hace referencia al id del usuario
-    // @Prop({ required: true, ref: User }) // Indica que es una referencia a la entidad Usuario
-    // userId: Ref<User>; // Tipo especial para definir una referencia
+    //comunes
 
-
-    @Prop({ type: Types.ObjectId, ref: 'User' }) // Establecer la referencia al modelo User
-    userId: User; // Nombre del campo para almacenar el objeto completo del usuario
-
-    @Prop({ required: true })
-    rh: string;
-
-    @Prop({ required: true, trim: true })
-    alergias: string;
+    @Prop({ type: Types.ObjectId, ref: 'User' }) 
+    userId: User;   
 
     @Prop({ required: true, trim: true })
     contacto_de_emergencia: string;
@@ -25,9 +26,25 @@ export class Manilla extends Document {
     @Prop({ required: true, trim: true })
     telefono_de_emergencia: string;
 
+    @Prop({ required: true })
+    tipo: Tipos;
+
     @Prop({  trim: true })
     qrCode: string;
 
+    //estado de la manilla
+    @Prop({ default: estadoManilla.Solicitada })
+    estado: estadoManilla;
+
+
+
+    //personalizados
+    @Prop({trim: true})
+    rh: string;
+
+    @Prop({  trim: true })
+    alergias: string;
+    
     @Prop({  trim: true })
     marca: string;
 
@@ -69,6 +86,10 @@ export class Manilla extends Document {
 
     @Prop({  trim: true })
     fecha_nacimiento_mascota: Date;
+
+    
+
+   
 
 
 }

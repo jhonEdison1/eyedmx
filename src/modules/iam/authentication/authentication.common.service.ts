@@ -10,6 +10,15 @@ import { JwtService } from '@nestjs/jwt';
 import config from 'src/config';
 import { ConfigType } from '@nestjs/config';
 
+export enum Tipos {
+  Motero = 'Motero',
+  Adulto_Mayor = 'Adulto_Mayor',
+  Niño = 'Niño',
+  Mascota = 'Mascota'
+}
+
+
+
 @Injectable()
 export class AuthenticationCommonService {
 
@@ -20,6 +29,8 @@ export class AuthenticationCommonService {
     private readonly hashingService: HashingService,
     private readonly jwtService: JwtService,
   ) { }
+
+
 
 
   generateJwtAccessToken(payload: PayloadToken) {
@@ -48,6 +59,9 @@ export class AuthenticationCommonService {
       this.errorService.createError(error);
     }
   }
+
+
+
 
 
   async findUserToAuthenticate(payload: SignInDto) {
@@ -85,7 +99,7 @@ export class AuthenticationCommonService {
   getFields(type: string) {
 
     switch (type) {
-      case "Motero":
+      case Tipos.Motero:
         return [
           {
             name: "marca",
@@ -134,7 +148,7 @@ export class AuthenticationCommonService {
           }
         ];
         break;
-      case "Adulto_Mayor":
+      case Tipos.Adulto_Mayor:
         return [
           {
             name: "genero",
@@ -170,7 +184,7 @@ export class AuthenticationCommonService {
           }
         ];
         break;
-      case "Niño":
+      case Tipos.Niño:
         return [
           {
             name: "genero",
@@ -230,7 +244,7 @@ export class AuthenticationCommonService {
           }         
         ];
         break;
-        case "Mascota":
+        case Tipos.Mascota:
           return [
             {
               name: "enfermedades",
@@ -263,19 +277,19 @@ export class AuthenticationCommonService {
   getTypes() {
     return [
       {
-        name: "Motero",
+        name: Tipos.Motero,
         description: "Motero"
       },
       {
-        name: "Adulto_Mayor",
+        name: Tipos.Adulto_Mayor,
         description: "Adulto Mayor"
       },
       {
-        name: "Niño",
+        name: Tipos.Niño,
         description: "Niño"
       },
       {
-        name: "Mascota",
+        name: Tipos.Mascota,
         description: "Mascota"
       }
     ];

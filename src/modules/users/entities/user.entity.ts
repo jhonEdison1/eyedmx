@@ -2,6 +2,15 @@ import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import { Document } from "mongoose";
 
 
+
+export enum plans {
+    Basico = 'Basico',
+    Intermedio = 'Intermedio',
+    Premium = 'Premium'
+    
+}
+
+
 @Schema({ timestamps: true })
 export class User extends Document {
 
@@ -30,8 +39,8 @@ export class User extends Document {
     @Prop({ required: true })
     fecha_nacimiento: Date;  
 
-    @Prop([{ type: String, enum: ['Motero', 'Niño', 'Adulto_Mayor', 'Mascota'] }])
-    tipo: string[];
+    // @Prop([{ type: String, enum: ['Motero', 'Niño', 'Adulto_Mayor', 'Mascota'] }])
+    // tipo: string[];
 
 
 
