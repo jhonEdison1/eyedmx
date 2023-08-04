@@ -104,14 +104,26 @@ export class AuthenticationCommonService {
           },
           {
             name: "genero",
-            type: "text",
-            description: "Genero del motero"
-          }, 
+            type: "select",
+            description: "Genero del portador de la manilla",
+            opciones: ["Masculino", "Femenino", "Otro"]
+          },
           {
             name: "placa",
             type: "text",
             description: "Placa de la moto"
 
+          },
+          {
+            name: "rh",
+            type: "text",
+            description: "rh del portador de la manilla"
+
+          },
+          {
+            name: "alergias",
+            type: "text",
+            description: "Alergias del portador de la manilla"
           }
         ];
         break;
@@ -119,8 +131,9 @@ export class AuthenticationCommonService {
         return [
           {
             name: "genero",
-            type: "text",
-            description: "Genero del adulto mayor"
+            type: "select",
+            description: "Genero del portador de la manilla",
+            opciones: ["Masculino", "Femenino", "Otro"]
           },
           {
             name: "enfermedades",
@@ -129,17 +142,29 @@ export class AuthenticationCommonService {
           },
           {
             name: "recomendaiones",
-            type: "text",
+            type: "textarea",
             description: "Recomendaciones del adulto mayor"
           },
+          {
+            name: "rh",
+            type: "text",
+            description: "rh del portador de la manilla"
+
+          },
+          {
+            name: "alergias",
+            type: "text",
+            description: "Alergias del portador de la manilla"
+          }
         ];
         break;
       case "Niño":
         return [
           {
             name: "genero",
-            type: "text",
-            description: "Genero del niño"
+            type: "select",
+            description: "Genero del portador de la manilla",
+            opciones: ["Masculino", "Femenino", "Otro"]
           },
           {
             name: "enfermedades",
@@ -148,7 +173,7 @@ export class AuthenticationCommonService {
           },
           {
             name: "recomendaiones",
-            type: "text",
+            type: "textarea",
             description: "Recomendaciones del niño"
           },
           {
@@ -170,7 +195,18 @@ export class AuthenticationCommonService {
             name: "telefono_madre",
             type: "text",
             description: "Telefono de la madre"
-          }          
+          } ,
+          {
+            name: "rh",
+            type: "text",
+            description: "rh del portador de la manilla"
+
+          },
+          {
+            name: "alergias",
+            type: "text",
+            description: "Alergias del portador de la manilla"
+          }         
         ];
         break;
         case "Mascota":
