@@ -51,22 +51,22 @@ export class ManillaMoteroDto extends CreateManillaDto {
     @ApiProperty({description: "marca de la motocicleta", type: String})  
     readonly marca: string;
 
-    // @IsPositive({ message: "el cilindraje debe ser un numero positivo" })
-    // @IsNumber({}, { message: "el cilindraje debe ser un numero" })
-    // @IsNotEmpty({ message: "el cilindraje es requerido" })
-    // readonly cilindraje: number;
+    @IsPositive({ message: "el cilindraje debe ser un numero positivo" })
+    @IsNumber({}, { message: "el cilindraje debe ser un numero" })
+    @IsNotEmpty({ message: "el cilindraje es requerido" })
+    readonly cilindraje: number;
 
-    // @IsString({ message: "la compañia de seguros debe contener caracteres validos" })
-    // @IsNotEmpty({ message: "la compañia de seguros es requerida" })
-    // readonly compañia_de_seguros: string;
+    @IsString({ message: "la compañia de seguros debe contener caracteres validos" })
+    @IsNotEmpty({ message: "la compañia de seguros es requerida" })
+    readonly compañia_de_seguros: string;
 
-    // @IsString({ message: "el genero del portador de la manilla debe contener caracteres validos" })
-    // @IsNotEmpty({ message: "el genero es requerido" })
-    // readonly genero: string;
+    @IsString({ message: "el genero del portador de la manilla debe contener caracteres validos" })
+    @IsNotEmpty({ message: "el genero es requerido" })
+    readonly genero: string;
 
-    // @IsString({ message: "la placa debe contener caracteres validos" })
-    // @IsNotEmpty({ message: "la placa es requerida" })
-    // readonly placa: string;
+    @IsString({ message: "la placa debe contener caracteres validos" })
+    @IsNotEmpty({ message: "la placa es requerida" })
+    readonly placa: string;
 
 }
 
