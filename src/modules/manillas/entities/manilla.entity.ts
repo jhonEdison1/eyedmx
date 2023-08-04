@@ -25,49 +25,49 @@ export class Manilla extends Document {
     @Prop({ required: true, trim: true })
     telefono_de_emergencia: string;
 
-    @Prop({ default: null, trim: true })
+    @Prop({  trim: true })
     qrCode: string;
 
-    @Prop({ default: null, trim: true })
+    @Prop({  trim: true })
     marca: string;
 
-    @Prop({ default: null, trim: true })
+    @Prop({  trim: true })
     cilindraje: number;
 
-    @Prop({ default: null, trim: true })
+    @Prop({  trim: true })
     compañia_de_seguros: string;
 
-    @Prop({ default: null, trim: true })
+    @Prop({  trim: true })
     genero: string;
 
-    @Prop({ default: null, trim: true })
+    @Prop({  trim: true })
     placa: string;
 
-    @Prop({ default: null, trim: true })
+    @Prop({  trim: true })
     enfermedades: string;
 
-    @Prop({ default: null, trim: true })
+    @Prop({  trim: true })
     recomendaiones: string;
 
-    @Prop({ default: null, trim: true })
+    @Prop({  trim: true })
     nombre_padre: string;
 
-    @Prop({ default: null, trim: true })
+    @Prop({  trim: true })
     nombre_madre: string;
 
-    @Prop({ default: null, trim: true })
+    @Prop({  trim: true })
     telefono_padre: string;
 
-    @Prop({ default: null, trim: true })
+    @Prop({  trim: true })
     telefono_madre: string;
 
-    @Prop({ default: null, trim: true })
+    @Prop({  trim: true })
     raza: string;
 
-    @Prop({ default: null, trim: true })
+    @Prop({  trim: true })
     nombre_mascota: string;
 
-    @Prop({ default: null, trim: true })
+    @Prop({  trim: true })
     fecha_nacimiento_mascota: Date;
 
 
