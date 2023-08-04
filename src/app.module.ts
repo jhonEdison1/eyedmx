@@ -9,6 +9,7 @@ import * as Joi from 'joi';
 import { UsersModule } from './modules/users/users.module';
 import { IamModule } from './modules/iam/iam.module';
 import { ErrorsModule } from './modules/errors/errors.module';
+import { ManillasModule } from './modules/manillas/manillas.module';
 
 @Module({
   imports: [
@@ -24,7 +25,8 @@ import { ErrorsModule } from './modules/errors/errors.module';
     DatabaseModule,
     UsersModule,
     ErrorsModule,
-    IamModule
+    IamModule,
+    ManillasModule
   ],
   controllers: [AppController],
   providers: [AppService],

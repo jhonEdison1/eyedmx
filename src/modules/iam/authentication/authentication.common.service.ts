@@ -94,7 +94,7 @@ export class AuthenticationCommonService {
           },
           {
             name: "cilindraje",
-            type: "text",
+            type: "number",
             description: "Cilindraje de la moto",
           },
           {
@@ -181,14 +181,19 @@ export class AuthenticationCommonService {
               description: "Enfermedades de la mascota"
             },
             {
-              name: "fecha_nacimiento",
-              type: "text",
+              name: "fecha_nacimiento_mascota",
+              type: "Date",
               description: "Fecha de nacimiento de la mascota"
             },
             {
               name: "raza",
               type: "text",
               description: "Raza de la mascota"
+            },
+            {
+              name: "nombre_masctoa",
+              type: "text",
+              description: "Nombre de la mascota"
             }
           ];
     }

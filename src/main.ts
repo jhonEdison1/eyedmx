@@ -13,7 +13,7 @@ async function bootstrap() {
       transformOptions: {
         enableImplicitConversion: true,
       }
-    }
+    }    
   ));
 
   const config = new DocumentBuilder().setTitle('EyedMX API').setDescription('The EyedMX API description').setVersion('1.0').addTag('eyedmx').build();

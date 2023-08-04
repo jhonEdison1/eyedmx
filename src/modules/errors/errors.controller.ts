@@ -1,6 +1,8 @@
 import { Controller, Get, Post } from '@nestjs/common';
 import { ErrorLoggerService } from './error-logger.service';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('errors')
 @Controller('error-log')
 export class ErrorsLoggerController {
 

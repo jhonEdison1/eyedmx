@@ -1,5 +1,17 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { IsEmail, IsNotEmpty, IsString, MinLength, MaxLength, IsOptional } from "class-validator";
+import { Type } from "class-transformer";
+import { IsEmail, IsNotEmpty, IsString, MinLength, MaxLength, IsOptional, IsDate, IsArray, ArrayNotEmpty, IsEnum, ValidateNested, ValidateIf } from "class-validator";
+import { ManillaAdulto_MayorDto, ManillaMascotaDto, ManillaMoteroDto, ManillaNiñoDto } from "src/modules/manillas/dto";
+
+
+
+enum type {
+    Motero = 'Motero',
+    Niño = 'Niño',
+    Adulto_Mayor = 'Adulto_Mayor',
+    Mascota = 'Mascota',
+  }
+
 
 export class CreateUserDto {
 
@@ -27,4 +39,46 @@ export class CreateUserDto {
     @IsOptional()
     @ApiProperty({description: "Rol del usuario", type: String})
     readonly role: string;
+
+    @IsString({message: "El telefono debe contener caracteres válidos"})
+    @IsNotEmpty({message: "El telefono es requerido"})
+    @MinLength(10, {message: "El telefono debe contener al menos 10 caracteres"})
+    @ApiProperty({description: "Telefono del usuario", type: String})
+    telefono: string;
+
+    @IsString({message: "La dirección debe contener caracteres válidos"})
+    @IsNotEmpty({message: "La dirección es requerida"})
+    @ApiProperty({description: "Dirección del usuario", type: String})
+    direccion: string;
+
+    @IsString({message: "El documento debe contener caracteres válidos"})
+    @IsNotEmpty({message: "El documento es requerido"})
+    @ApiProperty({description: "Documento del usuario", type: String})
+    documento: string;
+
+    @IsNotEmpty({message: "la fecha de nacimiento es requerida"})
+    @IsDate()
+    @Type(() => Date)
+    @ApiProperty({description: "Fecha de nacimiento del usuario", type: Date})
+    fecha_nacimiento: Date;
+
+    @IsArray()
+    @ArrayNotEmpty()
+    @IsEnum(['Motero', 'Niño', 'Adulto_Mayor', 'Mascota'], { each: true })
+    tipo: string[];
+    
+    @IsNotEmpty()
+    //@ValidateNested()
+    datosAdicionales: ManillaMoteroDto | ManillaNiñoDto | ManillaAdulto_MayorDto | ManillaMascotaDto;
+
+
+
+    
+
+
+
 }
+
+
+
+

@@ -7,12 +7,14 @@ import { HashingService } from 'src/providers/hashing/hashing.service';
 import { BcryptService } from 'src/providers/hashing/bcrypt.service';
 import { ErrorsModule } from '../errors/errors.module';
 import { IamModule } from '../iam/iam.module';
+import { ManillasModule } from '../manillas/manillas.module';
 
 @Module({
   imports: [
     MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),    
     ErrorsModule,
-    IamModule   
+    IamModule,
+    ManillasModule   
   ],
   controllers: [UsersController],
   providers: [
