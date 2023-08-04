@@ -91,39 +91,46 @@ export class AuthenticationCommonService {
             name: "marca",
             type: "text",
             description: "Marca de la moto",
+            required: true
           },
           {
             name: "cilindraje",
             type: "number",
             description: "Cilindraje de la moto",
+            required: true
           },
           {
             name: "compañia_de_seguros",
             type: "text",
             description: "Compañia de seguros",
+            required: true
           },
           {
             name: "genero",
             type: "select",
             description: "Genero del portador de la manilla",
-            opciones: ["Masculino", "Femenino", "Otro"]
+            opciones: ["Masculino", "Femenino", "Otro"],
+            required: true
           },
           {
             name: "placa",
             type: "text",
-            description: "Placa de la moto"
+            description: "Placa de la moto",
+            required: true
 
           },
           {
             name: "rh",
             type: "text",
-            description: "rh del portador de la manilla"
+            description: "rh del portador de la manilla",
+            required: true
 
           },
           {
             name: "alergias",
             type: "text",
-            description: "Alergias del portador de la manilla"
+            description: "Alergias del portador de la manilla",
+            required: false
           }
         ];
         break;
@@ -133,28 +140,33 @@ export class AuthenticationCommonService {
             name: "genero",
             type: "select",
             description: "Genero del portador de la manilla",
-            opciones: ["Masculino", "Femenino", "Otro"]
+            opciones: ["Masculino", "Femenino", "Otro"],
+            required: true
           },
           {
             name: "enfermedades",
             type: "text",
-            description: "Enfermedades del adulto mayor"
+            description: "Enfermedades del adulto mayor",
+            required: true
           },
           {
             name: "recomendaiones",
             type: "textarea",
-            description: "Recomendaciones del adulto mayor"
+            description: "Recomendaciones del adulto mayor",
+            required: false
           },
           {
             name: "rh",
             type: "text",
-            description: "rh del portador de la manilla"
+            description: "rh del portador de la manilla",
+            required: true
 
           },
           {
             name: "alergias",
             type: "text",
-            description: "Alergias del portador de la manilla"
+            description: "Alergias del portador de la manilla",
+            required: false
           }
         ];
         break;
@@ -164,48 +176,57 @@ export class AuthenticationCommonService {
             name: "genero",
             type: "select",
             description: "Genero del portador de la manilla",
-            opciones: ["Masculino", "Femenino", "Otro"]
+            opciones: ["Masculino", "Femenino", "Otro"],
+            required: true
           },
           {
             name: "enfermedades",
             type: "text",
-            description: "Enfermedades del niño"
+            description: "Enfermedades del niño",
+            required: false
           },
           {
             name: "recomendaiones",
             type: "textarea",
-            description: "Recomendaciones del niño"
+            description: "Recomendaciones del niño",
+            required: false
           },
           {
             name: "nombre_padre",
             type: "text",
-            description: "Nombre del padre"
+            description: "Nombre del padre",
+            required: false
           },
           {
             name: "nombre_madre",
             type: "text",
-            description: "Nombre de la madre"
+            description: "Nombre de la madre",
+            required: false
           },
           {
             name: "telefono_padre",
             type: "text",
-            description: "Telefono del padre"
+            description: "Telefono del padre",
+            required: false
           },
           {
             name: "telefono_madre",
             type: "text",
-            description: "Telefono de la madre"
+            description: "Telefono de la madre",
+            required: false
           } ,
           {
             name: "rh",
             type: "text",
-            description: "rh del portador de la manilla"
+            description: "rh del portador de la manilla",
+            required: true
 
           },
           {
             name: "alergias",
             type: "text",
-            description: "Alergias del portador de la manilla"
+            description: "Alergias del portador de la manilla",
+            required: false
           }         
         ];
         break;
@@ -214,22 +235,26 @@ export class AuthenticationCommonService {
             {
               name: "enfermedades",
               type: "text",
-              description: "Enfermedades de la mascota"
+              description: "Enfermedades de la mascota",
+              required: false
             },
             {
               name: "fecha_nacimiento_mascota",
               type: "Date",
-              description: "Fecha de nacimiento de la mascota"
+              description: "Fecha de nacimiento de la mascota",
+              required: false
             },
             {
               name: "raza",
               type: "text",
-              description: "Raza de la mascota"
+              description: "Raza de la mascota",
+              required: false
             },
             {
               name: "nombre_masctoa",
               type: "text",
-              description: "Nombre de la mascota"
+              description: "Nombre de la mascota",
+              required: true
             }
           ];
     }
