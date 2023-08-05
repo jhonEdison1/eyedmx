@@ -18,6 +18,10 @@ export default registerAs("config", () => {
             jwtRefreshTokenSecret: process.env.JWT_REFRESH_SECRET,
             jwtRefreshTokenExpiresTime: process.env.JWT_REFRESH_EXPIRES_TIME,
         },
+        frontend: {
+            url: process.env.FRONTEND_URL,
+            urlinfo: process.env.URL_INFO,
+        }
     }
 
 });

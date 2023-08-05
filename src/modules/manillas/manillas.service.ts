@@ -1,4 +1,4 @@
-import { ConflictException, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
+import { ConflictException, Inject, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { CreateManillaDto, ManillaAdulto_MayorDto, ManillaMascotaDto, ManillaMoteroDto, ManillaNiñoDto } from './dto/create-manilla.dto';
 import { UpdateManillaDto } from './dto/update-manilla.dto';
 import { validate } from 'class-validator';
@@ -7,11 +7,16 @@ import { FilterQuery, Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { Tipos } from '../iam/authentication/authentication.common.service';
 import { FilterManillaDto } from './dto/filter-manilla.dto';
+import config from 'src/config';
+import { ConfigType } from '@nestjs/config';
+import * as qr from 'qrcode';
+import * as fs from 'fs';
 
 @Injectable()
 export class ManillasService {
 
   constructor(
+    @Inject(config.KEY) private readonly configSerivce: ConfigType<typeof config>,
     @InjectModel(Manilla.name) private readonly manillaModel: Model<Manilla>
 
 
@@ -205,35 +210,45 @@ export class ManillasService {
 
   async aceptarManilla(id: string) {
     try {
-
       const exist = await this.manillaModel.findById(id).exec();
 
-      if (!exist) throw new NotFoundException('No existe la manilla');
+      if (!exist) {
+        throw new NotFoundException('No existe la manilla');
+      }
 
-      switch (exist.estado) {
-        case estadoManilla.Aceptada:
-
-          throw new ConflictException('La manilla ya fue aceptada');
-        case estadoManilla.Entregada:
-          throw new ConflictException('La manilla ya fue entregada');
-        case estadoManilla.Rechazada:
-          throw new ConflictException('La manilla ya fue rechazada');
-        default:
-          break;
+      const estado = exist.estado;
+      if ([estadoManilla.Aceptada, estadoManilla.Entregada, estadoManilla.Rechazada, estadoManilla.Enviada].includes(estado)) {
+        throw new ConflictException(`La manilla ya fue ${estado}`);
       }
 
       exist.estado = estadoManilla.Aceptada;
 
+
+
+
+      //pasar al final
       const manilla = await exist.save();
+
+      const urlFront = this.configSerivce.frontend.url;
+      const urlInfo = this.configSerivce.frontend.urlinfo;
+      const url = `${urlFront}/${urlInfo}/${id}`;
+
+      const qrData = url;
+      const qrOptions = { type: 'svg', errorCorrectionLevel: 'high', scale: 8 };
+      const qrCodeSvg = await qr.toString(qrData, qrOptions);
+
+      // Guardar el archivo SVG en disco (opcional)
+      fs.writeFileSync(`manilla_${id}.svg`, qrCodeSvg);
+
+      // Aquí, subir el SVG a S3 (implementar esta funcionalidad)
 
       return {
         message: 'Manilla aceptada satisfactoriamente',
-        manilla
-      }
-
+        manilla,
+        qrCodeSvg,
+      };
     } catch (error) {
       throw new ConflictException('No se pudo aceptar la manilla: ' + error.message);
-
     }
   }
 
