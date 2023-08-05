@@ -9,6 +9,7 @@ export enum estadoManilla {
     Solicitada = 'Solicitada',
     Aceptada = 'Aceptada',
     Rechazada = 'Rechazada',
+    Enviada = 'Enviada',
     Entregada = 'Entregada',
 }
 

@@ -1,7 +1,7 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { Type } from "class-transformer";
-import { IsEmail, IsNotEmpty, IsString, MinLength, MaxLength, IsOptional, IsDate, IsArray, ArrayNotEmpty, IsEnum, ValidateNested, ValidateIf } from "class-validator";
-import { ManillaAdulto_MayorDto, ManillaMascotaDto, ManillaMoteroDto, ManillaNiñoDto } from "src/modules/manillas/dto";
+import { IsEmail, IsNotEmpty, IsString, MinLength, MaxLength, IsOptional, IsDate } from "class-validator";
+
 
 
 

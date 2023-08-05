@@ -15,12 +15,9 @@ export class UsersService {
   constructor(
     @InjectModel(User.name) private readonly userModel: Model<User>,
     private readonly hashingService: HashingService,
-    private readonly errorService: ErrorsService
-  
+    private readonly errorService: ErrorsService 
 
-  ) {
-
-  }
+  ) {}
 
 
 
