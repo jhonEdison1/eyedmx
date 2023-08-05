@@ -138,6 +138,21 @@ export class ManillasService {
 
   }
 
+  async findById(id: string) {
+    try {
+      const manilla = (await this.manillaModel.findById(id)).populate({ path: 'userId', select: 'name' })
+      if (!manilla) {
+        throw new NotFoundException('Manilla no encontrada');
+      }
+      return manilla;
+
+    } catch (error) {
+      throw new NotFoundException('Manilla no encontrada' + error);
+
+    }
+
+  }
+
 
   async findAll(params?: FilterManillaDto) {
 
@@ -197,7 +212,7 @@ export class ManillasService {
 
       switch (exist.estado) {
         case estadoManilla.Aceptada:
-          
+
           throw new ConflictException('La manilla ya fue aceptada');
         case estadoManilla.Entregada:
           throw new ConflictException('La manilla ya fue entregada');

@@ -54,12 +54,10 @@ export class ManillasController {
   aprobar(@Param('id') id: string) {
     return this.manillasService.aceptarManilla(id);
   }
-
-
   
-  @Get(':id')
+  @Get('findById/:id')
   findOne(@Param('id') id: string) {
-    return this.manillasService.findOne(+id);
+    return this.manillasService.findById(id);
   }
 
   @Patch(':id')
