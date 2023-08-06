@@ -1,19 +1,31 @@
 import { ExecutionContext, Injectable } from "@nestjs/common";
 import { Reflector } from "@nestjs/core";
 import { AuthGuard } from "@nestjs/passport";
+import { AuthenticationCommonService } from "../authentication";
 
 @Injectable()
 export class JwtAuthAccessGuard extends AuthGuard("jwt-access") {
 
+    // constructor(private reflector: Reflector, private readonly authenticationCommonService: AuthenticationCommonService) {}
+
     constructor(
-        private readonly reflector: Reflector
+        private readonly reflector: Reflector,
+        private readonly authenticationCommonService: AuthenticationCommonService
 
     ) {
         super();
     }
 
 
-    canActivate(context: ExecutionContext) {    
+
+
+    async canActivate(context: ExecutionContext): Promise<any> {
+
+        const req = context.switchToHttp().getRequest();
+        //console.log('req', req)
+       
+
+        //const record = await this.authenticationCommonService.findUserAutenticated(user.id);
 
 
         return super.canActivate(context);

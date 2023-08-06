@@ -21,7 +21,14 @@ export default registerAs("config", () => {
         frontend: {
             url: process.env.FRONTEND_URL,
             urlinfo: process.env.URL_INFO,
-        }
+        },
+        s3: {
+            bucket: process.env.AWS_BUCKET_NAME,
+            region: process.env.AWS_BUCKET_REGION,
+            accessKeyId: process.env.AWS_ACCESS_KEY,
+            secretAccessKey: process.env.AWS_SECRET_KEY,
+            url:  process.env.AWS_BUCKET_URL
+        },
     }
 
 });

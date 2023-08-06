@@ -1,6 +1,6 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Request, Query } from '@nestjs/common';
 import { ManillasService } from './manillas.service';
-import { CreateManillaDto } from './dto/create-manilla.dto';
+import { CreateEntradaDto, CreateManillaDto } from './dto/create-manilla.dto';
 import { UpdateManillaDto } from './dto/update-manilla.dto';
 import { ApiTags } from '@nestjs/swagger';
 import { JwtAuthAccessGuard } from '../iam/guards/jwt-auth.guard';
@@ -64,6 +64,34 @@ export class ManillasController {
   update(@Param('id') id: string, @Body() updateManillaDto: UpdateManillaDto) {
     return this.manillasService.update(+id, updateManillaDto);
   }
+
+
+  @UseGuards(JwtAuthAccessGuard)
+  @Get('MisManillas')
+  findMisManillas(@Request() req) {
+    return this.manillasService.obtenerMisManillasAgrupadasPorTipo(req.user.id);
+  }
+
+  @Roles(Role.TALLER)
+  @UseGuards(JwtAuthAccessGuard, RolesGuard)
+  @Get('ObtenerInfoMotoPorPlaca/:placa')
+  obtenerInfoMotoPorPlaca(@Param('placa') placa: string) {
+    return this.manillasService.obtenerInfoMotoPorPlaca(placa);
+  }
+
+
+  @Roles(Role.TALLER)
+  @UseGuards(JwtAuthAccessGuard, RolesGuard)
+  @Post('crearEntrada/:placa')
+  crearEntrada(@Param('placa') placa: string, @Body() body: CreateEntradaDto, @Request() req ) {
+
+    return this.manillasService.crearEntradaManilla(placa, body, req.user.id);
+
+
+  }
+
+
+
 
   @Delete(':id')
   remove(@Param('id') id: string) {

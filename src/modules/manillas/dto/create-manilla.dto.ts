@@ -1,6 +1,6 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { Type } from "class-transformer";
-import { IsDate, IsMongoId, IsNotEmpty, IsNumber, IsOptional, IsPositive, IsString, ValidateIf, ValidationArguments, ValidationOptions, ValidatorConstraint, ValidatorConstraintInterface, registerDecorator } from "class-validator";
+import { IsArray, IsDate, IsMongoId, IsNotEmpty, IsNumber, IsObject, IsOptional, IsPositive, IsString, ValidateIf, ValidationArguments, ValidationOptions, ValidatorConstraint, ValidatorConstraintInterface, registerDecorator } from "class-validator";
 
 export class CreateManillaDto {
 
@@ -199,12 +199,27 @@ export class ManillaMascotaDto extends CreateManillaDto{
     @IsNotEmpty({ message: "el nombre es requerido" })
     readonly nombre_mascota: string;
 
-    @IsNotEmpty({message: "la fecha de nacimiento de la mascota es requerida"})
-    @IsDate()
-    @Type(() => Date)
+    //@IsNotEmpty({message: "la fecha de nacimiento de la mascota es requerida"})
+    //@IsDate()
+    //@Type(() => Date)
     readonly fecha_nacimiento_mascota: Date;
 
 
+}
+
+
+
+//las entradas seran un array que guardara objetos de esta manera  [{taller: 'id', observaciones: 'texto'}], no hace referencia a ningun modelo
+
+export class CreateEntradaDto {
+
+    // @IsString({ message: "el taller debe contener caracteres validos" })
+    // @IsNotEmpty({ message: "el taller es requerido" })
+    // taller: string;
+
+    @IsString({ message: "las observaciones deben contener caracteres validos" })
+    @IsNotEmpty({ message: "las observaciones son requeridas" })
+    observaciones: string;
 }
 
 

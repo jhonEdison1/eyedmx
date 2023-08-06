@@ -3,6 +3,7 @@ import { Document } from "mongoose";
 
 
 
+
 export enum plans {
     Basico = 'Basico',
     Intermedio = 'Intermedio',
@@ -33,11 +34,19 @@ export class User extends Document {
     @Prop({ required: true })
     direccion: string;
 
-    @Prop({ required: true })
+    @Prop({ /*required: true*/ })
     documento: string;
 
-    @Prop({ required: true })
-    fecha_nacimiento: Date;  
+    @Prop({ /*required: true*/ })
+    fecha_nacimiento: Date; 
+    
+    @Prop({default: true})
+    aceptado: Boolean;
+
+    @Prop({default: plans.Basico})
+    plan: string;
+
+
 
     // @Prop([{ type: String, enum: ['Motero', 'Niño', 'Adulto_Mayor', 'Mascota'] }])
     // tipo: string[];

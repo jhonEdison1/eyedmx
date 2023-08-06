@@ -17,6 +17,14 @@ export class AuthenticationService {
     async signIn(payload: SigninPayload) {
 
         try {
+
+            const isAceppted = await this.authcommonService.isAcepted(payload.id);
+            if (!isAceppted) {
+                throw new Error("El usuario no ha sido aceptado");
+            }
+
+
+
             const data: PayloadToken = { id: payload.id, role: payload.role };
 
             const [accessToken, refreshToken] = await Promise.all([

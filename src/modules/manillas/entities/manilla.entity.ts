@@ -88,6 +88,17 @@ export class Manilla extends Document {
     @Prop({  trim: true })
     fecha_nacimiento_mascota: Date;
 
+
+    //una propiedad que guardara un array de objetos asi [{taller: 'id', observaciones: 'texto'}], no hace referencia a ningun modelo
+
+    @Prop({ type: [{ taller: String, observaciones: String, fecha: Date }] })
+    entradas: [{ taller: String, observaciones: String, fecha: Date }];
+    
+
+
+
+
+
     
 
    

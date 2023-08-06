@@ -33,6 +33,18 @@ export class AuthenticationCommonService {
 
 
 
+  async isAcepted(id: string) {
+    try {
+      const user = await this.userModel.findById(id).exec();
+      if (!user) {
+        throw new ConflictException('El usuario no existe');
+      }
+      return user.aceptado;
+    } catch (error) {
+      this.errorService.createError(error);
+    }
+  }
+
   generateJwtAccessToken(payload: PayloadToken) {
     try {
       const accessToken = this.jwtService.signAsync(payload, {
