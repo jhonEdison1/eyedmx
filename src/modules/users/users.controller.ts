@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Query } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Query, Request } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { ApiTags } from '@nestjs/swagger';
 import { MongoIdPipe } from 'src/common/pipes/mongo-id.pipe';
@@ -80,14 +80,18 @@ export class UsersController {
     return this.usersService.findOneCliente(id);
   }
 
+
+
   @Get(':id')
   findOne(@Param('id', MongoIdPipe) id: string) {
     return this.usersService.findOne(id);
   }
 
-  @Patch(':id')
-  update(@Param('id', MongoIdPipe) id: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.usersService.update(id, updateUserDto);
+
+  @UseGuards(JwtAuthAccessGuard)
+  @Patch('editarUsuario/:id')  
+  update(@Param('id', MongoIdPipe) id: string, @Body() updateUserDto: UpdateUserDto, @Request() req) {
+    return this.usersService.updateCliente(id, updateUserDto, req.user);
   }
 
   @Delete(':id')

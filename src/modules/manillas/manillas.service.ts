@@ -298,6 +298,52 @@ export class ManillasService {
     }
   }
 
+  async enviarManilla(id: string) {
+
+    const exist = await this.manillaModel.findById(id).exec();
+
+      if (!exist) {
+        throw new NotFoundException('No existe la manilla');
+      }
+
+      const estado = exist.estado;
+      if ([estadoManilla.Entregada, estadoManilla.Rechazada, estadoManilla.Enviada].includes(estado)) {
+        throw new ConflictException(`La manilla ya fue ${estado}`);
+      }
+
+      exist.estado = estadoManilla.Enviada;
+
+      const manilla = await exist.save();
+
+      return {
+        message: 'Manilla enviada satisfactoriamente',
+        manilla,
+      };
+
+
+  }
+
+
+  async enviarVariasManillas(ids: string[]): Promise<{ enviadas: any[], errores: string[] }> {
+    const enviadas: any[] = [];
+    const errores: string[] = [];
+
+    for (const id of ids) {
+      try {
+        const manilla = await this.enviarManilla(id);
+        enviadas.push(manilla.manilla);
+      } catch (error) {
+        errores.push(`Error al enviar la manilla ${id}: ${error.message}`);
+      }
+    }
+
+    return {
+      enviadas,
+      errores,
+    };
+  }
+
+
 
 
   async aceptarVariasManillas(ids: string[]): Promise<{ aceptadas: any[], errores: string[] }> {

@@ -1,4 +1,4 @@
-import { ConflictException, Inject, Injectable } from '@nestjs/common';
+import { ConflictException, Inject, Injectable, UnauthorizedException } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectModel } from '@nestjs/mongoose';
@@ -296,6 +296,54 @@ export class UsersService {
     } catch (error) {
       this.errorService.createError(error);
     }
+
+  }
+
+
+
+  async updateCliente(id: string, payload: UpdateUserDto, user: User) {
+
+    try {
+
+      console.log('user', user);
+
+      if(user.id.toString() !== id){
+        throw new UnauthorizedException('No tienes permisos para actualizar este cliente');
+      }
+
+
+      const usuario = await this.userModel.findOne({ _id: id }).exec();
+
+      //antes de retornar el usuario, verificamos que exista
+      if (!usuario) {
+
+        throw new ConflictException('El usuario no existe');
+      }
+
+      //las unicas propiedades que se pueden actualizar son direccion, telefono y foto
+
+      if (payload.direccion) {
+        usuario.direccion = payload.direccion;
+      }
+
+      if (payload.telefono) {
+        usuario.telefono = payload.telefono;
+      }
+
+      if (payload.fotoBase64) {
+        usuario.fotoBase64 = await this.uploadBase64ToS3(id, payload.fotoBase64);
+      }
+
+      await usuario.save();
+
+      return usuario;
+     
+
+    } catch (error) {
+      this.errorService.createError(error);
+    }
+
+
 
   }
 
