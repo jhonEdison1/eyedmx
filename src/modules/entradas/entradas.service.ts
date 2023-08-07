@@ -25,6 +25,7 @@ export class EntradasService {
 
   async create(createEntradaDto: InfoEntradaDto) {
     const entrada = (await this.entradaModel.create(createEntradaDto)).populate({path: 'taller', select: 'name'});
+    return entrada;
   }
 
 
