@@ -157,11 +157,28 @@ export class AuthenticationCommonService {
             type: "text",
             description: "Alergias del portador de la manilla",
             required: false
+          },
+          {
+            name: "contacto_de_emergencia",
+            type: "text",
+            description: "Contacto de emergencia",
+            required: true
+          },
+          {
+            name: "telefono_de_emergencia",
+            type: "text",
+            description: "Telefono de emergencia",
+            required: true
           }
         ];
         break;
       case Tipos.Adulto_Mayor:
         return [
+          {
+            name: "nombre_portador",
+            type: "text",
+            description: "Nombre del portador de la manilla",
+          },
           {
             name: "genero",
             type: "select",
@@ -176,7 +193,7 @@ export class AuthenticationCommonService {
             required: true
           },
           {
-            name: "recomendaiones",
+            name: "recomendaciones",
             type: "textarea",
             description: "Recomendaciones del adulto mayor",
             required: false
@@ -193,11 +210,28 @@ export class AuthenticationCommonService {
             type: "text",
             description: "Alergias del portador de la manilla",
             required: false
+          },
+          {
+            name: "contacto_de_emergencia",
+            type: "text",
+            description: "Contacto de emergencia",
+            required: true
+          },
+          {
+            name: "telefono_de_emergencia",
+            type: "text",
+            description: "Telefono de emergencia",
+            required: true
           }
         ];
         break;
       case Tipos.Niño:
         return [
+          {
+            name: "nombre_portador",
+            type: "text",
+            description: "Nombre del portador de la manilla",
+          },
           {
             name: "genero",
             type: "select",
@@ -212,7 +246,7 @@ export class AuthenticationCommonService {
             required: false
           },
           {
-            name: "recomendaiones",
+            name: "recomendaciones",
             type: "textarea",
             description: "Recomendaciones del niño",
             required: false
@@ -253,7 +287,19 @@ export class AuthenticationCommonService {
             type: "text",
             description: "Alergias del portador de la manilla",
             required: false
-          }         
+          },
+          {
+            name: "contacto_de_emergencia",
+            type: "text",
+            description: "Contacto de emergencia",
+            required: true
+          },
+          {
+            name: "telefono_de_emergencia",
+            type: "text",
+            description: "Telefono de emergencia",
+            required: true
+          }      
         ];
         break;
         case Tipos.Mascota:
@@ -277,15 +323,26 @@ export class AuthenticationCommonService {
               required: false
             },
             {
-              name: "nombre_masctoa",
+              name: "nombre_mascota",
               type: "text",
               description: "Nombre de la mascota",
+              required: true
+            },
+            {
+              name: "contacto_de_emergencia",
+              type: "text",
+              description: "Contacto de emergencia",
+              required: true
+            },
+            {
+              name: "telefono_de_emergencia",
+              type: "text",
+              description: "Telefono de emergencia",
               required: true
             }
           ];
     }
   }
-
   getTypes() {
     return [
       {

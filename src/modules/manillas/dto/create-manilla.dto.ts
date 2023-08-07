@@ -74,6 +74,11 @@ export class ManillaMoteroDto extends CreateManillaDto {
 
 export class ManillaAdulto_MayorDto extends CreateManillaDto {
 
+
+    @IsString({ message: "el nombre_portador debe contener datos validos" })
+    @IsNotEmpty({ message: "el nombre_portador es requerido" })
+    readonly nombre_portador: string;
+
     @IsString({ message: "el genero debe contener caracteres validos" })
     @IsNotEmpty({ message: "el genero es requerido" })
     readonly genero: string;
@@ -136,6 +141,11 @@ export function AtLeastOneIsRequired(fields: string[], validationOptions?: Valid
 
 
 export class ManillaNiñoDto extends CreateManillaDto {
+
+
+    @IsString({ message: "el nombre_portador debe contener datos validos" })
+    @IsNotEmpty({ message: "el nombre_portador es requerido" })
+    readonly nombre_portador: string;
 
     @IsString({ message: "el genero debe contener caracteres validos" })
     @IsNotEmpty({ message: "el genero es requerido" })
