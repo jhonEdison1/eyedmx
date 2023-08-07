@@ -67,7 +67,7 @@ export class ManillasController {
 
   @Roles(Role.ADMIN)
   @UseGuards(JwtAuthAccessGuard, RolesGuard)
-  @Patch('enviarVarias')
+  @Post('enviarVarias')
   enviarVarias(@Body() body: IdsAprobarDto) {
     return this.manillasService.enviarVariasManillas(body.ids);
   }
