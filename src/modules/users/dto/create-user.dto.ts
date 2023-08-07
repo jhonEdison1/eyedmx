@@ -63,6 +63,10 @@ export class CreateUserDto {
     // //@ValidateNested()
     // datosAdicionales: ManillaMoteroDto | ManillaNiñoDto | ManillaAdulto_MayorDto | ManillaMascotaDto;
 
+    @IsOptional()
+    @ApiProperty({description: "Foto del usuario", type: String})
+    fotoBase64: string;
+
 
 
     

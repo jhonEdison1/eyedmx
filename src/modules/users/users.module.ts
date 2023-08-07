@@ -8,13 +8,15 @@ import { BcryptService } from 'src/providers/hashing/bcrypt.service';
 import { ErrorsModule } from '../errors/errors.module';
 import { IamModule } from '../iam/iam.module';
 import { ManillasModule } from '../manillas/manillas.module';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
     MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),    
     ErrorsModule,
     IamModule,
-    ManillasModule   
+    ManillasModule,
+    ConfigModule   
   ],
   controllers: [UsersController],
   providers: [

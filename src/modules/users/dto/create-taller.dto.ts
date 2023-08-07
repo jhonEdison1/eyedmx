@@ -43,6 +43,11 @@ export class CreateUserTallerDto {
     @ApiProperty({description: "Dirección del usuario", type: String})
     direccion: string;
 
+
+    @IsOptional()
+    @ApiProperty({description: "Foto del usuario", type: String})
+    fotoBase64: string;
+
     // @IsString({message: "El documento debe contener caracteres válidos"})
     // @IsNotEmpty({message: "El documento es requerido"})
     // @ApiProperty({description: "Documento del usuario", type: String})

@@ -1,4 +1,4 @@
-import { ConflictException, Injectable } from '@nestjs/common';
+import { ConflictException, Inject, Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectModel } from '@nestjs/mongoose';
@@ -10,19 +10,33 @@ import { ManillasService } from '../manillas/manillas.service';
 import { Role } from '../iam/models/roles.model';
 import { FilterUsersDto } from './dto';
 import { CreateUserTallerDto } from './dto/create-taller.dto';
+import { ConfigType } from '@nestjs/config';
+import config from 'src/config';
+import * as AWS from 'aws-sdk';
 
 
 @Injectable()
 export class UsersService {
 
+  private readonly s3: AWS.S3;
+
 
   constructor(
+    @Inject(config.KEY) private readonly configService: ConfigType<typeof config>,
     @InjectModel(User.name) private readonly userModel: Model<User>,
     private readonly hashingService: HashingService,
     private readonly errorService: ErrorsService,
     private readonly manillasService: ManillasService
 
-  ) { }
+  ) {
+    AWS.config.update({
+      accessKeyId: configService.s3.accessKeyId,
+      secretAccessKey: configService.s3.secretAccessKey,
+      region: configService.s3.region
+    });
+
+    this.s3 = new AWS.S3();
+  }
 
 
 
@@ -35,10 +49,20 @@ export class UsersService {
   async create(payload: CreateUserDto) {
 
     try {
+      const existemail = await this.userModel.exists({ email: payload.email.trim() });
+      if(existemail){
+        throw new ConflictException('El correo ya existe');
+      }
 
 
       payload.password = await this.hashingService.hash(payload.password.trim());
+     
       const newRecord = new this.userModel(payload);
+      if(payload.fotoBase64){
+        payload.fotoBase64 = await this.uploadBase64ToS3(newRecord._id.toString(), payload.fotoBase64);
+      }
+
+      newRecord.fotoBase64 = payload.fotoBase64;
       const newuser = await newRecord.save();
       return newuser;
 
@@ -50,13 +74,55 @@ export class UsersService {
 
   }
 
+  async uploadBase64ToS3(id: string, base64Data: string): Promise<string> {
+    const buffer = Buffer.from(base64Data, 'base64');
+
+    const uploadFolderPath = 'users'; // Carpeta base en S3
+    const fileName = `users/${id}/${Date.now()}.jpg`; // Nombre de archivo
+
+    const s3Params: AWS.S3.PutObjectRequest = {
+      Bucket: this.configService.s3.bucket,
+      Key: fileName,
+      Body: buffer,
+      ContentType: 'image/jpeg', // Ajustar según el tipo de imagen
+    };
+
+    try {
+      const data = await this.s3.putObject(s3Params).promise();
+      const urlfoto = this.s3.getSignedUrl('getObject', {
+        Bucket: this.configService.s3.bucket,
+        Key: `${fileName}`
+
+      });
+
+
+      //return `https://${this.configService.s3.bucket}.s3.${this.configService.s3.region}.amazonaws.com/${fileName}`;
+      return urlfoto;
+      
+    } catch (error) {
+      throw new Error(`Error al subir la imagen a S3: ${error.message}`);
+    }
+  }
+
   async singupTaller(payload: CreateUserTallerDto) {
 
     try {
+      const existemail = await this.userModel.exists({ email: payload.email.trim() });
+      if(existemail){
+        throw new ConflictException('El correo ya existe');
+      }
       payload.password = await this.hashingService.hash(payload.password.trim());
       const newRecord = new this.userModel(payload);
       newRecord.role = Role.TALLER;
       newRecord.aceptado = false;
+
+      if(payload.fotoBase64){
+        payload.fotoBase64 = await this.uploadBase64ToS3(newRecord._id.toString(), payload.fotoBase64);
+      }
+
+      newRecord.fotoBase64 = payload.fotoBase64;
+
+
       const newuser = await newRecord.save();
       return newuser;
     } catch (error) {
@@ -70,9 +136,23 @@ export class UsersService {
 
   async createTaller(payload: CreateUserTallerDto) {
     try {
+
+      const existemail = await this.userModel.exists({ email: payload.email.trim() });
+      if(existemail){
+        throw new ConflictException('El correo ya existe');
+      }
       payload.password = await this.hashingService.hash(payload.password.trim());
       const newRecord = new this.userModel(payload);
       newRecord.role = Role.TALLER;
+
+      if(payload.fotoBase64){
+        payload.fotoBase64 = await this.uploadBase64ToS3(newRecord._id.toString(), payload.fotoBase64);
+      }
+
+      newRecord.fotoBase64 = payload.fotoBase64;
+
+
+
       const newuser = await newRecord.save();
       return newuser;
     } catch (error) {
@@ -192,28 +272,30 @@ export class UsersService {
 
 
   async findOneCliente(id: string) {
-      
-      try {
-        const cliente = await this.userModel.findOne({ _id: id, role: Role.USER }).exec();
 
-        //antes de retornar el cliente, verificamos que exista
-        if (!cliente) {
-          throw new ConflictException('El cliente no existe');
-        }
+    try {
+      const cliente = await this.userModel.findOne({ _id: id, role: Role.USER }).exec();
 
-        //buscamos las manillas del cliente
-        const manillas = await this.manillasService.obtenerMisManillasAgrupadasPorTipo(id);
+      cliente.password = undefined;
 
-        //asignamos las manillas al cliente
-        let clienteConManillas = cliente.toObject();
-        clienteConManillas['manillas'] = manillas;
-
-
-
-        return clienteConManillas;
-      } catch (error) {
-        this.errorService.createError(error);
+      //antes de retornar el cliente, verificamos que exista
+      if (!cliente) {
+        throw new ConflictException('El cliente no existe');
       }
+
+      //buscamos las manillas del cliente
+      const manillas = await this.manillasService.obtenerMisManillasAgrupadasPorTipo(id);
+
+      //asignamos las manillas al cliente
+      let clienteConManillas = cliente.toObject();
+      clienteConManillas['manillas'] = manillas;
+
+
+
+      return clienteConManillas;
+    } catch (error) {
+      this.errorService.createError(error);
+    }
 
   }
 

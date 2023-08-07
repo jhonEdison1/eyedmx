@@ -46,6 +46,9 @@ export class User extends Document {
     @Prop({default: plans.Basico})
     plan: string;
 
+    @Prop({required: false})
+    fotoBase64: string;
+
 
 
     // @Prop([{ type: String, enum: ['Motero', 'Niño', 'Adulto_Mayor', 'Mascota'] }])
