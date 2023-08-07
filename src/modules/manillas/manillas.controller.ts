@@ -1,6 +1,6 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Request, Query } from '@nestjs/common';
 import { ManillasService } from './manillas.service';
-import { CreateEntradaDto, CreateManillaDto } from './dto/create-manilla.dto';
+import {CreateManillaDto } from './dto/create-manilla.dto';
 import { UpdateManillaDto } from './dto/update-manilla.dto';
 import { ApiTags } from '@nestjs/swagger';
 import { JwtAuthAccessGuard } from '../iam/guards/jwt-auth.guard';
@@ -8,6 +8,8 @@ import { Roles } from '../iam/decorators';
 import { Role } from '../iam/models/roles.model';
 import { RolesGuard } from '../iam/guards/roles.guard';
 import { FilterManillaDto } from './dto/filter-manilla.dto';
+import { IdsAprobarDto } from './dto/ids-aprobar.dto';
+import { CreateEntradaDto } from '../entradas/dto/create-entrada.dto';
 
 @ApiTags("manillas")
 @Controller('manillas')
@@ -54,6 +56,14 @@ export class ManillasController {
   aprobar(@Param('id') id: string) {
     return this.manillasService.aceptarManilla(id);
   }
+
+
+  @Roles(Role.ADMIN)
+  @UseGuards(JwtAuthAccessGuard, RolesGuard)
+  @Post('aprobarVarias')
+  aprobarVarias(@Body() body: IdsAprobarDto) {
+    return this.manillasService.aceptarVariasManillas(body.ids);
+  }
   
   @Get('findById/:id')
   findOne(@Param('id') id: string) {
@@ -75,8 +85,8 @@ export class ManillasController {
   @Roles(Role.TALLER)
   @UseGuards(JwtAuthAccessGuard, RolesGuard)
   @Get('ObtenerInfoMotoPorPlaca/:placa')
-  obtenerInfoMotoPorPlaca(@Param('placa') placa: string) {
-    return this.manillasService.obtenerInfoMotoPorPlaca(placa);
+  obtenerInfoMotoPorPlaca(@Param('placa') placa: string, @Request() req) {
+    return this.manillasService.obtenerInfoMotoPorPlaca(placa, req.user.id);
   }
 
 

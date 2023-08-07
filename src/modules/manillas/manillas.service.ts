@@ -1,5 +1,5 @@
 import { ConflictException, Inject, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
-import { CreateEntradaDto, CreateManillaDto, ManillaAdulto_MayorDto, ManillaMascotaDto, ManillaMoteroDto, ManillaNiñoDto } from './dto/create-manilla.dto';
+import { CreateManillaDto, ManillaAdulto_MayorDto, ManillaMascotaDto, ManillaMoteroDto, ManillaNiñoDto } from './dto/create-manilla.dto';
 import { UpdateManillaDto } from './dto/update-manilla.dto';
 import { validate } from 'class-validator';
 import { Manilla, estadoManilla } from './entities/manilla.entity';
@@ -13,6 +13,8 @@ import * as qr from 'qrcode';
 import * as fs from 'fs';
 import * as AWS from 'aws-sdk';
 import { format, parseISO } from 'date-fns';
+import { EntradasService } from '../entradas/entradas.service';
+import { CreateEntradaDto } from '../entradas/dto/create-entrada.dto';
 
 @Injectable()
 export class ManillasService {
@@ -21,7 +23,8 @@ export class ManillasService {
 
   constructor(
     @Inject(config.KEY) private readonly configSerivce: ConfigType<typeof config>,
-    @InjectModel(Manilla.name) private readonly manillaModel: Model<Manilla>
+    @InjectModel(Manilla.name) private readonly manillaModel: Model<Manilla>,
+    private readonly entradaService: EntradasService,
 
 
   ) {
@@ -297,6 +300,32 @@ export class ManillasService {
 
 
 
+  async aceptarVariasManillas(ids: string[]): Promise<{ aceptadas: any[], errores: string[] }> {
+    const aceptadas: any[] = [];
+    const errores: string[] = [];
+
+    for (const id of ids) {
+        try {
+            const manilla = await this.aceptarManilla(id);
+            aceptadas.push(manilla.manilla);
+        } catch (error) {
+            errores.push(`Error al aceptar la manilla ${id}: ${error.message}`);
+        }
+    }
+
+    return {
+        aceptadas,
+        errores,
+    };
+}
+
+
+    
+
+
+
+
+
   async obtenerMisManillasAgrupadasPorTipo(userId: string) {
 
     try {
@@ -317,7 +346,7 @@ export class ManillasService {
 
 
 
-  async obtenerInfoMotoPorPlaca(placa: string) {
+  async obtenerInfoMotoPorPlaca(placa: string, tallerid: string) {
 
     const manilla = await this.manillaModel.findOne({ placa: placa }).populate({ path: 'userId', select: 'name' })
 
@@ -325,13 +354,16 @@ export class ManillasService {
       throw new NotFoundException('No existe ninguna manilla asociada a la placa proporcionada');
     }
 
+    const entradas =await  this.entradaService.findByPlacaAndTaller(placa, tallerid);
+   
+
     const infoRetorno = {
 
       placa: manilla.placa,
       marca: manilla.marca,
       cilindraje: manilla.cilindraje,
       conductor: manilla.userId.name,
-      entradas: manilla.entradas,
+      entradas: entradas,
 
     }
     return infoRetorno;
@@ -349,12 +381,16 @@ export class ManillasService {
     const entrada = {
       taller: userId,
       observaciones: createEntradaManillaDto.observaciones,
-      fecha: new Date()
-    }
+      placa: placa,
+      manilla: manilla._id    
+    }   
 
-    manilla.entradas.push(entrada);
+    console.log('entrada', entrada)
+    const entradaCreada = await this.entradaService.create(entrada);
 
-    await manilla.save();
+    const entradas =await this.entradaService.findByPlacaAndTaller(placa, userId);
+
+
 
     const infoRetorno = {
 
@@ -362,10 +398,7 @@ export class ManillasService {
       marca: manilla.marca,
       cilindraje: manilla.cilindraje,
       conductor: manilla.userId.name,
-      entradas: manilla.entradas,
-
-
-
+      entradas: entradas
     }
 
 

@@ -221,16 +221,16 @@ export class ManillaMascotaDto extends CreateManillaDto{
 
 //las entradas seran un array que guardara objetos de esta manera  [{taller: 'id', observaciones: 'texto'}], no hace referencia a ningun modelo
 
-export class CreateEntradaDto {
+// export class CreateEntradaDto {
 
-    // @IsString({ message: "el taller debe contener caracteres validos" })
-    // @IsNotEmpty({ message: "el taller es requerido" })
-    // taller: string;
+//     // @IsString({ message: "el taller debe contener caracteres validos" })
+//     // @IsNotEmpty({ message: "el taller es requerido" })
+//     // taller: string;
 
-    @IsString({ message: "las observaciones deben contener caracteres validos" })
-    @IsNotEmpty({ message: "las observaciones son requeridas" })
-    observaciones: string;
-}
+//     @IsString({ message: "las observaciones deben contener caracteres validos" })
+//     @IsNotEmpty({ message: "las observaciones son requeridas" })
+//     observaciones: string;
+// }
 
 
 
