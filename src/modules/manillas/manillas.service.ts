@@ -15,16 +15,23 @@ import * as AWS from 'aws-sdk';
 import { format, parseISO } from 'date-fns';
 import { EntradasService } from '../entradas/entradas.service';
 import { CreateEntradaDto } from '../entradas/dto/create-entrada.dto';
+import { MailService } from '../mail/mail.service';
+import * as sharp from 'sharp';
+
+
+
 
 @Injectable()
 export class ManillasService {
 
   private readonly s3: AWS.S3;
 
+
   constructor(
     @Inject(config.KEY) private readonly configSerivce: ConfigType<typeof config>,
     @InjectModel(Manilla.name) private readonly manillaModel: Model<Manilla>,
     private readonly entradaService: EntradasService,
+    private readonly mailService: MailService
 
 
   ) {
@@ -244,10 +251,11 @@ export class ManillasService {
 
       const qrData = url;
       const qrOptions = { type: 'svg', errorCorrectionLevel: 'high', scale: 8 };
+      //const qrOptions = { type: 'png', errorCorrectionLevel: 'high', scale: 8 };
       const qrCodeSvg = await qr.toString(qrData, qrOptions);
 
       // Guardar el archivo SVG en disco (opcional)
-      //fs.writeFileSync(`manilla_${id}.svg`, qrCodeSvg);
+      //fs.writeFileSync(`manilla_${id}.png`, qrCodeSvg);
 
       // Aquí, subir el SVG a S3 (implementar esta funcionalidad)
       const uploadFolderPath = 'uploads';
@@ -255,6 +263,7 @@ export class ManillasService {
       const formattedDate = format(currentDate, 'yyyy-MM-dd');
       const dailyFolderPath = `${uploadFolderPath}/${formattedDate}`;
       const fileName = `manilla_${id}.svg`;
+      //const fileName = `manilla_${id}.png`;
 
       // Subir el archivo SVG al S3
       const s3Params: AWS.S3.PutObjectRequest = {
@@ -262,10 +271,11 @@ export class ManillasService {
         Key: `${dailyFolderPath}/${fileName}`,
         Body: qrCodeSvg,
         ContentType: 'image/svg+xml', // Establecer el tipo de contenido correcto
+        // ContentType: 'image/png'
       };
 
-      const uploadedObject = await this.s3.putObject(s3Params).promise();
-      // const uploadedObject = await this.s3.upload(s3Params).promise();
+      //const uploadedObject = await this.s3.putObject(s3Params).promise();
+      const uploadedObject = await this.s3.upload(s3Params).promise();
 
       // Obtener la URL del objeto recién subido
       // const urlqr = this.s3.getSignedUrl('getObject', {
@@ -273,13 +283,41 @@ export class ManillasService {
       //   Key: `${dailyFolderPath}/${fileName}`       
       // });
 
-      //const urlqr = uploadedObject.Location
+      const urlqr = uploadedObject.Location
 
-      const urlqr = this.s3.getSignedUrl('getObject', {
+      // const urlqr = this.s3.getSignedUrl('getObject', {
+      //   Bucket: this.configSerivce.s3.bucket,
+      //   Key: `${dailyFolderPath}/${fileName}`
+
+      // });
+
+      const imgPng = await this.svgToPng(qrCodeSvg);
+
+      const params = {
         Bucket: this.configSerivce.s3.bucket,
-        Key: `${dailyFolderPath}/${fileName}`
+        Key: `${dailyFolderPath}/${fileName}.png`,
+        Body: imgPng,
+        ContentType: 'image/png',
+      };
 
-      });
+      const uploadedObjectPng = await this.s3.upload(params).promise();
+
+      const urlpng = uploadedObjectPng.Location
+
+
+
+
+
+      await exist.populate({ path: 'userId', select: 'name email' })
+
+      const email = exist.userId.email;
+      const name = exist.userId.name;
+
+
+
+      console.log('email', exist.userId.email, 'name', exist.userId.name);
+
+      await this.mailService.sendQrCodeEmail(email, urlpng, name);
 
 
 
@@ -302,26 +340,45 @@ export class ManillasService {
 
     const exist = await this.manillaModel.findById(id).exec();
 
-      if (!exist) {
-        throw new NotFoundException('No existe la manilla');
-      }
+    if (!exist) {
+      throw new NotFoundException('No existe la manilla');
+    }
 
-      const estado = exist.estado;
-      if ([estadoManilla.Entregada, estadoManilla.Rechazada, estadoManilla.Enviada].includes(estado)) {
-        throw new ConflictException(`La manilla ya fue ${estado}`);
-      }
+    const estado = exist.estado;
+    if ([estadoManilla.Entregada, estadoManilla.Rechazada, estadoManilla.Enviada].includes(estado)) {
+      throw new ConflictException(`La manilla ya fue ${estado}`);
+    }
 
-      exist.estado = estadoManilla.Enviada;
+    exist.estado = estadoManilla.Enviada;
 
-      const manilla = await exist.save();
+    const manilla = await exist.save();
 
-      return {
-        message: 'Manilla enviada satisfactoriamente',
-        manilla,
-      };
+    return {
+      message: 'Manilla enviada satisfactoriamente',
+      manilla,
+    };
 
 
   }
+
+
+
+
+  async svgToPng(svgXml: string,): Promise<Buffer> {
+    const width = 500
+    const height = 500
+
+
+    const pngBuffer = await sharp(Buffer.from(svgXml))
+      .resize(width, height)  // Agrega esta línea para redimensionar la imagen
+      .toFormat('png')
+      .toBuffer();
+
+    return pngBuffer;
+  }
+
+
+
 
 
   async enviarVariasManillas(ids: string[]): Promise<{ enviadas: any[], errores: string[] }> {
@@ -351,37 +408,78 @@ export class ManillasService {
     const errores: string[] = [];
 
     for (const id of ids) {
-        try {
-            const manilla = await this.aceptarManilla(id);
-            aceptadas.push(manilla.manilla);
-        } catch (error) {
-            errores.push(`Error al aceptar la manilla ${id}: ${error.message}`);
-        }
+      try {
+        const manilla = await this.aceptarManilla(id);
+        aceptadas.push(manilla.manilla);
+      } catch (error) {
+        errores.push(`Error al aceptar la manilla ${id}: ${error.message}`);
+      }
     }
 
     return {
-        aceptadas,
-        errores,
+      aceptadas,
+      errores,
     };
-}
-
-
-    
+  }
 
 
 
 
 
-  async obtenerMisManillasAgrupadasPorTipo(userId: string) {
+
+
+
+  async obtenerMisManillasAgrupadasPorTipo(userId: string, params?: FilterManillaDto) {
+
+    const filters: FilterQuery<Manilla> = {};
+    const { limit, offset } = params;
+
+    console.log(offset, limit)
 
     try {
       const misManillas =
         await this.manillaModel.aggregate([
           { $match: { userId: userId } },
           { $group: { _id: '$tipo', manillas: { $push: '$$ROOT' }, } },
-        ]);
+        ])
 
-      return misManillas;
+      //const misManillas = await this.manillaModel.find({ userId: userId }).skip(offset).limit(limit).exec();
+
+      const totalDocuments = await this.manillaModel.countDocuments({ userId: userId }).exec();
+
+      //organizarlas por tipo
+
+      // const manillasAgrupadas = {
+      //   Adulto_Mayor: [],
+      //   Motero: [],
+      //   Niño: [],
+      //   Mascota: []
+      // }
+
+      // misManillas.forEach((manilla) => {
+      //   switch (manilla.tipo) {
+      //     case Tipos.Adulto_Mayor:
+      //       manillasAgrupadas.Adulto_Mayor.push(manilla);
+      //       break;
+      //     case Tipos.Motero:
+      //       manillasAgrupadas.Motero.push(manilla);
+      //       break;
+      //     case Tipos.Niño:
+      //       manillasAgrupadas.Niño.push(manilla);
+      //       break;
+      //     case Tipos.Mascota:
+      //       manillasAgrupadas.Mascota.push(manilla);
+      //       break;
+      //     default:
+      //       break;
+      //   }
+      // })
+
+      return {
+        // manillasAgrupadas,
+        // totalDocuments,
+        misManillas
+      }
 
 
 
@@ -400,8 +498,8 @@ export class ManillasService {
       throw new NotFoundException('No existe ninguna manilla asociada a la placa proporcionada');
     }
 
-    const entradas =await  this.entradaService.findByPlacaAndTaller(placa, tallerid);
-   
+    const entradas = await this.entradaService.findByPlacaAndTaller(placa, tallerid);
+
 
     const infoRetorno = {
 
@@ -428,13 +526,13 @@ export class ManillasService {
       taller: userId,
       observaciones: createEntradaManillaDto.observaciones,
       placa: placa,
-      manilla: manilla._id    
-    }   
+      manilla: manilla._id
+    }
 
     console.log('entrada', entrada)
     const entradaCreada = await this.entradaService.create(entrada);
 
-    const entradas =await this.entradaService.findByPlacaAndTaller(placa, userId);
+    const entradas = await this.entradaService.findByPlacaAndTaller(placa, userId);
 
 
 

@@ -10,6 +10,7 @@ import { RolesGuard } from '../iam/guards/roles.guard';
 import { FilterManillaDto } from './dto/filter-manilla.dto';
 import { IdsAprobarDto } from './dto/ids-aprobar.dto';
 import { CreateEntradaDto } from '../entradas/dto/create-entrada.dto';
+import { filter } from 'rxjs';
 
 @ApiTags("manillas")
 @Controller('manillas')
@@ -95,8 +96,8 @@ export class ManillasController {
 
   @UseGuards(JwtAuthAccessGuard)
   @Get('MisManillas')
-  findMisManillas(@Request() req) {
-    return this.manillasService.obtenerMisManillasAgrupadasPorTipo(req.user.id);
+  findMisManillas(@Request() req, @Query() filter?: FilterManillaDto) {
+    return this.manillasService.obtenerMisManillasAgrupadasPorTipo(req.user.id, filter);
   }
 
   @Roles(Role.TALLER)

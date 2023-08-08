@@ -29,6 +29,13 @@ export default registerAs("config", () => {
             secretAccessKey: process.env.AWS_SECRET_KEY,
             url:  process.env.AWS_BUCKET_URL
         },
+        mail: {
+            host: process.env.MAIL_HOST,
+            user: process.env.MAIL_USER,
+            pass: process.env.MAIL_PASS,
+            from: process.env.MAIL_FROM
+        },
+
     }
 
 });

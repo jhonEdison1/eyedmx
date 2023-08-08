@@ -3,7 +3,7 @@ import { UsersService } from './users.service';
 import { ApiTags } from '@nestjs/swagger';
 import { MongoIdPipe } from 'src/common/pipes/mongo-id.pipe';
 import { JwtAuthAccessGuard } from '../iam/guards/jwt-auth.guard';
-import { CreateUserDto, UpdateUserDto, FilterUsersDto } from './dto';
+import { CreateUserDto, UpdateUserDto, FilterUsersDto, ChangePasswordDto } from './dto';
 import { Roles, Plan} from '../iam/decorators';
 import { Role } from '../iam/models/roles.model';
 import { RolesGuard } from '../iam/guards/roles.guard';
@@ -29,7 +29,7 @@ export class UsersController {
   @Roles(Role.ADMIN)
   @UseGuards(JwtAuthAccessGuard, RolesGuard)
   @Post('create/taller')
-  createTaller(@Body() payload: CreateUserDto) {
+  createTaller(@Body() payload: CreateUserTallerDto) {
     return this.usersService.createTaller(payload);
   }
 
@@ -54,6 +54,20 @@ export class UsersController {
   @Get('All/talleres')
   findAllTalleres(@Query() filter: FilterUsersDto) {
     return this.usersService.findAllUsersTalleres(filter);
+  }
+
+  @Roles(Role.ADMIN)
+  @UseGuards(JwtAuthAccessGuard, RolesGuard)
+  @Get('All/talleres/aceptados')
+  findAllTalleresAceptados(@Query() filter: FilterUsersDto) {
+    return this.usersService.findAllUsersTalleresAceptados(filter);
+  }
+
+  @Roles(Role.ADMIN)
+  @UseGuards(JwtAuthAccessGuard, RolesGuard)
+  @Get('All/talleres/pendientes')
+  findAllTalleresPendientes(@Query() filter: FilterUsersDto) {
+    return this.usersService.findAllUsersTalleresPendientes(filter);
   }
 
 
@@ -92,6 +106,13 @@ export class UsersController {
   @Patch('editarUsuario/:id')  
   update(@Param('id', MongoIdPipe) id: string, @Body() updateUserDto: UpdateUserDto, @Request() req) {
     return this.usersService.updateCliente(id, updateUserDto, req.user);
+  }
+
+
+  @UseGuards(JwtAuthAccessGuard)
+  @Patch('ChangePassword')
+  changePassword(@Body() payload: ChangePasswordDto, @Request() req) {
+    return this.usersService.changePassword(req.user.id, payload);
   }
 
   @Delete(':id')

@@ -1,6 +1,4 @@
 import { ConflictException, Inject, Injectable, UnauthorizedException } from '@nestjs/common';
-import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { User } from './entities/user.entity';
 import { FilterQuery, Model } from 'mongoose';
@@ -8,7 +6,7 @@ import { HashingService } from 'src/providers/hashing/hashing.service';
 import { ErrorsService } from '../errors/errors.service';
 import { ManillasService } from '../manillas/manillas.service';
 import { Role } from '../iam/models/roles.model';
-import { FilterUsersDto } from './dto';
+import { FilterUsersDto, ChangePasswordDto, CreateUserDto, UpdateUserDto } from './dto';
 import { CreateUserTallerDto } from './dto/create-taller.dto';
 import { ConfigType } from '@nestjs/config';
 import config from 'src/config';
@@ -233,6 +231,76 @@ export class UsersService {
   }
 
 
+  async findAllUsersTalleresAceptados(params?: FilterUsersDto) {
+
+
+    const filters: FilterQuery<User> = { role: Role.TALLER, aceptado: true };
+    const { limit, offset, name } = params;
+
+    /** Si existen parámetros entonces aplicamos filtros de búsqueda */
+    if (params) {
+      if (name) {
+        filters.name = {
+          $regex: name,
+          $options: "i",
+        };
+      }
+    }
+
+    const [talleres, totalDocuments] = await Promise.all([
+      this.userModel
+        .find(filters)
+        .skip(offset)
+        .limit(limit)
+        .exec(),
+      this.userModel.countDocuments(filters).exec(),
+    ]);
+
+    return {
+      talleres,
+      totalDocuments
+    };
+
+
+
+  }
+
+
+  async findAllUsersTalleresPendientes(params?: FilterUsersDto) {
+
+
+    const filters: FilterQuery<User> = { role: Role.TALLER, aceptado: false };
+    const { limit, offset, name } = params;
+
+    /** Si existen parámetros entonces aplicamos filtros de búsqueda */
+    if (params) {
+      if (name) {
+        filters.name = {
+          $regex: name,
+          $options: "i",
+        };
+      }
+    }
+
+    const [talleres, totalDocuments] = await Promise.all([
+      this.userModel
+        .find(filters)
+        .skip(offset)
+        .limit(limit)
+        .exec(),
+      this.userModel.countDocuments(filters).exec(),
+    ]);
+
+    return {
+      talleres,
+      totalDocuments
+    };
+
+
+
+  }
+
+
   async findOneTaller(id: string) {
 
     try {
@@ -346,6 +414,45 @@ export class UsersService {
 
 
   }
+
+
+  async changePassword(id: string, payload: ChangePasswordDto) {
+    console.log(id)
+
+    try {
+
+      const usuario = await this.userModel.findOne({ _id: id }).exec();
+
+      if(!usuario){
+        throw new ConflictException('El usuario no existe');
+      }
+
+    
+
+      const isPasswordMatched = await this.hashingService.compare(payload.oldpassword.trim(), usuario.password);
+      console.log(isPasswordMatched)
+
+      if (!isPasswordMatched) {
+        throw new ConflictException("La contraseña anterior no es correcta, por favor verifique");
+      }
+
+      usuario.password = await this.hashingService.hash(payload.newPassword.trim());
+
+      await usuario.save();
+
+      return {
+        message: 'Contraseña actualizada correctamente'
+
+      }
+
+
+
+    } catch (error) {
+      throw new ConflictException("Fallo al actualizar contraseña " + error.message);
+
+    }
+  }
+
 
 
 
