@@ -33,6 +33,14 @@ export class UsersController {
     return this.usersService.createTaller(payload);
   }
 
+
+  @Roles(Role.ADMIN)
+  @UseGuards(JwtAuthAccessGuard, RolesGuard)
+  @Get('cliente/:id')
+  findOneCliente(@Param('id', MongoIdPipe) id: string) {
+    return this.usersService.findOneCliente(id);
+  }
+
   //@UseGuards(JwtAuthAccessGuard)
   @Roles(Role.USER)
   @UseGuards(JwtAuthAccessGuard, RolesGuard)
@@ -56,20 +64,7 @@ export class UsersController {
     return this.usersService.findAllUsersTalleres(filter);
   }
 
-  @Roles(Role.ADMIN)
-  @UseGuards(JwtAuthAccessGuard, RolesGuard)
-  @Get('All/talleres/aceptados')
-  findAllTalleresAceptados(@Query() filter: FilterUsersDto) {
-    return this.usersService.findAllUsersTalleresAceptados(filter);
-  }
-
-  @Roles(Role.ADMIN)
-  @UseGuards(JwtAuthAccessGuard, RolesGuard)
-  @Get('All/talleres/pendientes')
-  findAllTalleresPendientes(@Query() filter: FilterUsersDto) {
-    return this.usersService.findAllUsersTalleresPendientes(filter);
-  }
-
+ 
 
   @Roles(Role.ADMIN)
   @UseGuards(JwtAuthAccessGuard, RolesGuard)
@@ -87,19 +82,26 @@ export class UsersController {
   }
 
 
+  
+
   @Roles(Role.ADMIN)
   @UseGuards(JwtAuthAccessGuard, RolesGuard)
-  @Get('cliente/:id')
-  findOneCliente(@Param('id', MongoIdPipe) id: string) {
-    return this.usersService.findOneCliente(id);
+  @Get('All/talleres/aceptados')
+  findAllTalleresAceptados(@Query() filter: FilterUsersDto) {
+    return this.usersService.findAllUsersTalleresAceptados(filter);
+  }
+
+  @Roles(Role.ADMIN)
+  @UseGuards(JwtAuthAccessGuard, RolesGuard)
+  @Get('All/talleres/pendientes')
+  findAllTalleresPendientes(@Query() filter: FilterUsersDto) {
+    return this.usersService.findAllUsersTalleresPendientes(filter);
   }
 
 
 
-  @Get(':id')
-  findOne(@Param('id', MongoIdPipe) id: string) {
-    return this.usersService.findOne(id);
-  }
+
+  
 
 
   @UseGuards(JwtAuthAccessGuard)
@@ -115,8 +117,5 @@ export class UsersController {
     return this.usersService.changePassword(req.user.id, payload);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.usersService.remove(+id);
-  }
+  
 }

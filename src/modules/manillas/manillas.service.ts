@@ -431,10 +431,10 @@ export class ManillasService {
 
   async obtenerMisManillasAgrupadasPorTipo(userId: string, params?: FilterManillaDto) {
 
-    const filters: FilterQuery<Manilla> = {};
-    const { limit, offset } = params;
+    // const filters: FilterQuery<Manilla> = {};
+    // const { limit, offset } = params;
 
-    console.log(offset, limit)
+    // console.log(offset, limit)
 
     try {
       const misManillas =

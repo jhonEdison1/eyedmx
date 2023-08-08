@@ -341,6 +341,8 @@ export class UsersService {
 
   async findOneCliente(id: string) {
 
+    console.log('llego al servicio', id)
+
     try {
       const cliente = await this.userModel.findOne({ _id: id, role: Role.USER }).exec();
 
