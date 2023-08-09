@@ -90,10 +90,48 @@ export class ManillasService {
       throw new ConflictException('Datos inválidos para el tipo de manilla' + customErrors);
     }
 
+
     // Crear la manilla en la base de datos
     const newRecord = new this.manillaModel(manilla);
+
+    if(createManillaDto.foto_portador){
+      newRecord.foto_portador = await this.uploadBase64ToS3(newRecord._id.toString(), createManillaDto.foto_portador);
+    }
+
+
     const newManilla = await newRecord.save();
     return newManilla;
+  }
+
+
+  async uploadBase64ToS3(id: string, base64Data: string): Promise<string> {
+    const buffer = Buffer.from(base64Data, 'base64');
+
+    const uploadFolderPath = 'portador'; // Carpeta base en S3
+    const fileName = `portador/${id}/${Date.now()}.jpg`; // Nombre de archivo
+
+    const s3Params: AWS.S3.PutObjectRequest = {
+      Bucket: this.configSerivce.s3.bucket,
+      Key: fileName,
+      Body: buffer,
+      ContentType: 'image/jpeg', // Ajustar según el tipo de imagen
+    };
+
+    try {
+      const data = await this.s3.putObject(s3Params).promise();
+      const urlfoto = this.s3.getSignedUrl('getObject', {
+        Bucket: this.configSerivce.s3.bucket,
+        Key: `${fileName}`
+
+      });
+
+
+      //return `https://${this.configService.s3.bucket}.s3.${this.configService.s3.region}.amazonaws.com/${fileName}`;
+      return urlfoto;
+      
+    } catch (error) {
+      throw new Error(`Error al subir la imagen a S3: ${error.message}`);
+    }
   }
 
 
@@ -447,37 +485,8 @@ export class ManillasService {
 
       const totalDocuments = await this.manillaModel.countDocuments({ userId: userId }).exec();
 
-      //organizarlas por tipo
-
-      // const manillasAgrupadas = {
-      //   Adulto_Mayor: [],
-      //   Motero: [],
-      //   Niño: [],
-      //   Mascota: []
-      // }
-
-      // misManillas.forEach((manilla) => {
-      //   switch (manilla.tipo) {
-      //     case Tipos.Adulto_Mayor:
-      //       manillasAgrupadas.Adulto_Mayor.push(manilla);
-      //       break;
-      //     case Tipos.Motero:
-      //       manillasAgrupadas.Motero.push(manilla);
-      //       break;
-      //     case Tipos.Niño:
-      //       manillasAgrupadas.Niño.push(manilla);
-      //       break;
-      //     case Tipos.Mascota:
-      //       manillasAgrupadas.Mascota.push(manilla);
-      //       break;
-      //     default:
-      //       break;
-      //   }
-      // })
-
-      return {
-        // manillasAgrupadas,
-        // totalDocuments,
+      
+      return {        
         misManillas
       }
 

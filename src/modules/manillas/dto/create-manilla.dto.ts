@@ -27,6 +27,11 @@ export class CreateManillaDto {
     @ApiProperty({description: " tipo  del portador de la manilla", type: String})  
     tipo: string;
 
+    @IsString({ message: "la foto_portador debe contener datos validos" })
+    @IsNotEmpty({ message: "la foto_portador es requerida" })
+    @ApiProperty({description: "foto del portador de la manilla", type: String})
+    readonly foto_portador: string;
+
 
 
    

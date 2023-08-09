@@ -114,6 +114,12 @@ export class AuthenticationCommonService {
       case Tipos.Motero:
         return [
           {
+            name: "foto_portador",
+            type: "file",
+            description: "Foto del portador de la manilla",
+            required: true
+          },
+          {
             name: "marca",
             type: "text",
             description: "Marca de la moto",

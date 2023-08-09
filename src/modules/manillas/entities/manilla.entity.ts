@@ -91,6 +91,9 @@ export class Manilla extends Document {
     @Prop({  trim: true })   
     nombre_portador: string;
 
+    @Prop({  trim: true })
+    foto_portador: string;
+
 
     // //una propiedad que guardara un array de objetos asi [{taller: 'id', observaciones: 'texto'}], no hace referencia a ningun modelo
 
