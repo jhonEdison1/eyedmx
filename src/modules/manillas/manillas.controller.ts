@@ -58,6 +58,13 @@ export class ManillasController {
     return this.manillasService.aceptarManilla(id);
   }
 
+  @Roles(Role.ADMIN)
+  @UseGuards(JwtAuthAccessGuard, RolesGuard)
+  @Post('aprobarTodas')
+  aprobarTodas() {
+    return this.manillasService.aceptarTodasLasManillas();
+  }
+
 
   @Roles(Role.ADMIN)
   @UseGuards(JwtAuthAccessGuard, RolesGuard)

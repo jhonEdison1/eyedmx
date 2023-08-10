@@ -23,6 +23,11 @@ export class EntradasService {
     return entradas;
   }
 
+  async findByPlaca(placa: string) {
+    const entradas = await this.entradaModel.find({placa: placa}).populate({path: 'taller', select: 'name'});
+    return entradas;
+  }
+
   async create(createEntradaDto: InfoEntradaDto) {
     const entrada = (await this.entradaModel.create(createEntradaDto)).populate({path: 'taller', select: 'name'});
     return entrada;

@@ -21,6 +21,10 @@ import * as sharp from 'sharp';
 
 
 
+
+
+
+
 @Injectable()
 export class ManillasService {
 
@@ -94,8 +98,29 @@ export class ManillasService {
     // Crear la manilla en la base de datos
     const newRecord = new this.manillaModel(manilla);
 
-    if(createManillaDto.foto_portador){
-      newRecord.foto_portador = await this.uploadBase64ToS3(newRecord._id.toString(), createManillaDto.foto_portador);
+    if (createManillaDto.foto_portador) {
+      newRecord.foto_portador = await this.uploadBase64ToS3(newRecord._id.toString(), createManillaDto.foto_portador, 'foto_portador');
+    }
+
+
+    if (createManillaDto.licencia) {
+      newRecord.licencia = await this.uploadBase64ToS3(newRecord._id.toString(), createManillaDto.licencia, 'licencia');
+    }
+
+    if (createManillaDto.matricula_o_tarjeta) {
+      newRecord.matricula_o_tarjeta = await this.uploadBase64ToS3(newRecord._id.toString(), createManillaDto.matricula_o_tarjeta, 'matricula_o_tarjeta');
+    }
+
+    if (createManillaDto.factura) {
+      newRecord.factura = await this.uploadBase64ToS3(newRecord._id.toString(), createManillaDto.factura, 'factura');
+    }
+
+    if (createManillaDto.seguro) {
+      newRecord.seguro = await this.uploadBase64ToS3(newRecord._id.toString(), createManillaDto.seguro, 'seguro');
+    }
+
+    if (createManillaDto.tenencias) {
+      newRecord.tenencias = await this.uploadBase64ToS3(newRecord._id.toString(), createManillaDto.tenencias, 'tenencias');
     }
 
 
@@ -104,11 +129,11 @@ export class ManillasService {
   }
 
 
-  async uploadBase64ToS3(id: string, base64Data: string): Promise<string> {
+  async uploadBase64ToS3(id: string, base64Data: string, field: string): Promise<string> {
     const buffer = Buffer.from(base64Data, 'base64');
 
     const uploadFolderPath = 'portador'; // Carpeta base en S3
-    const fileName = `portador/${id}/${Date.now()}.jpg`; // Nombre de archivo
+    const fileName = `portador/${id}/${field}.jpg`; // Nombre de archivo
 
     const s3Params: AWS.S3.PutObjectRequest = {
       Bucket: this.configSerivce.s3.bucket,
@@ -118,17 +143,28 @@ export class ManillasService {
     };
 
     try {
-      const data = await this.s3.putObject(s3Params).promise();
-      const urlfoto = this.s3.getSignedUrl('getObject', {
-        Bucket: this.configSerivce.s3.bucket,
-        Key: `${fileName}`
+      // const data = await this.s3.putObject(s3Params).promise();
+      // const urlfoto = this.s3.getSignedUrl('getObject', {
+      //   Bucket: this.configSerivce.s3.bucket,
+      //   Key: `${fileName}`
 
-      });
+      // });
+
+
+      const uploadedObject = await this.s3.upload(s3Params).promise();
+
+      // Obtener la URL del objeto recién subido
+      // const urlqr = this.s3.getSignedUrl('getObject', {
+      //   Bucket: this.configSerivce.s3.bucket,
+      //   Key: `${dailyFolderPath}/${fileName}`       
+      // });
+
+      const urlfoto = uploadedObject.Location
 
 
       //return `https://${this.configService.s3.bucket}.s3.${this.configService.s3.region}.amazonaws.com/${fileName}`;
       return urlfoto;
-      
+
     } catch (error) {
       throw new Error(`Error al subir la imagen a S3: ${error.message}`);
     }
@@ -207,10 +243,18 @@ export class ManillasService {
 
   async findById(id: string) {
     try {
-      const manilla = (await this.manillaModel.findById(id)).populate({ path: 'userId', select: 'name' })
+      const manilla = await this.manillaModel.findById(id).populate({ path: 'userId', select: 'name' })
       if (!manilla) {
         throw new NotFoundException('Manilla no encontrada');
       }
+
+      if (manilla.tipo === Tipos.Motero) {
+        manilla.entradas = await this.entradaService.findByPlaca(manilla.placa);
+
+      }
+
+
+
       return manilla;
 
     } catch (error) {
@@ -312,16 +356,17 @@ export class ManillasService {
         // ContentType: 'image/png'
       };
 
-      //const uploadedObject = await this.s3.putObject(s3Params).promise();
+
+
+
       const uploadedObject = await this.s3.upload(s3Params).promise();
-
-      // Obtener la URL del objeto recién subido
-      // const urlqr = this.s3.getSignedUrl('getObject', {
-      //   Bucket: this.configSerivce.s3.bucket,
-      //   Key: `${dailyFolderPath}/${fileName}`       
-      // });
-
       const urlqr = uploadedObject.Location
+
+     
+
+
+
+
 
       // const urlqr = this.s3.getSignedUrl('getObject', {
       //   Bucket: this.configSerivce.s3.bucket,
@@ -362,6 +407,7 @@ export class ManillasService {
 
       exist.estado = estadoManilla.Aceptada;
       exist.qrCode = urlqr;
+      //exist.qrdxf = urldxf;
       const manilla = await exist.save();
 
       return {
@@ -462,6 +508,24 @@ export class ManillasService {
 
 
 
+  async aceptarTodasLasManillas(): Promise<{ aceptadas: any[], errores: string[] }> {
+
+    const manillas = await this.manillaModel.find({ estado: estadoManilla.Solicitada }).exec();
+
+    if (!manillas) {
+      throw new NotFoundException('No existen manillas solicitadas');
+    }
+
+    const ids = manillas.map((manilla) => manilla._id.toString());
+
+    const aceptadas = await this.aceptarVariasManillas(ids);
+
+    return aceptadas;
+
+  }
+
+
+
 
 
 
@@ -485,8 +549,8 @@ export class ManillasService {
 
       const totalDocuments = await this.manillaModel.countDocuments({ userId: userId }).exec();
 
-      
-      return {        
+
+      return {
         misManillas
       }
 

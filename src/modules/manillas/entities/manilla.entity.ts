@@ -33,9 +33,16 @@ export class Manilla extends Document {
     @Prop({  trim: true })
     qrCode: string;
 
+    @Prop({  trim: true })
+    qrdxf: string;
+
     //estado de la manilla
     @Prop({ default: estadoManilla.Solicitada })
     estado: estadoManilla;
+
+
+    @Prop({  trim: true })
+    entradas: Array<any>;
 
 
 
@@ -95,19 +102,22 @@ export class Manilla extends Document {
     foto_portador: string;
 
 
-    // //una propiedad que guardara un array de objetos asi [{taller: 'id', observaciones: 'texto'}], no hace referencia a ningun modelo
-
-    // @Prop({ type: [{ taller: String, observaciones: String, fecha: Date }] })
-    // entradas: [{ taller: String, observaciones: String, fecha: Date }];
-    
+    @Prop({  trim: true })
+    licencia : string;
 
 
+    @Prop({  trim: true })
+    matricula_o_tarjeta : string;
+
+    @Prop({  trim: true })
+    factura: string;
 
 
+    @Prop({  trim: true })
+    seguro: string;
 
-    
-
-   
+    @Prop({  trim: true })
+    tenencias: string; 
 
 
 }

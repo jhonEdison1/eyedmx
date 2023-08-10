@@ -33,6 +33,22 @@ export class CreateManillaDto {
     readonly foto_portador: string;
 
 
+    @IsOptional()
+    readonly licencia: string;
+
+    @IsOptional()
+    readonly matricula_o_tarjeta : string;
+
+    @IsOptional()
+    readonly factura: string;
+
+    @IsOptional()
+    readonly seguro: string;
+
+    @IsOptional()
+    readonly tenencias: string;
+
+
 
    
 
@@ -73,6 +89,9 @@ export class ManillaMoteroDto extends CreateManillaDto {
     @IsNotEmpty({ message: "las alergias son requeridas" })
     @ApiProperty({description: "alergias que pueda presentar el portador de la manilla", type: String})  
     readonly alergias: string;
+
+
+   
 
 }
 

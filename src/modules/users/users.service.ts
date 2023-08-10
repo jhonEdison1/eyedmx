@@ -86,12 +86,19 @@ export class UsersService {
     };
 
     try {
-      const data = await this.s3.putObject(s3Params).promise();
-      const urlfoto = this.s3.getSignedUrl('getObject', {
-        Bucket: this.configService.s3.bucket,
-        Key: `${fileName}`
 
-      });
+      const uploadedObject = await this.s3.upload(s3Params).promise();     
+
+      const urlfoto = uploadedObject.Location
+
+
+
+      // const data = await this.s3.putObject(s3Params).promise();
+      // const urlfoto = this.s3.getSignedUrl('getObject', {
+      //   Bucket: this.configService.s3.bucket,
+      //   Key: `${fileName}`
+
+      // });
 
 
       //return `https://${this.configService.s3.bucket}.s3.${this.configService.s3.region}.amazonaws.com/${fileName}`;
