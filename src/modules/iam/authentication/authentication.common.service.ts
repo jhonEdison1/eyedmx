@@ -208,7 +208,7 @@ export class AuthenticationCommonService {
           },
           {
             name: "telefono_de_emergencia",
-            type: "text",
+            type: "telefono",
             description: "Telefono de emergencia",
             required: true
           }
