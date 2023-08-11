@@ -188,8 +188,9 @@ export class AuthenticationCommonService {
           },
           {
             name: "rh",
-            type: "text",
-            description: "rh del portador de la manilla",
+            type: "select",
+            description: "Rh del portador de la manilla",
+            opciones: ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"],
             required: true
 
           },
@@ -241,8 +242,9 @@ export class AuthenticationCommonService {
           },
           {
             name: "rh",
-            type: "text",
-            description: "rh del portador de la manilla",
+            type: "select",
+            description: "Rh del portador de la manilla",
+            opciones: ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"],
             required: true
 
           },
@@ -260,10 +262,16 @@ export class AuthenticationCommonService {
           },
           {
             name: "telefono_de_emergencia",
-            type: "text",
+            type: "telefono",
             description: "Telefono de emergencia",
             required: true
-          }
+          },
+          {
+            name: "foto_portador",
+            type: "file",
+            description: "Foto del portador de la manilla",
+            required: true
+          },
         ];
         break;
       case Tipos.Niño:
@@ -272,6 +280,12 @@ export class AuthenticationCommonService {
             name: "nombre_portador",
             type: "text",
             description: "Nombre del portador de la manilla",
+          },
+          {
+            name: "foto_portador",
+            type: "file",
+            description: "Foto del portador de la manilla",
+            required: true
           },
           {
             name: "genero",
@@ -306,20 +320,21 @@ export class AuthenticationCommonService {
           },
           {
             name: "telefono_padre",
-            type: "text",
+            type: "telefono",
             description: "Telefono del padre",
             required: false
           },
           {
             name: "telefono_madre",
-            type: "text",
+            type: "telefono",
             description: "Telefono de la madre",
             required: false
           } ,
           {
             name: "rh",
-            type: "text",
-            description: "rh del portador de la manilla",
+            type: "select",
+            description: "Rh del portador de la manilla",
+            opciones: ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"],
             required: true
 
           },
@@ -337,7 +352,7 @@ export class AuthenticationCommonService {
           },
           {
             name: "telefono_de_emergencia",
-            type: "text",
+            type: "telefono",
             description: "Telefono de emergencia",
             required: true
           }      
@@ -377,10 +392,16 @@ export class AuthenticationCommonService {
             },
             {
               name: "telefono_de_emergencia",
-              type: "text",
+              type: "telefono",
               description: "Telefono de emergencia",
               required: true
-            }
+            },
+            {
+              name: "foto_portador",
+              type: "file",
+              description: "Foto del portador de la manilla",
+              required: true
+            },
           ];
     }
   }
