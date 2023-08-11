@@ -195,11 +195,11 @@ export class ManillaNiñoDto extends CreateManillaDto {
     @IsOptional()
     readonly telefono_madre: string;
 
-    @IsNotEmpty()
+    //@IsNotEmpty()
     @AtLeastOneIsRequired(['nombre_padre', 'nombre_madre'])
     atLeastOneNameIsRequired: string;
 
-    @IsNotEmpty()
+    //@IsNotEmpty()
     @AtLeastOneIsRequired(['telefono_padre', 'telefono_madre'])
     atLeastOnePhoneIsRequired: string;
 
