@@ -91,7 +91,7 @@ export class ManillasController {
   }
   
   @Get('findById/:id')
-  findOne(@Param('id') id: string) {
+  findOne(@Param('id') id: number) {
     return this.manillasService.findById(id);
   }
 

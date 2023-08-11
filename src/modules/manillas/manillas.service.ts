@@ -94,9 +94,14 @@ export class ManillasService {
       throw new ConflictException('Datos inválidos para el tipo de manilla' + customErrors);
     }
 
+    const lastNumId = await this.findLastNumId();
+
+
 
     // Crear la manilla en la base de datos
     const newRecord = new this.manillaModel(manilla);
+
+    newRecord.numid = lastNumId + 1;
 
     if (createManillaDto.foto_portador) {
       newRecord.foto_portador = await this.uploadBase64ToS3(newRecord._id.toString(), createManillaDto.foto_portador, 'foto_portador');
@@ -122,6 +127,9 @@ export class ManillasService {
     if (createManillaDto.tenencias) {
       newRecord.tenencias = await this.uploadBase64ToS3(newRecord._id.toString(), createManillaDto.tenencias, 'tenencias');
     }
+
+
+
 
 
     const newManilla = await newRecord.save();
@@ -241,9 +249,10 @@ export class ManillasService {
 
   }
 
-  async findById(id: string) {
+  async findById(id: number) {
     try {
-      const manilla = await this.manillaModel.findById(id).populate({ path: 'userId', select: 'name' })
+      //const manilla = await this.manillaModel.findById(id).populate({ path: 'userId', select: 'name' })
+      const manilla = await this.manillaModel.findOne({ numid: id }).populate({ path: 'userId', select: 'name' })
       if (!manilla) {
         throw new NotFoundException('Manilla no encontrada');
       }
@@ -327,9 +336,12 @@ export class ManillasService {
         throw new ConflictException(`La manilla ya fue ${estado}`);
       }
 
+
+      const idnum = exist.numid;
+
       const urlFront = this.configSerivce.frontend.url;
       const urlInfo = this.configSerivce.frontend.urlinfo;
-      const url = `${urlFront}/${urlInfo}/${id}`;
+      const url = `${urlFront}/${urlInfo}/${idnum}`;
 
       const qrData = url;
       const qrOptions = { type: 'svg', errorCorrectionLevel: 'high', scale: 8 };
@@ -459,6 +471,21 @@ export class ManillasService {
       .toBuffer();
 
     return pngBuffer;
+  }
+
+  //funcion para traer el ultimo numId de el ultimo registro de manilla
+
+  async findLastNumId() {
+      
+      const lastManilla = await this.manillaModel.findOne().sort({ numid: -1 }).exec();
+  
+      if (!lastManilla) {
+        return 0;
+      }
+  
+      return lastManilla.numid;
+
+
   }
 
 
