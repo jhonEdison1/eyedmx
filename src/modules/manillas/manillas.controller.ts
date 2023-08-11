@@ -1,7 +1,7 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Request, Query } from '@nestjs/common';
 import { ManillasService } from './manillas.service';
 import {CreateManillaDto } from './dto/create-manilla.dto';
-import { UpdateManillaDto } from './dto/update-manilla.dto';
+import { EditManillaDto, UpdateManillaDto } from './dto/update-manilla.dto';
 import { ApiTags } from '@nestjs/swagger';
 import { JwtAuthAccessGuard } from '../iam/guards/jwt-auth.guard';
 import { Roles } from '../iam/decorators';
@@ -22,6 +22,13 @@ export class ManillasController {
   create(@Body() createManillaDto: CreateManillaDto,  @Request() req) {    
     return this.manillasService.createManilla(createManillaDto, req.user.id);
   }
+
+  @Post('update/:id')
+  @UseGuards(JwtAuthAccessGuard)
+  updateManilla(@Param('id') id: string, @Body() editManilla: EditManillaDto, @Request() req) {
+    return this.manillasService.editManilla(id, editManilla, req.user.id);
+  }
+
 
 
   @Roles(Role.ADMIN)

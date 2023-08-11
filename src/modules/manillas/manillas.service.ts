@@ -1,6 +1,6 @@
 import { ConflictException, Inject, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { CreateManillaDto, ManillaAdulto_MayorDto, ManillaMascotaDto, ManillaMoteroDto, ManillaNiñoDto } from './dto/create-manilla.dto';
-import { UpdateManillaDto } from './dto/update-manilla.dto';
+import { EditManillaDto, UpdateManillaDto } from './dto/update-manilla.dto';
 import { validate } from 'class-validator';
 import { Manilla, estadoManilla } from './entities/manilla.entity';
 import { FilterQuery, Model, Types } from 'mongoose';
@@ -134,6 +134,69 @@ export class ManillasService {
 
     const newManilla = await newRecord.save();
     return newManilla;
+  }
+
+  async editManilla(id: string, editManillaDto: EditManillaDto, userId: string) {
+
+    //validar que exista la manilla y que el usuario que la solicita sea el mismo que la creo
+
+    const manilla = await this.manillaModel.findById(id).exec();
+
+    if(!manilla){
+      throw new NotFoundException('No existe la manilla');
+    }
+    if(manilla.userId.toString() !== userId){
+      throw new UnauthorizedException('No tiene permisos para editar esta manilla');
+    }
+
+    // Validar el objeto recibido utilizando las decoraciones de class-validator
+    const errors = await validate(editManillaDto);
+
+    if (errors.length > 0) {
+      throw new ConflictException('Datos inválidos');
+    }
+
+    if (editManillaDto.foto_portador) {
+      manilla.foto_portador = await this.uploadBase64ToS3(manilla._id.toString(), editManillaDto.foto_portador, 'foto_portador');
+    }
+
+
+    if (editManillaDto.licencia) {
+      manilla.licencia = await this.uploadBase64ToS3(manilla._id.toString(), editManillaDto.licencia, 'licencia');
+    }
+
+    if (editManillaDto.matricula_o_tarjeta) {
+      manilla.matricula_o_tarjeta = await this.uploadBase64ToS3(manilla._id.toString(), editManillaDto.matricula_o_tarjeta, 'matricula_o_tarjeta');
+    }
+
+    if (editManillaDto.factura) {
+      manilla.factura = await this.uploadBase64ToS3(manilla._id.toString(), editManillaDto.factura, 'factura');
+    }
+
+    if (editManillaDto.seguro) {
+      manilla.seguro = await this.uploadBase64ToS3(manilla._id.toString(), editManillaDto.seguro, 'seguro');
+    }
+
+    if (editManillaDto.tenencias) {
+      manilla.tenencias = await this.uploadBase64ToS3(manilla._id.toString(), editManillaDto.tenencias, 'tenencias');
+    }
+
+    // Asignar los valores del objeto recibido a la instancia de la manilla
+
+    Object.assign(manilla, editManillaDto);
+
+    //actualizar la manilla en la base de datos
+
+    const manillaEditada = await manilla.save();
+
+    return {
+      message: 'informacion editada satisfactoriamente',
+      manillaEditada
+    }
+
+
+
+
   }
 
 
