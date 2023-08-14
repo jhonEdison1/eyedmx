@@ -140,7 +140,7 @@ export class ManillasService {
 
     //validar que exista la manilla y que el usuario que la solicita sea el mismo que la creo
 
-    const manilla = await this.manillaModel.findById(id).exec();
+    const manilla = await this.manillaModel.findById(id)
 
     if(!manilla){
       throw new NotFoundException('No existe la manilla');
@@ -157,7 +157,10 @@ export class ManillasService {
     }
 
     if (editManillaDto.foto_portador) {
-      manilla.foto_portador = await this.uploadBase64ToS3(manilla._id.toString(), editManillaDto.foto_portador, 'foto_portador');
+     
+      const resultado = await this.uploadBase64ToS3(manilla._id.toString(), editManillaDto.foto_portador, 'foto_portador');
+      console.log('entro ', resultado)
+      manilla.foto_portador = resultado;
     }
 
 
@@ -183,7 +186,7 @@ export class ManillasService {
 
     // Asignar los valores del objeto recibido a la instancia de la manilla
 
-    Object.assign(manilla, editManillaDto);
+   // Object.assign(manilla, editManillaDto);
 
     //actualizar la manilla en la base de datos
 
