@@ -151,7 +151,7 @@ export class AuthenticationCommonService {
           {
             name: "foto_portador",
             type: "file",
-            description: "Foto del portador de la manilla",
+            description: "Foto del portador de la pulsera",
             required: true
           },
           {
@@ -175,7 +175,7 @@ export class AuthenticationCommonService {
           {
             name: "genero",
             type: "select",
-            description: "Genero del portador de la manilla",
+            description: "Genero del portador de la pulsera",
             opciones: ["Masculino", "Femenino", "Otro"],
             required: true
           },
@@ -189,7 +189,7 @@ export class AuthenticationCommonService {
           {
             name: "rh",
             type: "select",
-            description: "Rh del portador de la manilla",
+            description: "Rh del portador de la pulsera",
             opciones: ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"],
             required: true
 
@@ -197,7 +197,7 @@ export class AuthenticationCommonService {
           {
             name: "alergias",
             type: "text",
-            description: "Alergias del portador de la manilla",
+            description: "Alergias del portador de la pulsera",
             required: false
           },
           {
@@ -219,12 +219,12 @@ export class AuthenticationCommonService {
           {
             name: "nombre_portador",
             type: "text",
-            description: "Nombre del portador de la manilla",
+            description: "Nombre del portador de la pulsera",
           },
           {
             name: "genero",
             type: "select",
-            description: "Genero del portador de la manilla",
+            description: "Genero del portador de la pulsera",
             opciones: ["Masculino", "Femenino", "Otro"],
             required: true
           },
@@ -243,7 +243,7 @@ export class AuthenticationCommonService {
           {
             name: "rh",
             type: "select",
-            description: "Rh del portador de la manilla",
+            description: "Rh del portador de la pulsera",
             opciones: ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"],
             required: true
 
@@ -251,7 +251,7 @@ export class AuthenticationCommonService {
           {
             name: "alergias",
             type: "text",
-            description: "Alergias del portador de la manilla",
+            description: "Alergias del portador de la pulsera",
             required: false
           },
           {
@@ -269,7 +269,7 @@ export class AuthenticationCommonService {
           {
             name: "foto_portador",
             type: "file",
-            description: "Foto del portador de la manilla",
+            description: "Foto del portador de la pulsera",
             required: true
           },
         ];
@@ -279,18 +279,18 @@ export class AuthenticationCommonService {
           {
             name: "nombre_portador",
             type: "text",
-            description: "Nombre del portador de la manilla",
+            description: "Nombre del portador de la pulsera",
           },
           {
             name: "foto_portador",
             type: "file",
-            description: "Foto del portador de la manilla",
+            description: "Foto del portador de la pulsera",
             required: true
           },
           {
             name: "genero",
             type: "select",
-            description: "Genero del portador de la manilla",
+            description: "Genero del portador de la pulsera",
             opciones: ["Masculino", "Femenino", "Otro"],
             required: true
           },
@@ -333,7 +333,7 @@ export class AuthenticationCommonService {
           {
             name: "rh",
             type: "select",
-            description: "Rh del portador de la manilla",
+            description: "Rh del portador de la pulsera",
             opciones: ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"],
             required: true
 
@@ -341,7 +341,7 @@ export class AuthenticationCommonService {
           {
             name: "alergias",
             type: "text",
-            description: "Alergias del portador de la manilla",
+            description: "Alergias del portador de la pulsera",
             required: false
           },
           {
@@ -399,7 +399,7 @@ export class AuthenticationCommonService {
             {
               name: "foto_portador",
               type: "file",
-              description: "Foto del portador de la manilla",
+              description: "Foto del portador de la pulsera",
               required: true
             },
           ];
