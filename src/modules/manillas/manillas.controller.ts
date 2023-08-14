@@ -11,6 +11,7 @@ import { FilterManillaDto } from './dto/filter-manilla.dto';
 import { IdsAprobarDto } from './dto/ids-aprobar.dto';
 import { CreateEntradaDto } from '../entradas/dto/create-entrada.dto';
 import { filter } from 'rxjs';
+import { estadoManilla } from './entities/manilla.entity';
 
 @ApiTags("manillas")
 @Controller('manillas')
@@ -75,16 +76,16 @@ export class ManillasController {
 
   @Roles(Role.ADMIN)
   @UseGuards(JwtAuthAccessGuard, RolesGuard)
-  @Patch('enviar/:id')
-  enviar(@Param('id') id: string) {
-    return this.manillasService.enviarManilla(id);
+  @Patch('cambiarEstado/:id')
+  enviar(@Param('id') id: string, @Query('estado') estado: estadoManilla) {
+    return this.manillasService.cambiarEstadoManilla(id, estado);
   }
 
   @Roles(Role.ADMIN)
   @UseGuards(JwtAuthAccessGuard, RolesGuard)
-  @Post('enviarVarias')
-  enviarVarias(@Body() body: IdsAprobarDto) {
-    return this.manillasService.enviarVariasManillas(body.ids);
+  @Post('cambiarEstadoVarias')
+  enviarVarias(@Body() body: IdsAprobarDto, @Query('estado') estado: estadoManilla) {
+    return this.manillasService.cambiarestadoVarias(body.ids, estado);
   }
  
 

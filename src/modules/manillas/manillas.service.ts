@@ -675,6 +675,40 @@ export class ManillasService {
 
   }
 
+  //cambiar el estado de la manilla a enviada o entregada, basicamente la misma funcion que enviarManilla solo que ahora recibe el estado por parametro para no tener que crear otra funcion
+
+  async cambiarEstadoManilla(id: string, estado: estadoManilla) {
+
+    //verificar que el estado sea valido
+
+    if (![estadoManilla.Entregada, estadoManilla.Enviada].includes(estado)) {
+      throw new ConflictException(`El estado ${estado} no es valido`);
+    }
+
+   const exist = await this.manillaModel.findById(id).exec();
+
+    if (!exist) {
+      throw new NotFoundException('No existe la manilla');
+    }
+
+    const estadoActual = exist.estado;
+
+    if (estadoActual === estado) {
+      throw new ConflictException(`La manilla ya fue ${estado}`);
+    }
+
+    exist.estado = estado ;
+
+
+
+    await exist.save();
+
+    return {
+      message: 'Estado de la pulsera cambiado satisfactoriamente',
+      manilla: exist,
+    };
+  }
+
 
 
 
@@ -710,21 +744,21 @@ export class ManillasService {
 
 
 
-  async enviarVariasManillas(ids: string[]): Promise<{ enviadas: any[], errores: string[] }> {
-    const enviadas: any[] = [];
+  async cambiarestadoVarias(ids: string[], estado: estadoManilla): Promise<{ manillas: any[], errores: string[] }> {
+    const manillas: any[] = [];
     const errores: string[] = [];
 
     for (const id of ids) {
       try {
-        const manilla = await this.enviarManilla(id);
-        enviadas.push(manilla.manilla);
+        const manilla = await this.cambiarEstadoManilla(id, estado);
+        manillas.push(manilla.manilla);
       } catch (error) {
         errores.push(`Error al enviar la Pulsera ${id}: ${error.message}`);
       }
     }
 
     return {
-      enviadas,
+      manillas,
       errores,
     };
   }
