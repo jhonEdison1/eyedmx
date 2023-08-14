@@ -58,7 +58,7 @@ export class ManillasService {
     }
 
     if (createManillaDto.userId !== userId) {
-      throw new UnauthorizedException('No tiene permisos para crear manillas para otro usuario');
+      throw new UnauthorizedException('No tiene permisos para crear pulseras para otro usuario');
     }
 
     // Identificar el tipo de manilla en función de la propiedad 'tipo'
@@ -78,7 +78,7 @@ export class ManillasService {
         manilla = new ManillaMascotaDto();
         break;
       default:
-        throw new ConflictException('Tipo de manilla no válido');
+        throw new ConflictException('Tipo de pulsera no válido');
     }
 
     // Asignar los valores del objeto recibido a la instancia de la manilla
@@ -91,7 +91,7 @@ export class ManillasService {
     const customErrors = await validate(manilla);
 
     if (customErrors.length > 0) {
-      throw new ConflictException('Datos inválidos para el tipo de manilla' + customErrors);
+      throw new ConflictException('Datos inválidos para el tipo de pulsera' + customErrors);
     }
 
     const lastNumId = await this.findLastNumId();
@@ -216,10 +216,10 @@ export class ManillasService {
     const manilla = await this.manillaModel.findById(id)
 
     if(!manilla){
-      throw new NotFoundException('No existe la manilla');
+      throw new NotFoundException('No existe la pulsera');
     }
     if(manilla.userId.toString() !== userId){
-      throw new UnauthorizedException('No tiene permisos para editar esta manilla');
+      throw new UnauthorizedException('No tiene permisos para editar esta pulsera');
     }
 
     // Validar el objeto recibido utilizando las decoraciones de class-validator
@@ -472,7 +472,7 @@ export class ManillasService {
       //const manilla = await this.manillaModel.findById(id).populate({ path: 'userId', select: 'name' })
       const manilla = await this.manillaModel.findOne({ numid: id }).populate({ path: 'userId', select: 'name' })
       if (!manilla) {
-        throw new NotFoundException('Manilla no encontrada');
+        throw new NotFoundException('Pulsera no encontrada');
       }
 
       if (manilla.tipo === Tipos.Motero) {
@@ -485,7 +485,7 @@ export class ManillasService {
       return manilla;
 
     } catch (error) {
-      throw new NotFoundException('Manilla no encontrada' + error);
+      throw new NotFoundException('Pulsera no encontrada' + error);
 
     }
 
@@ -719,7 +719,7 @@ export class ManillasService {
         const manilla = await this.enviarManilla(id);
         enviadas.push(manilla.manilla);
       } catch (error) {
-        errores.push(`Error al enviar la manilla ${id}: ${error.message}`);
+        errores.push(`Error al enviar la Pulsera ${id}: ${error.message}`);
       }
     }
 
@@ -741,7 +741,7 @@ export class ManillasService {
         const manilla = await this.aceptarManilla(id);
         aceptadas.push(manilla.manilla);
       } catch (error) {
-        errores.push(`Error al aceptar la manilla ${id}: ${error.message}`);
+        errores.push(`Error al aceptar la Pulsera ${id}: ${error.message}`);
       }
     }
 
@@ -758,7 +758,7 @@ export class ManillasService {
     const manillas = await this.manillaModel.find({ estado: estadoManilla.Solicitada }).exec();
 
     if (!manillas) {
-      throw new NotFoundException('No existen manillas solicitadas');
+      throw new NotFoundException('No existen pulseras solicitadas');
     }
 
     const ids = manillas.map((manilla) => manilla._id.toString());
@@ -802,7 +802,7 @@ export class ManillasService {
 
 
     } catch (error) {
-      throw new ConflictException('Error al obtener las manillas agrupadas por tipo' + error.message);
+      throw new ConflictException('Error al obtener las pulseras agrupadas por tipo' + error.message);
     }
   }
 
@@ -813,7 +813,7 @@ export class ManillasService {
     const manilla = await this.manillaModel.findOne({ placa: placa }).populate({ path: 'userId', select: 'name' })
 
     if (!manilla) {
-      throw new NotFoundException('No existe ninguna manilla asociada a la placa proporcionada');
+      throw new NotFoundException('No existe ninguna pulsera asociada a la placa proporcionada');
     }
 
     const entradas = await this.entradaService.findByPlacaAndTaller(placa, tallerid);
@@ -837,7 +837,7 @@ export class ManillasService {
     const manilla = await (await this.manillaModel.findOne({ placa: placa }).populate({ path: 'userId', select: 'name' }))
 
     if (!manilla) {
-      throw new NotFoundException('No existe ninguna manilla asociada a la placa proporcionada');
+      throw new NotFoundException('No existe ninguna pulsera asociada a la placa proporcionada');
     }
 
     const entrada = {

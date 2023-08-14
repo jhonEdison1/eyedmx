@@ -8,7 +8,7 @@ export class IdsAprobarDto {
 
    
     
-    @ApiProperty({description: "ids de las manillas", type: array})
+    @ApiProperty({description: "ids de las pulseras", type: array})
     @IsArray()  
     @ArrayMinSize(1)  
     ids: string[];

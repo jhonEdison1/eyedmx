@@ -71,7 +71,7 @@ export class ManillaMoteroDto extends CreateManillaDto {
     @IsNotEmpty({ message: "la compañia de seguros es requerida" })
     readonly compañia_de_seguros: string;
 
-    @IsString({ message: "el genero del portador de la manilla debe contener caracteres validos" })
+    @IsString({ message: "el genero del portador de la pulsera debe contener caracteres validos" })
     @IsNotEmpty({ message: "el genero es requerido" })
     readonly genero: string;
 
@@ -82,12 +82,12 @@ export class ManillaMoteroDto extends CreateManillaDto {
 
     @IsString({ message: "el rh debe contener datos validos" })
     @IsNotEmpty({ message: "el rh es requerido" })
-    @ApiProperty({description: "informacion del grupo y tipo sanguineo del portador de la manilla", type: String})  
+    @ApiProperty({description: "informacion del grupo y tipo sanguineo del portador de la pulsera", type: String})  
     readonly rh: string;
 
     @IsString({ message: "las alergias caracteres validos" })
     @IsNotEmpty({ message: "las alergias son requeridas" })
-    @ApiProperty({description: "alergias que pueda presentar el portador de la manilla", type: String})  
+    @ApiProperty({description: "alergias que pueda presentar el portador de la pulsera", type: String})  
     readonly alergias: string;
 
 
@@ -117,12 +117,12 @@ export class ManillaAdulto_MayorDto extends CreateManillaDto {
 
     @IsString({ message: "el rh debe contener datos validos" })
     @IsNotEmpty({ message: "el rh es requerido" })
-    @ApiProperty({description: "informacion del grupo y tipo sanguineo del portador de la manilla", type: String})  
+    @ApiProperty({description: "informacion del grupo y tipo sanguineo del portador de la pulsera", type: String})  
     readonly rh: string;
 
     @IsString({ message: "las alergias caracteres validos" })
     @IsNotEmpty({ message: "las alergias son requeridas" })
-    @ApiProperty({description: "alergias que pueda presentar el portador de la manilla", type: String})  
+    @ApiProperty({description: "alergias que pueda presentar el portador de la pulsera", type: String})  
     readonly alergias: string;
 
 
@@ -206,12 +206,12 @@ export class ManillaNiñoDto extends CreateManillaDto {
 
     @IsString({ message: "el rh debe contener datos validos" })
     @IsNotEmpty({ message: "el rh es requerido" })
-    @ApiProperty({description: "informacion del grupo y tipo sanguineo del portador de la manilla", type: String})  
+    @ApiProperty({description: "informacion del grupo y tipo sanguineo del portador de la pulsera", type: String})  
     readonly rh: string;
 
     @IsString({ message: "las alergias caracteres validos" })
     @IsNotEmpty({ message: "las alergias son requeridas" })
-    @ApiProperty({description: "alergias que pueda presentar el portador de la manilla", type: String})  
+    @ApiProperty({description: "alergias que pueda presentar el portador de la pulsera", type: String})  
     readonly alergias: string;
 
 }
