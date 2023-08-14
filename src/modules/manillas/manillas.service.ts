@@ -104,28 +104,71 @@ export class ManillasService {
     newRecord.numid = lastNumId + 1;
 
     if (createManillaDto.foto_portador) {
-      newRecord.foto_portador = await this.uploadBase64ToS3(newRecord._id.toString(), createManillaDto.foto_portador, 'foto_portador');
+      let dataD = createManillaDto.foto_portador;
+      const extension = dataD.substring("data:image/".length, dataD.indexOf(";base64"))
+      if(extension == 'pdf'){
+        dataD = dataD.replace('data:application/pdf;base64,','')
+      }else{
+        dataD = dataD.replace(/^data:image\/\w+;base64,/,'');
+      }
+      
+      newRecord.foto_portador = await this.uploadBase64ToS3(newRecord._id.toString(), dataD /*createManillaDto.foto_portador*/, 'foto_portador', extension);
     }
 
 
     if (createManillaDto.licencia) {
-      newRecord.licencia = await this.uploadBase64ToS3(newRecord._id.toString(), createManillaDto.licencia, 'licencia');
+      let dataD = createManillaDto.licencia;
+      const extension = dataD.substring("data:image/".length, dataD.indexOf(";base64"))
+      if(extension == 'pdf'){
+        dataD = dataD.replace('data:application/pdf;base64,','')
+      }else{
+        dataD = dataD.replace(/^data:image\/\w+;base64,/,'');
+      }
+      newRecord.licencia = await this.uploadBase64ToS3(newRecord._id.toString(), dataD, 'licencia', extension);
     }
 
     if (createManillaDto.matricula_o_tarjeta) {
-      newRecord.matricula_o_tarjeta = await this.uploadBase64ToS3(newRecord._id.toString(), createManillaDto.matricula_o_tarjeta, 'matricula_o_tarjeta');
+      let dataD = createManillaDto.matricula_o_tarjeta;
+      const extension = dataD.substring("data:image/".length, dataD.indexOf(";base64"))
+      if(extension == 'pdf'){
+        dataD = dataD.replace('data:application/pdf;base64,','')
+      }else{
+        dataD = dataD.replace(/^data:image\/\w+;base64,/,'');
+      }
+      newRecord.matricula_o_tarjeta = await this.uploadBase64ToS3(newRecord._id.toString(), dataD, 'matricula_o_tarjeta', extension);
     }
 
     if (createManillaDto.factura) {
-      newRecord.factura = await this.uploadBase64ToS3(newRecord._id.toString(), createManillaDto.factura, 'factura');
+      let dataD = createManillaDto.factura ;
+      const extension = dataD.substring("data:image/".length, dataD.indexOf(";base64"))
+      if(extension == 'pdf'){
+        dataD = dataD.replace('data:application/pdf;base64,','')
+      }else{
+        dataD = dataD.replace(/^data:image\/\w+;base64,/,'');
+      }
+      newRecord.factura = await this.uploadBase64ToS3(newRecord._id.toString(), dataD, 'factura', extension);
     }
 
     if (createManillaDto.seguro) {
-      newRecord.seguro = await this.uploadBase64ToS3(newRecord._id.toString(), createManillaDto.seguro, 'seguro');
+      let dataD = createManillaDto.seguro;
+      const extension = dataD.substring("data:image/".length, dataD.indexOf(";base64"))
+      if(extension == 'pdf'){
+        dataD = dataD.replace('data:application/pdf;base64,','')
+      }else{
+        dataD = dataD.replace(/^data:image\/\w+;base64,/,'');
+      }
+      newRecord.seguro = await this.uploadBase64ToS3(newRecord._id.toString(), dataD, 'seguro', extension);
     }
 
     if (createManillaDto.tenencias) {
-      newRecord.tenencias = await this.uploadBase64ToS3(newRecord._id.toString(), createManillaDto.tenencias, 'tenencias');
+      let dataD = createManillaDto.tenencias;
+      const extension = dataD.substring("data:image/".length, dataD.indexOf(";base64"))
+      if(extension == 'pdf'){
+        dataD = dataD.replace('data:application/pdf;base64,','')
+      }else{
+        dataD = dataD.replace(/^data:image\/\w+;base64,/,'');
+      }
+      newRecord.tenencias = await this.uploadBase64ToS3(newRecord._id.toString(), dataD, 'tenencias', extension);
     }
 
 
@@ -157,31 +200,73 @@ export class ManillasService {
     }
 
     if (editManillaDto.foto_portador) {
+      let dataD = editManillaDto.foto_portador;
+      const extension = dataD.substring("data:image/".length, dataD.indexOf(";base64"))
+      if(extension == 'pdf'){
+        dataD = dataD.replace('data:application/pdf;base64,','')
+      }else{
+        dataD = dataD.replace(/^data:image\/\w+;base64,/,'');
+      }
      
-      const resultado = await this.uploadBase64ToS3(manilla._id.toString(), editManillaDto.foto_portador, 'foto_portador');
-      console.log('entro ', resultado)
+      const resultado = await this.uploadBase64ToS3(manilla._id.toString(), dataD, 'foto_portador', extension);
+     
       manilla.foto_portador = resultado;
     }
 
 
     if (editManillaDto.licencia) {
-      manilla.licencia = await this.uploadBase64ToS3(manilla._id.toString(), editManillaDto.licencia, 'licencia');
+      let dataD = editManillaDto.licencia;
+      const extension = dataD.substring("data:image/".length, dataD.indexOf(";base64"))
+      if(extension == 'pdf'){
+        dataD = dataD.replace('data:application/pdf;base64,','')
+      }else{
+        dataD = dataD.replace(/^data:image\/\w+;base64,/,'');
+      }
+      manilla.licencia = await this.uploadBase64ToS3(manilla._id.toString(), dataD, 'licencia', extension);
     }
 
     if (editManillaDto.matricula_o_tarjeta) {
-      manilla.matricula_o_tarjeta = await this.uploadBase64ToS3(manilla._id.toString(), editManillaDto.matricula_o_tarjeta, 'matricula_o_tarjeta');
+      let dataD = editManillaDto.matricula_o_tarjeta;
+      const extension = dataD.substring("data:image/".length, dataD.indexOf(";base64"))
+      if(extension == 'pdf'){
+        dataD = dataD.replace('data:application/pdf;base64,','')
+      }else{
+        dataD = dataD.replace(/^data:image\/\w+;base64,/,'');
+      }
+      manilla.matricula_o_tarjeta = await this.uploadBase64ToS3(manilla._id.toString(), dataD, 'matricula_o_tarjeta', extension);
     }
 
     if (editManillaDto.factura) {
-      manilla.factura = await this.uploadBase64ToS3(manilla._id.toString(), editManillaDto.factura, 'factura');
+      let dataD = editManillaDto.factura;
+      const extension = dataD.substring("data:image/".length, dataD.indexOf(";base64"))
+      if(extension == 'pdf'){
+        dataD = dataD.replace('data:application/pdf;base64,','')
+      }else{
+        dataD = dataD.replace(/^data:image\/\w+;base64,/,'');
+      }
+      manilla.factura = await this.uploadBase64ToS3(manilla._id.toString(), dataD, 'factura', extension);
     }
 
     if (editManillaDto.seguro) {
-      manilla.seguro = await this.uploadBase64ToS3(manilla._id.toString(), editManillaDto.seguro, 'seguro');
+      let dataD = editManillaDto.seguro;
+      const extension = dataD.substring("data:image/".length, dataD.indexOf(";base64"))
+      if(extension == 'pdf'){
+        dataD = dataD.replace('data:application/pdf;base64,','')
+      }else{
+        dataD = dataD.replace(/^data:image\/\w+;base64,/,'');
+      }
+      manilla.seguro = await this.uploadBase64ToS3(manilla._id.toString(), dataD, 'seguro', extension);
     }
 
     if (editManillaDto.tenencias) {
-      manilla.tenencias = await this.uploadBase64ToS3(manilla._id.toString(), editManillaDto.tenencias, 'tenencias');
+      let dataD = editManillaDto.tenencias;
+      const extension = dataD.substring("data:image/".length, dataD.indexOf(";base64"))
+      if(extension == 'pdf'){
+        dataD = dataD.replace('data:application/pdf;base64,','')
+      }else{
+        dataD = dataD.replace(/^data:image\/\w+;base64,/,'');
+      }
+      manilla.tenencias = await this.uploadBase64ToS3(manilla._id.toString(), dataD, 'tenencias' , extension);
     }
 
     // Asignar los valores del objeto recibido a la instancia de la manilla
@@ -203,17 +288,25 @@ export class ManillasService {
   }
 
 
-  async uploadBase64ToS3(id: string, base64Data: string, field: string): Promise<string> {
+  async uploadBase64ToS3(id: string, base64Data: string, field: string, extension: string): Promise<string> {
     const buffer = Buffer.from(base64Data, 'base64');
 
+
+    let content = '';
+    if (extension == 'pdf') {
+        content = 'application/pdf'
+    } else {
+        content = 'image/jpeg'
+    }
+
     const uploadFolderPath = 'portador'; // Carpeta base en S3
-    const fileName = `portador/${id}/${field}.jpg`; // Nombre de archivo
+    const fileName = `portador/${id}/${field}`; // Nombre de archivo
 
     const s3Params: AWS.S3.PutObjectRequest = {
       Bucket: this.configSerivce.s3.bucket,
-      Key: fileName,
+      Key: fileName+ '.' + extension,
       Body: buffer,
-      ContentType: 'image/jpeg', // Ajustar según el tipo de imagen
+      ContentType: content
     };
 
     try {
