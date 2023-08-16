@@ -114,46 +114,16 @@ export class AuthenticationCommonService {
       case Tipos.Motero:
         return [
           {
-            name: "licencia",
-            type: "file",
-            description: "licencia de conduccion",
-            required: false
-
-          },
-          {
-            name: "matricula_o_tarjeta",
-            type: "file",
-            description: "Matricula o tarjeta de circulación",
-            required: false
-
-          },
-          {
-            name: "factura",
-            type: "file",
-            description: "factura de la moto",
-            required: false
-
-          },
-          {
-            name: "seguro",
-            type: "file",
-            description: "seguro de la moto",
-            required: false
-
-          },
-          {
-            name: "tenencias",
-            type: "file",
-            description: "tenencias de la moto",
-            required: false
-
+            name: "nombre_portador",
+            type: "text",
+            description: "Nombre del portador de la pulsera",
           },
           {
             name: "foto_portador",
             type: "file",
             description: "Foto del portador de la pulsera",
             required: true
-          },
+          },         
           {
             name: "marca",
             type: "text",
@@ -172,11 +142,7 @@ export class AuthenticationCommonService {
             description: "Compañia de seguros",
             required: true
           },
-          {
-            name: "nombre_portador",
-            type: "text",
-            description: "Nombre del portador de la pulsera",
-          },
+          
           {
             name: "genero",
             type: "select",
@@ -216,7 +182,42 @@ export class AuthenticationCommonService {
             type: "telefono",
             description: "Telefono de emergencia",
             required: true
-          }
+          }, {
+            name: "licencia",
+            type: "file",
+            description: "licencia de conduccion",
+            required: false
+
+          },
+          {
+            name: "matricula_o_tarjeta",
+            type: "file",
+            description: "Matricula o tarjeta de circulación",
+            required: false
+
+          },
+          {
+            name: "factura",
+            type: "file",
+            description: "factura de la moto",
+            required: false
+
+          },
+          {
+            name: "seguro",
+            type: "file",
+            description: "seguro de la moto",
+            required: false
+
+          },
+          {
+            name: "tenencias",
+            type: "file",
+            description: "tenencias de la moto",
+            required: false
+
+          },
+          
         ];
         break;
       case Tipos.Adulto_Mayor:
