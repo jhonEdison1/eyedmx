@@ -57,6 +57,10 @@ export class CreateManillaDto {
 
 export class ManillaMoteroDto extends CreateManillaDto {
 
+    @IsString({ message: "el nombre_portador debe contener datos validos" })
+    @IsNotEmpty({ message: "el nombre_portador es requerido" })
+    readonly nombre_portador: string;
+
     @IsString({ message: "la marca debe contener caracteres validos" })
     @IsNotEmpty({ message: "la marca es requerida" })
     @ApiProperty({description: "marca de la motocicleta", type: String})  

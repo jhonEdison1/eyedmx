@@ -55,6 +55,9 @@ export class EditManillaDto {
 
 export class EditManillaMoteroDto extends EditManillaDto {
 
+
+    readonly nombre_portador: string;
+
     // @IsString({ message: "la marca debe contener caracteres validos" })
     // @IsNotEmpty({ message: "la marca es requerida" })
     // @ApiProperty({description: "marca de la motocicleta", type: String})  

@@ -173,6 +173,11 @@ export class AuthenticationCommonService {
             required: true
           },
           {
+            name: "nombre_portador",
+            type: "text",
+            description: "Nombre del portador de la pulsera",
+          },
+          {
             name: "genero",
             type: "select",
             description: "Genero del portador de la pulsera",
