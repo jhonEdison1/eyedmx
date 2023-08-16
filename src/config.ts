@@ -4,12 +4,12 @@ export default registerAs("config", () => {
     return {
         mongo: {
             dbname: process.env.DATABASE_NAME || "eyedmx",
-            user: process.env.DB_USERNAME || "admin",
-            password: process.env.DB_PASSWORD   || "admin",
+            user: process.env.DB_USERNAME ,
+            password: process.env.DB_PASSWORD  ,
             port: process.env.DATABASE_PORT || 27017,
             hostname: process.env.HOST_NAME || "127.0.0.1",
             connection: process.env.DB_CONNECTION || "mongodb",
-            params: process.env?.PARAMS || "readPreference=primary&appname=MongoDB%20Compass&authSource=admin&directConnection=true&ssl=false",
+            params: process.env?.PARAMS 
         },
         session: {
             accessToken: process.env.ACCESS_TOKEN,
