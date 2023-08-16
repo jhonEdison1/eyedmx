@@ -30,23 +30,23 @@ export class EditManillaDto {
     // @IsString({ message: "la foto_portador debe contener datos validos" })
     // @IsNotEmpty({ message: "la foto_portador es requerida" })
     // @ApiProperty({description: "foto del portador de la manilla", type: String})
-    readonly foto_portador: string;
+     foto_portador: string;
 
 
     @IsOptional()
-    readonly licencia: string;
+     licencia: string;
 
     @IsOptional()
-    readonly matricula_o_tarjeta: string;
+     matricula_o_tarjeta: string;
 
     @IsOptional()
-    readonly factura: string;
+     factura: string;
 
     @IsOptional()
-    readonly seguro: string;
+     seguro: string;
 
     @IsOptional()
-    readonly tenencias: string;
+     tenencias: string;
 
 
 }

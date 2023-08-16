@@ -233,6 +233,7 @@ export class ManillasService {
       let dataD = editManillaDto.foto_portador;
       let extension = dataD.substring("data:".length, dataD.indexOf(";base64"))
      
+     
       if(extension == 'application/pdf'){
         
         dataD = dataD.replace('data:application/pdf;base64,','')
@@ -246,6 +247,7 @@ export class ManillasService {
       const resultado = await this.uploadBase64ToS3(manilla._id.toString(), dataD, 'foto_portador', extension);
      
       manilla.foto_portador = resultado;
+      editManillaDto.foto_portador = resultado
     }
 
 
@@ -263,6 +265,7 @@ export class ManillasService {
         extension = 'png'
       }
       manilla.licencia = await this.uploadBase64ToS3(manilla._id.toString(), dataD, 'licencia', extension);
+      editManillaDto.licencia = manilla.licencia
     }
 
     if (editManillaDto.matricula_o_tarjeta) {
@@ -278,6 +281,7 @@ export class ManillasService {
         extension = 'png'
       }
       manilla.matricula_o_tarjeta = await this.uploadBase64ToS3(manilla._id.toString(), dataD, 'matricula_o_tarjeta', extension);
+      editManillaDto.matricula_o_tarjeta = manilla.matricula_o_tarjeta
     }
 
     if (editManillaDto.factura) {
@@ -294,6 +298,7 @@ export class ManillasService {
         extension = 'png'
       }
       manilla.factura = await this.uploadBase64ToS3(manilla._id.toString(), dataD, 'factura', extension);
+      editManillaDto.factura = manilla.factura
     }
 
     if (editManillaDto.seguro) {
@@ -310,6 +315,7 @@ export class ManillasService {
         extension = 'png'
       }
       manilla.seguro = await this.uploadBase64ToS3(manilla._id.toString(), dataD, 'seguro', extension);
+      editManillaDto.seguro = manilla.seguro
     }
 
     if (editManillaDto.tenencias) {
@@ -326,11 +332,12 @@ export class ManillasService {
         extension = 'png'
       }
       manilla.tenencias = await this.uploadBase64ToS3(manilla._id.toString(), dataD, 'tenencias' , extension);
+      editManillaDto.tenencias = manilla.tenencias
     }
 
     // Asignar los valores del objeto recibido a la instancia de la manilla
 
-    //Object.assign(manilla, editManillaDto);
+    Object.assign(manilla, editManillaDto);
 
     //actualizar la manilla en la base de datos
 
