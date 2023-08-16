@@ -330,11 +330,11 @@ export class ManillasService {
 
     // Asignar los valores del objeto recibido a la instancia de la manilla
 
-   // Object.assign(manilla, editManillaDto);
+    //Object.assign(manilla, editManillaDto);
 
     //actualizar la manilla en la base de datos
 
-    const manillaEditada = await manilla.save();
+    const manillaEditada = await this.manillaModel.findByIdAndUpdate(id, manilla, { new: true }).exec();
 
     return {
       message: 'informacion editada satisfactoriamente',
