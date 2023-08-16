@@ -10,20 +10,13 @@ export class MailService {
       ) { }
 
 
-      async sendQrCodeEmail(email: string, qrCode: string, nameuser: string) {
+      async sendQrCodeEmail(email: string, qrCode: string, nameuser: string) {      
 
-        console.log('qr', qrCode )
-
-       
-
-        let name = 'qrcodemanilla';
-        
-    
-       
+        let name = 'qrcodemanilla';        
         await this.mailerService.sendMail({
           to: email, // list of receivers
           // from: '"Support Team" <support@example.com>', // override default from
-          subject: 'Manilla Aprobada!',
+          subject: 'Pulsera Aprobada!',
           template: name, // `.hbs` extension is appended automatically
           context: { // ✏️ filling curly brackets with content
             name: nameuser,
@@ -31,6 +24,34 @@ export class MailService {
           },
         });
         
+      }
+
+      async sendPulseraEnviada(email: string, nameuser: string){
+
+        let name = 'pulseraenviada';
+        await this.mailerService.sendMail({
+          to: email, // list of receivers
+          subject: 'Pulsera Enviada!',
+          template: name, // `.hbs` extension is appended automatically
+          context: { // ✏️ filling curly brackets with content
+            name: nameuser,
+          },
+        });
+
+      }
+
+
+      async sendPulseraEntregada(email: string, nameuser: string){
+
+        let name = 'pulseraentregada';
+        await this.mailerService.sendMail({
+          to: email, // list of receivers
+          subject: 'Pulsera Entregada!',
+          template: name, // `.hbs` extension is appended automatically
+          context: { // ✏️ filling curly brackets with content
+            name: nameuser,
+          },
+        });
       }
 
 
