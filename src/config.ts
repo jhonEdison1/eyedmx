@@ -4,8 +4,8 @@ export default registerAs("config", () => {
     return {
         mongo: {
             dbname: process.env.DATABASE_NAME || "eyedmx",
-            user: process.env.DB_USERNAME,
-            password: process.env.DB_PASSWORD,
+            user: process.env.DB_USERNAME || "admin",
+            password: process.env.DB_PASSWORD   || "admin",
             port: process.env.DATABASE_PORT || 27017,
             hostname: process.env.HOST_NAME || "127.0.0.1",
             connection: process.env.DB_CONNECTION || "mongodb",
