@@ -9,7 +9,7 @@ export default registerAs("config", () => {
             port: process.env.DATABASE_PORT || 27017,
             hostname: process.env.HOST_NAME || "127.0.0.1",
             connection: process.env.DB_CONNECTION || "mongodb",
-            params: process.env?.PARAMS || "readPreference=primary&appname=MongoDB%20Compass?authSource=admin&directConnection=true&ssl=false",
+            params: process.env?.PARAMS || "readPreference=primary&appname=MongoDB%20Compass&authSource=admin&directConnection=true&ssl=false",
         },
         session: {
             accessToken: process.env.ACCESS_TOKEN,
