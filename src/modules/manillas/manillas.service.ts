@@ -688,7 +688,7 @@ export class ManillasService {
 
     //verificar que el estado sea valido
 
-    if (![estadoManilla.Entregada, estadoManilla.Enviada].includes(estado)) {
+    if (![estadoManilla.Entregada, estadoManilla.Enviada, estadoManilla.Rechazada].includes(estado)) {
       throw new ConflictException(`El estado ${estado} no es valido`);
     }
 
