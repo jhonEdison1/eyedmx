@@ -14,13 +14,13 @@ import { ManillasModule } from './modules/manillas/manillas.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
-      envFilePath: enviroments[process.env.NODE_ENV ?? "prod"],
+      envFilePath: enviroments[process.env.NODE_ENV ?? "dev"],
       load: [config],
-      isGlobal: true,
+      isGlobal: true/*,
       validationSchema: Joi.object({
         DATABASE_NAME: Joi.string().required(),
         DATABASE_PORT: Joi.number().required(),
-      })
+      })*/
     }),
     DatabaseModule,
     UsersModule,
