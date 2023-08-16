@@ -99,7 +99,7 @@ export class Manilla extends Document {
     @Prop({ trim: true })
     fecha_nacimiento_mascota: Date;
 
-    @Prop({ trim: true })
+    @Prop({ trim: true, default: '' })
     nombre_portador: string;
 
     @Prop({ trim: true })
