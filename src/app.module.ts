@@ -16,11 +16,11 @@ import { ManillasModule } from './modules/manillas/manillas.module';
     ConfigModule.forRoot({
       envFilePath: enviroments[process.env.NODE_ENV ?? "dev"],
       load: [config],
-      isGlobal: true/*,
+      isGlobal: true,
       validationSchema: Joi.object({
         DATABASE_NAME: Joi.string().required(),
         DATABASE_PORT: Joi.number().required(),
-      })*/
+      })
     }),
     DatabaseModule,
     UsersModule,
