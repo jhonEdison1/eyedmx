@@ -16,6 +16,7 @@ export class MongooseConfigService implements MongooseOptionsFactory {
 
     createMongooseOptions(): MongooseModuleOptions {
         const { connection, hostname, dbname, user, password, port, params } = this.configService.mongo;
+        console.log(connection, hostname, dbname, user, password, port, params, process.env.NODE_ENV)
 
         return {
             uri: process.env.NODE_ENV === "dev" ? `${connection}://${hostname}:${port}/${dbname}?${params}` : `${connection}://${user}:${password}@${hostname}:${port}/${dbname}?${params}`
