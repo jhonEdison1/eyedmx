@@ -14,7 +14,7 @@ import { ManillasModule } from './modules/manillas/manillas.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
-      envFilePath: enviroments[process.env.NODE_ENV ?? "dev"],
+      envFilePath: enviroments[process.env.NODE_ENV ?? "prod"],
       load: [config],
       isGlobal: true,
       validationSchema: Joi.object({
