@@ -11,6 +11,7 @@ import { CreateUserTallerDto } from './dto/create-taller.dto';
 import { ConfigType } from '@nestjs/config';
 import config from 'src/config';
 import * as AWS from 'aws-sdk';
+import { MailService } from '../mail/mail.service';
 
 
 @Injectable()
@@ -24,7 +25,8 @@ export class UsersService {
     @InjectModel(User.name) private readonly userModel: Model<User>,
     private readonly hashingService: HashingService,
     private readonly errorService: ErrorsService,
-    private readonly manillasService: ManillasService
+    private readonly manillasService: ManillasService,
+    private readonly mailService: MailService
 
   ) {
     AWS.config.update({
@@ -82,6 +84,21 @@ export class UsersService {
 
       newRecord.fotoBase64 = payload.fotoBase64;
       const newuser = await newRecord.save();
+
+
+      const email = newuser.email;
+      const name = newuser.name;
+
+
+      await this.mailService.sendCorreoBienvenida(email, name);
+
+
+
+
+
+
+
+
       return newuser;
 
 
@@ -220,6 +237,15 @@ export class UsersService {
 
 
       const newuser = await newRecord.save();
+
+      const email = newuser.email;
+      const name = newuser.name;
+
+
+      await this.mailService.sendCorreoBienvenida(email, name);
+
+
+
       return newuser;
     } catch (error) {
       this.errorService.createError(error);
@@ -395,6 +421,16 @@ export class UsersService {
       }
       taller.aceptado = true;
       await taller.save();
+
+
+      const email = taller.email;
+      const name = taller.name;
+
+
+      await this.mailService.sendCorreoBienvenida(email, name);
+
+
+
       return taller;
 
     } catch (error) {

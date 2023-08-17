@@ -9,6 +9,7 @@ import { ErrorsModule } from '../errors/errors.module';
 import { IamModule } from '../iam/iam.module';
 import { ManillasModule } from '../manillas/manillas.module';
 import { ConfigModule } from '@nestjs/config';
+import { MailModule } from '../mail/mail.module';
 
 @Module({
   imports: [
@@ -16,7 +17,8 @@ import { ConfigModule } from '@nestjs/config';
     ErrorsModule,
     IamModule,
     ManillasModule,
-    ConfigModule   
+    ConfigModule,
+    MailModule   
   ],
   controllers: [UsersController],
   providers: [

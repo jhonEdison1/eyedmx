@@ -55,4 +55,19 @@ export class MailService {
       }
 
 
+      async sendCorreoBienvenida(email: string, nameuser: string){
+
+        let name = 'correobienvenida';
+
+        await this.mailerService.sendMail({
+          to: email, // list of receivers
+          subject: 'Bienvenido a EyedMx!',
+          template: name, // `.hbs` extension is appended automatically
+          context: { // ✏️ filling curly brackets with content
+            name: nameuser,
+          },
+        });
+      }
+
+
 }
