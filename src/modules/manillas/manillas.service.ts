@@ -112,10 +112,20 @@ export class ManillasService {
         dataD = dataD.replace('data:application/pdf;base64,', '')
         extension = 'pdf'
 
-      } else {
-        dataD = dataD.replace(/^data:image\/\w+;base64,/, '');
+      } else if (extension == 'image/png') {
+
+        dataD = dataD.replace('data:image/png;base64,', '');
         extension = 'png'
-      }
+
+      } else if (extension == 'image/jpeg') {
+
+        dataD = dataD.replace('data:image/jpeg;base64,', '');
+        extension = 'jpg'
+      } else if (extension == 'image/jpg') {
+
+        dataD = dataD.replace('data:image/jpg;base64,', '');
+        extension = 'jpg'
+      } 
 
       newRecord.foto_portador = await this.uploadBase64ToS3(newRecord._id.toString(), dataD /*createManillaDto.foto_portador*/, 'foto_portador', extension);
     }
@@ -130,10 +140,20 @@ export class ManillasService {
         dataD = dataD.replace('data:application/pdf;base64,', '')
         extension = 'pdf'
 
-      } else {
-        dataD = dataD.replace(/^data:image\/\w+;base64,/, '');
+      } else if (extension == 'image/png') {
+
+        dataD = dataD.replace('data:image/png;base64,', '');
         extension = 'png'
-      }
+
+      } else if (extension == 'image/jpeg') {
+
+        dataD = dataD.replace('data:image/jpeg;base64,', '');
+        extension = 'jpg'
+      } else if (extension == 'image/jpg') {
+
+        dataD = dataD.replace('data:image/jpg;base64,', '');
+        extension = 'jpg'
+      } 
       newRecord.licencia = await this.uploadBase64ToS3(newRecord._id.toString(), dataD, 'licencia', extension);
     }
 
@@ -146,10 +166,20 @@ export class ManillasService {
         dataD = dataD.replace('data:application/pdf;base64,', '')
         extension = 'pdf'
 
-      } else {
-        dataD = dataD.replace(/^data:image\/\w+;base64,/, '');
+      } else if (extension == 'image/png') {
+
+        dataD = dataD.replace('data:image/png;base64,', '');
         extension = 'png'
-      }
+
+      } else if (extension == 'image/jpeg') {
+
+        dataD = dataD.replace('data:image/jpeg;base64,', '');
+        extension = 'jpg'
+      } else if (extension == 'image/jpg') {
+
+        dataD = dataD.replace('data:image/jpg;base64,', '');
+        extension = 'jpg'
+      } 
       newRecord.matricula_o_tarjeta = await this.uploadBase64ToS3(newRecord._id.toString(), dataD, 'matricula_o_tarjeta', extension);
     }
 
@@ -162,10 +192,20 @@ export class ManillasService {
         dataD = dataD.replace('data:application/pdf;base64,', '')
         extension = 'pdf'
 
-      } else {
-        dataD = dataD.replace(/^data:image\/\w+;base64,/, '');
+      } else if (extension == 'image/png') {
+
+        dataD = dataD.replace('data:image/png;base64,', '');
         extension = 'png'
-      }
+
+      } else if (extension == 'image/jpeg') {
+
+        dataD = dataD.replace('data:image/jpeg;base64,', '');
+        extension = 'jpg'
+      } else if (extension == 'image/jpg') {
+
+        dataD = dataD.replace('data:image/jpg;base64,', '');
+        extension = 'jpg'
+      } 
       newRecord.factura = await this.uploadBase64ToS3(newRecord._id.toString(), dataD, 'factura', extension);
     }
 
@@ -178,10 +218,20 @@ export class ManillasService {
         dataD = dataD.replace('data:application/pdf;base64,', '')
         extension = 'pdf'
 
-      } else {
-        dataD = dataD.replace(/^data:image\/\w+;base64,/, '');
+      } else if (extension == 'image/png') {
+
+        dataD = dataD.replace('data:image/png;base64,', '');
         extension = 'png'
-      }
+
+      } else if (extension == 'image/jpeg') {
+
+        dataD = dataD.replace('data:image/jpeg;base64,', '');
+        extension = 'jpg'
+      } else if (extension == 'image/jpg') {
+
+        dataD = dataD.replace('data:image/jpg;base64,', '');
+        extension = 'jpg'
+      } 
       newRecord.seguro = await this.uploadBase64ToS3(newRecord._id.toString(), dataD, 'seguro', extension);
     }
 
@@ -194,10 +244,20 @@ export class ManillasService {
         dataD = dataD.replace('data:application/pdf;base64,', '')
         extension = 'pdf'
 
-      } else {
-        dataD = dataD.replace(/^data:image\/\w+;base64,/, '');
+      } else if (extension == 'image/png') {
+
+        dataD = dataD.replace('data:image/png;base64,', '');
         extension = 'png'
-      }
+
+      } else if (extension == 'image/jpeg') {
+
+        dataD = dataD.replace('data:image/jpeg;base64,', '');
+        extension = 'jpg'
+      } else if (extension == 'image/jpg') {
+
+        dataD = dataD.replace('data:image/jpg;base64,', '');
+        extension = 'jpg'
+      } 
       newRecord.tenencias = await this.uploadBase64ToS3(newRecord._id.toString(), dataD, 'tenencias', extension);
     }
 
@@ -362,8 +422,13 @@ export class ManillasService {
     if (extension == 'pdf') {
       content = 'application/pdf'
     } else {
-      content = 'image/jpeg'
+      content = 'image' + '/' + extension;
     }
+    
+    
+
+
+    
 
     const uploadFolderPath = 'portador'; // Carpeta base en S3
     const fileName = `portador/${id}/${field}`; // Nombre de archivo

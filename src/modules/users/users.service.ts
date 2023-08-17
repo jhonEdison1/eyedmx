@@ -57,7 +57,27 @@ export class UsersService {
      
       const newRecord = new this.userModel(payload);
       if(payload.fotoBase64){
-        payload.fotoBase64 = await this.uploadBase64ToS3(newRecord._id.toString(), payload.fotoBase64);
+        let dataD = payload.fotoBase64;
+        let extension = dataD.substring("data:".length, dataD.indexOf(";base64"))
+        if (extension == 'image/png') {
+
+          dataD = dataD.replace('data:image/png;base64,', '');
+          extension = 'png'
+  
+        } else if (extension == 'image/jpeg') {
+
+          dataD = dataD.replace('data:image/jpeg;base64,', '');
+          extension = 'jpg'
+        } else if (extension == 'image/jpg') {
+
+          dataD = dataD.replace('data:image/jpg;base64,', '');
+          extension = 'jpg'
+        } else{
+          throw new ConflictException('La imagen debe ser png o jpg');
+        }
+
+
+        payload.fotoBase64 = await this.uploadBase64ToS3(newRecord._id.toString(), dataD, extension);
       }
 
       newRecord.fotoBase64 = payload.fotoBase64;
@@ -72,17 +92,19 @@ export class UsersService {
 
   }
 
-  async uploadBase64ToS3(id: string, base64Data: string): Promise<string> {
+  async uploadBase64ToS3(id: string, base64Data: string, extension: string): Promise<string> {
     const buffer = Buffer.from(base64Data, 'base64');
 
     const uploadFolderPath = 'users'; // Carpeta base en S3
-    const fileName = `users/${id}/${Date.now()}.jpg`; // Nombre de archivo
+    const fileName = `users/${id}/${Date.now()}` + '.' + extension; // Ruta de archivo en S3
+
+    let contentype = 'image' + '/' + extension;
 
     const s3Params: AWS.S3.PutObjectRequest = {
       Bucket: this.configService.s3.bucket,
       Key: fileName,
       Body: buffer,
-      ContentType: 'image/jpeg', // Ajustar según el tipo de imagen
+      ContentType: contentype,
     };
 
     try {
@@ -122,9 +144,28 @@ export class UsersService {
       newRecord.aceptado = false;
 
       if(payload.fotoBase64){
-        payload.fotoBase64 = await this.uploadBase64ToS3(newRecord._id.toString(), payload.fotoBase64);
-      }
+        let dataD = payload.fotoBase64;
+        let extension = dataD.substring("data:".length, dataD.indexOf(";base64"))
+        if (extension == 'image/png') {
 
+          dataD = dataD.replace('data:image/png;base64,', '');
+          extension = 'png'
+  
+        } else if (extension == 'image/jpeg') {
+
+          dataD = dataD.replace('data:image/jpeg;base64,', '');
+          extension = 'jpg'
+        } else if (extension == 'image/jpg') {
+
+          dataD = dataD.replace('data:image/jpg;base64,', '');
+          extension = 'jpg'
+        } else{
+          throw new ConflictException('La imagen debe ser png o jpg');
+        }
+
+
+        payload.fotoBase64 = await this.uploadBase64ToS3(newRecord._id.toString(), dataD, extension);
+      }
       newRecord.fotoBase64 = payload.fotoBase64;
 
 
@@ -151,7 +192,27 @@ export class UsersService {
       newRecord.role = Role.TALLER;
 
       if(payload.fotoBase64){
-        payload.fotoBase64 = await this.uploadBase64ToS3(newRecord._id.toString(), payload.fotoBase64);
+        let dataD = payload.fotoBase64;
+        let extension = dataD.substring("data:".length, dataD.indexOf(";base64"))
+        if (extension == 'image/png') {
+
+          dataD = dataD.replace('data:image/png;base64,', '');
+          extension = 'png'
+  
+        } else if (extension == 'image/jpeg') {
+
+          dataD = dataD.replace('data:image/jpeg;base64,', '');
+          extension = 'jpg'
+        } else if (extension == 'image/jpg') {
+
+          dataD = dataD.replace('data:image/jpg;base64,', '');
+          extension = 'jpg'
+        } else{
+          throw new ConflictException('La imagen debe ser png o jpg');
+        }
+
+
+        payload.fotoBase64 = await this.uploadBase64ToS3(newRecord._id.toString(), dataD, extension);
       }
 
       newRecord.fotoBase64 = payload.fotoBase64;
@@ -407,9 +468,33 @@ export class UsersService {
         usuario.telefono = payload.telefono;
       }
 
-      if (payload.fotoBase64) {
-        usuario.fotoBase64 = await this.uploadBase64ToS3(id, payload.fotoBase64);
+      if(payload.fotoBase64){
+        let dataD = payload.fotoBase64;
+        let extension = dataD.substring("data:".length, dataD.indexOf(";base64"))
+        if (extension == 'image/png') {
+
+          dataD = dataD.replace('data:image/png;base64,', '');
+          extension = 'png'
+  
+        } else if (extension == 'image/jpeg') {
+
+          dataD = dataD.replace('data:image/jpeg;base64,', '');
+          extension = 'jpg'
+        } else if (extension == 'image/jpg') {
+
+          dataD = dataD.replace('data:image/jpg;base64,', '');
+          extension = 'jpg'
+        } else{
+          throw new ConflictException('La imagen debe ser png o jpg');
+        }
+
+
+        usuario.fotoBase64 = await this.uploadBase64ToS3(id, dataD, extension);
       }
+
+      // if (payload.fotoBase64) {
+      //   usuario.fotoBase64 = await this.uploadBase64ToS3(id, payload.fotoBase64);
+      // }
 
       await usuario.save();
 
