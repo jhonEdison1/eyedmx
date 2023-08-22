@@ -1,6 +1,6 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { Type } from "class-transformer";
-import { IsArray, IsDate, IsMongoId, IsNotEmpty, IsNumber, IsObject, IsOptional, IsPositive, IsString, ValidateIf, ValidationArguments, ValidationOptions, ValidatorConstraint, ValidatorConstraintInterface, registerDecorator } from "class-validator";
+import { IsArray, IsDate, IsMongoId, IsNotEmpty, IsNumber, IsObject, IsOptional, IsPhoneNumber, IsPositive, IsString, ValidateIf, ValidationArguments, ValidationOptions, ValidatorConstraint, ValidatorConstraintInterface, registerDecorator } from "class-validator";
 
 export class CreateManillaDto {
 
@@ -27,9 +27,9 @@ export class CreateManillaDto {
     @ApiProperty({description: " tipo  del portador de la manilla", type: String})  
     tipo: string;
 
-    @IsString({ message: "la foto_portador debe contener datos validos" })
-    @IsNotEmpty({ message: "la foto_portador es requerida" })
-    @ApiProperty({description: "foto del portador de la manilla", type: String})
+    // @IsString({ message: "la foto_portador debe contener datos validos" })
+    // @IsNotEmpty({ message: "la foto_portador es requerida" })
+    // @ApiProperty({description: "foto del portador de la manilla", type: String})
     readonly foto_portador: string;
 
 
@@ -61,28 +61,27 @@ export class ManillaMoteroDto extends CreateManillaDto {
     @IsNotEmpty({ message: "el nombre_portador es requerido" })
     readonly nombre_portador: string;
 
-    @IsString({ message: "la marca debe contener caracteres validos" })
-    @IsNotEmpty({ message: "la marca es requerida" })
-    @ApiProperty({description: "marca de la motocicleta", type: String})  
-    readonly marca: string;
+    @IsString({ message: "el diocumento debe contener datos validos" })
+    @IsNotEmpty({ message: "el documento es requerido" })
+    readonly documento: string;
 
-    @IsPositive({ message: "el cilindraje debe ser un numero positivo" })
-    @IsNumber({}, { message: "el cilindraje debe ser un numero" })
-    @IsNotEmpty({ message: "el cilindraje es requerido" })
-    readonly cilindraje: number;
-
-    @IsString({ message: "la compañia de seguros debe contener caracteres validos" })
-    @IsNotEmpty({ message: "la compañia de seguros es requerida" })
-    readonly compañia_de_seguros: string;
+    @IsOptional()
+    readonly fecha_nacimiento: Date;
 
     @IsString({ message: "el genero del portador de la pulsera debe contener caracteres validos" })
     @IsNotEmpty({ message: "el genero es requerido" })
-    readonly genero: string;
+    readonly genero: string; 
 
-    @IsString({ message: "la placa debe contener caracteres validos" })
-    @IsNotEmpty({ message: "la placa es requerida" })
-    readonly placa: string;
+    @IsOptional()
+    readonly email: string;
 
+    @IsString({ message: "la direccion debe contener caracteres validos" })
+    @IsNotEmpty({ message: "la direccion es requerida" })
+    readonly direccion: string;
+
+    @IsPhoneNumber('MX', { message: "el telefono debe contener caracteres validos" })
+    @IsNotEmpty({ message: "el telefono es requerido" })
+    readonly telefono: string;
 
     @IsString({ message: "el rh debe contener datos validos" })
     @IsNotEmpty({ message: "el rh es requerido" })
@@ -93,6 +92,29 @@ export class ManillaMoteroDto extends CreateManillaDto {
     @IsNotEmpty({ message: "las alergias son requeridas" })
     @ApiProperty({description: "alergias que pueda presentar el portador de la pulsera", type: String})  
     readonly alergias: string;
+
+
+
+    @IsOptional()
+    readonly marca: string;
+
+    @IsOptional()
+    readonly cilindraje: number;
+
+    @IsOptional()
+    readonly compañia_de_seguros: string;
+
+    @IsOptional()
+    readonly centro_de_salud: string;   
+
+    @IsString({ message: "la placa debe contener caracteres validos" })
+    @IsNotEmpty({ message: "la placa es requerida" })
+    readonly placa: string;
+
+
+    
+
+   
 
 
    
@@ -107,17 +129,26 @@ export class ManillaAdulto_MayorDto extends CreateManillaDto {
     @IsNotEmpty({ message: "el nombre_portador es requerido" })
     readonly nombre_portador: string;
 
+    @IsOptional()
+    readonly documento: string;
+
+    @IsNotEmpty({message: "la fecha de nacimiento del portador de la pulsera es requerida"})
+    readonly fecha_nacimiento: Date;
+
     @IsString({ message: "el genero debe contener caracteres validos" })
     @IsNotEmpty({ message: "el genero es requerido" })
     readonly genero: string;
 
-    @IsString({ message: "las enfermedades deben contener caracteres validos" })
-    @IsNotEmpty({ message: "las enfermedades son requeridas" })
-    readonly enfermedades: string;
+    @IsOptional()
+    readonly email: string;
 
-    @IsString({ message: "las recomendaciones deben contener caracteres validos" })
-    @IsNotEmpty({ message: "las recomendaciones son requeridas" })
-    readonly recomendaciones: string;
+    @IsString({ message: "la direccion debe contener caracteres validos" })
+    @IsNotEmpty({ message: "la direccion es requerida" })
+    readonly direccion: string;
+
+    @IsPhoneNumber('MX', { message: "el telefono debe contener caracteres validos" })
+    @IsNotEmpty({ message: "el telefono es requerido" })
+    readonly telefono: string;
 
     @IsString({ message: "el rh debe contener datos validos" })
     @IsNotEmpty({ message: "el rh es requerido" })
@@ -129,7 +160,17 @@ export class ManillaAdulto_MayorDto extends CreateManillaDto {
     @ApiProperty({description: "alergias que pueda presentar el portador de la pulsera", type: String})  
     readonly alergias: string;
 
+    @IsString({ message: "las enfermedades deben contener caracteres validos" })
+    @IsNotEmpty({ message: "las enfermedades son requeridas" })
+    readonly enfermedades: string;
 
+    @IsString({ message: "el centro de salud debe contener caracteres validos" })
+    @IsNotEmpty({ message: "el centro de saud es requerido" })
+    readonly centro_de_salud: string;   
+
+    @IsString({ message: "las recomendaciones deben contener caracteres validos" })
+    @IsNotEmpty({ message: "las recomendaciones son requeridas" })
+    readonly recomendaciones: string;
 
 }
 
@@ -175,16 +216,46 @@ export class ManillaNiñoDto extends CreateManillaDto {
     @IsNotEmpty({ message: "el nombre_portador es requerido" })
     readonly nombre_portador: string;
 
+    @IsOptional()
+    readonly documento: string;
+
+    @IsNotEmpty({message: "la fecha de nacimiento del portador de la pulsera es requerida"})
+    readonly fecha_nacimiento: Date;
+
     @IsString({ message: "el genero debe contener caracteres validos" })
     @IsNotEmpty({ message: "el genero es requerido" })
     readonly genero: string;
+
+    @IsOptional()
+    readonly email: string;
+
+    @IsString({ message: "la direccion debe contener caracteres validos" })
+    @IsNotEmpty({ message: "la direccion es requerida" })
+    readonly direccion: string;
+
+    @IsPhoneNumber('MX', { message: "el telefono debe contener caracteres validos" })
+    @IsNotEmpty({ message: "el telefono es requerido" })
+    readonly telefono: string;
+
+    @IsString({ message: "el rh debe contener datos validos" })
+    @IsNotEmpty({ message: "el rh es requerido" })
+    @ApiProperty({description: "informacion del grupo y tipo sanguineo del portador de la pulsera", type: String})  
+    readonly rh: string;
+
+    
+    @IsString({ message: "las alergias caracteres validos" })
+    @IsNotEmpty({ message: "las alergias son requeridas" })
+    @ApiProperty({description: "alergias que pueda presentar el portador de la pulsera", type: String})  
+    readonly alergias: string;
 
     @IsString({ message: "las enfermedades deben contener caracteres validos" })
     @IsNotEmpty({ message: "las enfermedades son requeridas" })
     readonly enfermedades: string;
 
-    @IsString({ message: "las recomendaciones deben contener caracteres validos" })
-    @IsNotEmpty({ message: "las recomendaciones son requeridas" })
+    @IsOptional()
+    readonly centro_de_salud: string;   
+
+    @IsOptional()
     readonly recomendaciones: string;
 
     @IsOptional()
@@ -208,39 +279,50 @@ export class ManillaNiñoDto extends CreateManillaDto {
     atLeastOnePhoneIsRequired: string;
 
 
-    @IsString({ message: "el rh debe contener datos validos" })
-    @IsNotEmpty({ message: "el rh es requerido" })
-    @ApiProperty({description: "informacion del grupo y tipo sanguineo del portador de la pulsera", type: String})  
-    readonly rh: string;
+    
 
-    @IsString({ message: "las alergias caracteres validos" })
-    @IsNotEmpty({ message: "las alergias son requeridas" })
-    @ApiProperty({description: "alergias que pueda presentar el portador de la pulsera", type: String})  
-    readonly alergias: string;
 
 }
 
 
 export class ManillaMascotaDto extends CreateManillaDto{
 
- 
-
-    @IsString({ message: "las enfermedades deben contener caracteres validos" })
-    @IsNotEmpty({ message: "las enfermedades son requeridas" })
-    readonly enfermedades: string;
-
-    @IsString({ message: "la raza debe contener caracteres validos" })
-    @IsNotEmpty({ message: "la raza es requerida" })
-    readonly raza: string;
+    @IsString({ message: "el nombre del dueño debe contener datos validos" })
+    @IsNotEmpty({ message: "el nombre del dueño es requerido" })
+    readonly nombre_duenio: string;
 
     @IsString({ message: "el nombre debe contener caracteres validos" })
     @IsNotEmpty({ message: "el nombre es requerido" })
     readonly nombre_mascota: string;
 
+    @IsOptional()
+    readonly email: string;
+
+    @IsString({ message: "la direccion debe contener caracteres validos" })
+    @IsNotEmpty({ message: "la direccion es requerida" })
+    readonly direccion: string;
+
+    @IsPhoneNumber('MX', { message: "el telefono debe contener caracteres validos" })
+    @IsNotEmpty({ message: "el telefono es requerido" })
+    readonly telefono: string; 
+
+    @IsString({ message: "las enfermedades deben contener caracteres validos" })
+    @IsNotEmpty({ message: "las enfermedades son requeridas" })
+    readonly enfermedades: string;      
+
+    @IsOptional()
+    readonly centro_de_salud: string;   
+
     //@IsNotEmpty({message: "la fecha de nacimiento de la mascota es requerida"})
     //@IsDate()
     //@Type(() => Date)
     readonly fecha_nacimiento_mascota: Date;
+
+    @IsString({ message: "la raza debe contener caracteres validos" })
+    @IsNotEmpty({ message: "la raza es requerida" })
+    readonly raza: string;
+
+
 
 
 }

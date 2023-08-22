@@ -117,104 +117,163 @@ export class AuthenticationCommonService {
             name: "nombre_portador",
             type: "text",
             description: "Nombre del portador de la pulsera",
+            required: true,
+            private: false
           },
           {
-            name: "foto_portador",
-            type: "file",
-            description: "Foto del portador de la pulsera",
-            required: true
-          },         
-          {
-            name: "marca",
+            name: "documento",
             type: "text",
-            description: "Marca de la moto",
-            required: true
+            description: "Documento del portador de la pulsera",
+            required: true,
+            private: true
           },
           {
-            name: "cilindraje",
-            type: "number",
-            description: "Cilindraje de la moto",
-            required: true
+            name: "fecha_nacimiento",
+            type: "Date",
+            description: "Fecha de nacimiento del portador de la pulsera",
+            required: false,
+            private: true
           },
-          {
-            name: "compañia_de_seguros",
-            type: "text",
-            description: "Compañia de seguros",
-            required: true
-          },
-          
           {
             name: "genero",
             type: "select",
             description: "Genero del portador de la pulsera",
             opciones: ["Masculino", "Femenino", "Otro"],
-            required: true
+            required: true,
+            private: false
           },
           {
-            name: "placa",
+            name: "email",
+            type: "email",
+            description: "Email del portador de la pulsera",
+            required: false,
+            private: true
+          },
+          {
+            name: "direccion",
             type: "text",
-            description: "Placa de la moto",
-            required: true
-
+            description: "Direccion del portador de la pulsera",
+            required: true,
+            private: true
+          },
+          {
+            name: "telefono",
+            type: "telefono",
+            description: "Telefono del portador de la pulsera",
+            required: true,
+            private: false
+          },
+          {
+            name: "contacto_de_emergencia",
+            type: "text",
+            description: "Contacto de emergencia",
+            required: true,
+            private: false
+          },
+          {
+            name: "telefono_de_emergencia",
+            type: "telefono",
+            description: "Telefono de emergencia",
+            required: true,
+            private: false
           },
           {
             name: "rh",
             type: "select",
             description: "Rh del portador de la pulsera",
             opciones: ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"],
-            required: true
+            required: true,
+            private: false
 
           },
           {
             name: "alergias",
             type: "text",
             description: "Alergias del portador de la pulsera",
-            required: false
-          },
+            required: false,
+            private: false
+          },                    
           {
-            name: "contacto_de_emergencia",
+            name: "marca",
             type: "text",
-            description: "Contacto de emergencia",
-            required: true
+            description: "Marca de la moto",
+            required: false,
+            private:  true
           },
           {
-            name: "telefono_de_emergencia",
-            type: "telefono",
-            description: "Telefono de emergencia",
-            required: true
-          }, {
+            name: "cilindraje",
+            type: "number",
+            description: "Cilindraje de la moto",
+            required: false,
+            private: true
+          },
+          {
+            name: "foto_portador",
+            type: "file",
+            description: "Foto del portador de la pulsera",
+            required: false,
+            private: false
+          }, 
+          {
+            name: "centro_de_salud",
+            type: "text",
+            description: "Centro de salud",
+            required: false,
+            private: false
+          },
+          {
+            name: "compañia_de_seguros",
+            type: "text",
+            description: "Compañia de seguros",
+            required: true,
+            private: false
+          }, 
+          {
+            name: "placa",
+            type: "text",
+            description: "Placa de la moto",
+            required: true,
+            private: true
+
+          },      
+          {
             name: "licencia",
             type: "file",
             description: "licencia de conduccion",
-            required: false
+            required: false,
+            private: true
 
           },
           {
             name: "matricula_o_tarjeta",
             type: "file",
             description: "Matricula o tarjeta de circulación",
-            required: false
+            required: false,
+            private: true
 
           },
           {
             name: "factura",
             type: "file",
             description: "factura de la moto",
-            required: false
+            required: false,
+            private: true
 
           },
           {
             name: "seguro",
             type: "file",
             description: "seguro de la moto",
-            required: false
+            required: false,
+            private: true
 
           },
           {
             name: "tenencias",
             type: "file",
             description: "tenencias de la moto",
-            required: false
+            required: false,
+            private: true
 
           },
           
@@ -226,57 +285,110 @@ export class AuthenticationCommonService {
             name: "nombre_portador",
             type: "text",
             description: "Nombre del portador de la pulsera",
+            required: true,
+            private: false
+
+          },
+          {
+            name: "documento",
+            type: "text",
+            description: "Documento del portador de la pulsera",
+            required: false,
+            private: true
+          },
+          {
+            name: "fecha_nacimiento",
+            type: "Date",
+            description: "Fecha de nacimiento del portador de la pulsera",
+            required: true,
+            private: false
           },
           {
             name: "genero",
             type: "select",
             description: "Genero del portador de la pulsera",
             opciones: ["Masculino", "Femenino", "Otro"],
-            required: true
+            required: true,
+            private: false
           },
           {
-            name: "enfermedades",
+            name: "email",
+            type: "email",
+            description: "Email del portador de la pulsera",
+            required: false,
+            private: true
+          },
+          {
+            name: "direccion",
             type: "text",
-            description: "Enfermedades del adulto mayor",
-            required: true
+            description: "Direccion del portador de la pulsera",
+            required: true,
+            private: true
           },
           {
-            name: "recomendaciones",
-            type: "textarea",
-            description: "Recomendaciones del adulto mayor",
-            required: false
+            name: "telefono",
+            type: "telefono",
+            description: "Telefono del portador de la pulsera",
+            required: true,
+            private: false
+          },
+          {
+            name: "contacto_de_emergencia",
+            type: "text",
+            description: "Contacto de emergencia",
+            required: true,
+            private: false
+          },
+          {
+            name: "telefono_de_emergencia",
+            type: "telefono",
+            description: "Telefono de emergencia",
+            required: true,
+            private: false
           },
           {
             name: "rh",
             type: "select",
             description: "Rh del portador de la pulsera",
             opciones: ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"],
-            required: true
+            required: true,
+            private: false
 
           },
           {
             name: "alergias",
             type: "text",
             description: "Alergias del portador de la pulsera",
-            required: false
-          },
+            required: false,
+            private: false
+          },  
           {
-            name: "contacto_de_emergencia",
+            name: "enfermedades",
             type: "text",
-            description: "Contacto de emergencia",
-            required: true
+            description: "Enfermedades del adulto mayor",
+            required: true,
+            private: false
           },
           {
-            name: "telefono_de_emergencia",
-            type: "telefono",
-            description: "Telefono de emergencia",
-            required: true
+            name: "centro_de_salud",
+            type: "text",
+            description: "Centro de salud",
+            required: true,
+            private: false
           },
+          {
+            name: "recomendaciones",
+            type: "textarea",
+            description: "Recomendaciones del adulto mayor",
+            required: false,
+            private : false
+          },      
           {
             name: "foto_portador",
             type: "file",
             description: "Foto del portador de la pulsera",
-            required: true
+            required: true,
+            private: false
           },
         ];
         break;
@@ -286,103 +398,151 @@ export class AuthenticationCommonService {
             name: "nombre_portador",
             type: "text",
             description: "Nombre del portador de la pulsera",
+            required: true,
+            private: false
           },
           {
-            name: "foto_portador",
-            type: "file",
-            description: "Foto del portador de la pulsera",
-            required: true
+            name: "documento",
+            type: "text",
+            description: "Documento del portador de la pulsera",
+            required: false,
+            private: true
+          },
+          {
+            name: "fecha_nacimiento",
+            type: "Date",
+            description: "Fecha de nacimiento del portador de la pulsera",
+            required: false,
+            private: true
           },
           {
             name: "genero",
             type: "select",
             description: "Genero del portador de la pulsera",
             opciones: ["Masculino", "Femenino", "Otro"],
-            required: true
+            required: true,
+            private: false
           },
           {
-            name: "enfermedades",
+            name: "email",
+            type: "email",
+            description: "Email del portador de la pulsera",
+            required: false,
+            private: true
+          },
+          {
+            name: "direccion",
             type: "text",
-            description: "Enfermedades del niño",
-            required: false
+            description: "Direccion del portador de la pulsera",
+            required: true,
+            private: true
           },
           {
-            name: "recomendaciones",
-            type: "textarea",
-            description: "Recomendaciones del niño",
-            required: false
-          },
-          {
-            name: "nombre_padre",
-            type: "text",
-            description: "Nombre del padre",
-            required: false
-          },
-          {
-            name: "nombre_madre",
-            type: "text",
-            description: "Nombre de la madre",
-            required: false
-          },
-          {
-            name: "telefono_padre",
+            name: "telefono",
             type: "telefono",
-            description: "Telefono del padre",
-            required: false
-          },
-          {
-            name: "telefono_madre",
-            type: "telefono",
-            description: "Telefono de la madre",
-            required: false
-          } ,
-          {
-            name: "rh",
-            type: "select",
-            description: "Rh del portador de la pulsera",
-            opciones: ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"],
-            required: true
-
-          },
-          {
-            name: "alergias",
-            type: "text",
-            description: "Alergias del portador de la pulsera",
-            required: false
+            description: "Telefono del portador de la pulsera",
+            required: true,
+            private: false
           },
           {
             name: "contacto_de_emergencia",
             type: "text",
             description: "Contacto de emergencia",
-            required: true
+            required: true,
+            private: false
           },
           {
             name: "telefono_de_emergencia",
             type: "telefono",
             description: "Telefono de emergencia",
-            required: true
-          }      
+            required: true,
+            private: false
+          },
+          {
+            name: "rh",
+            type: "select",
+            description: "Rh del portador de la pulsera",
+            opciones: ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"],
+            required: true,
+            private: false
+          },     
+          {
+            name: "alergias",
+            type: "text",
+            description: "Alergias del portador de la pulsera",
+            required: false,
+            private: false
+
+          },                   
+          {
+            name: "enfermedades",
+            type: "text",
+            description: "Enfermedades del niño",
+            required: false,
+            private: false
+          },
+          {
+            name: "centro_de_salud",
+            type: "text",
+            description: "Centro de salud",
+            required: false,
+            private: false
+          },
+          {
+            name: "recomendaciones",
+            type: "textarea",
+            description: "Recomendaciones del niño",
+            required: false,
+            private : false
+          },
+          {
+            name: "nombre_padre",
+            type: "text",
+            description: "Nombre del padre",
+            required: false,
+            private: true
+          },
+          {
+            name: "nombre_madre",
+            type: "text",
+            description: "Nombre de la madre",
+            required: false,
+            private: true
+          },
+          {
+            name: "telefono_padre",
+            type: "telefono",
+            description: "Telefono del padre",
+            required: false,
+            private: true
+          },
+          {
+            name: "telefono_madre",
+            type: "telefono",
+            description: "Telefono de la madre",
+            required: false,
+            private: true
+          },
+          {
+            name: "foto_portador",
+            type: "file",
+            description: "Foto del portador de la pulsera",
+            required: true,
+            private: false
+          }          
+          
+          
         ];
         break;
         case Tipos.Mascota:
           return [
             {
-              name: "enfermedades",
+              name: "nombre_duenio",
               type: "text",
-              description: "Enfermedades de la mascota",
-              required: false
-            },
-            {
-              name: "fecha_nacimiento_mascota",
-              type: "Date",
-              description: "Fecha de nacimiento de la mascota",
-              required: false
-            },
-            {
-              name: "raza",
-              type: "text",
-              description: "Raza de la mascota",
-              required: false
+              description: "Nombre del dueño de la mascota",
+              required: true,
+              private: false
+
             },
             {
               name: "nombre_mascota",
@@ -391,22 +551,76 @@ export class AuthenticationCommonService {
               required: true
             },
             {
+              name: "email",
+              type: "email",
+              description: "Email del portador de la pulsera",
+              required: false,
+              private: true
+            },
+            {
+              name: "direccion",
+              type: "text",
+              description: "Direccion del portador de la pulsera",
+              required: true,
+              private: true
+            },
+            {
+              name: "telefono",
+              type: "telefono",
+              description: "Telefono del portador de la pulsera",
+              required: true,
+              private: false
+            },
+            {
               name: "contacto_de_emergencia",
               type: "text",
               description: "Contacto de emergencia",
-              required: true
+              required: true,
+              private: false
             },
             {
               name: "telefono_de_emergencia",
               type: "telefono",
               description: "Telefono de emergencia",
-              required: true
+              required: true,
+              private: false
             },
+            {
+              name: "enfermedades",
+              type: "text",
+              description: "Enfermedades de la mascota",
+              required: false,
+              private: false
+            },
+            {
+              name: "centro_de_salud",
+              type: "text",
+              description: "Centro de salud",
+              required: false,
+              private: false
+
+            },
+            {
+              name: "fecha_nacimiento_mascota",
+              type: "Date",
+              description: "Fecha de nacimiento de la mascota",
+              required: false,
+              private: true
+            },
+            {
+              name: "raza",
+              type: "text",
+              description: "Raza de la mascota",
+              required: false,
+              private: false
+            },            
+            
             {
               name: "foto_portador",
               type: "file",
               description: "Foto del portador de la pulsera",
-              required: true
+              required: true,
+              private: false
             },
           ];
     }

@@ -19,7 +19,7 @@ export class MongooseConfigService implements MongooseOptionsFactory {
         console.log(connection, hostname, dbname, user, password, port, params, process.env.NODE_ENV)
 
         return {
-            uri: process.env.NODE_ENV === "dev" ? `$${connection}://${user}:${password}@${hostname}:${port}/${dbname}?${params}` : `${connection}://${user}:${password}@${hostname}:${port}/${dbname}?${params}`
+            uri: process.env.NODE_ENV === "dev" ? `${connection}://${user}:${password}@${hostname}:${port}/${dbname}?${params}` : `${connection}://${user}:${password}@${hostname}:${port}/${dbname}?${params}`
             //uri: process.env.NODE_ENV === "dev" ? `${connection}://${hostname}:${port}/${dbname}?${params}` : `${connection}://${user}:${password}@${hostname}:${port}/${dbname}?${params}` esto en localhost
            
         };

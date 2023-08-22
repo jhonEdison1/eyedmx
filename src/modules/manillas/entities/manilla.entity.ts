@@ -37,9 +37,9 @@ export class Manilla extends Document {
     @Prop({ trim: true })
     qrCode: string;
 
-    @Prop({ trim: true })
-    qrdxf: string;
-
+    @Prop({ type: Number})
+    numid: number;
+    
     //estado de la manilla
     @Prop({ default: estadoManilla.Solicitada })
     estado: estadoManilla;
@@ -48,9 +48,27 @@ export class Manilla extends Document {
     @Prop({ trim: true })
     entradas: Array<any>;
 
+    @Prop({ trim: true, default: '' })
+    nombre_portador: string;
 
+    @Prop({ trim: true })
+    documento: string;
 
-    //personalizados
+    @Prop({ trim: true })
+    fecha_nacimiento: Date;
+
+    @Prop({ trim: true })
+    genero: string;
+
+    @Prop({ trim: true })
+    email: string;
+
+    @Prop({ trim: true })
+    direccion: string;
+
+    @Prop({ trim: true })
+    telefono: string;
+
     @Prop({ trim: true })
     rh: string;
 
@@ -64,13 +82,33 @@ export class Manilla extends Document {
     cilindraje: number;
 
     @Prop({ trim: true })
+    foto_portador: string;
+
+    @Prop({ trim: true })
+    centro_de_salud: string;
+
+    @Prop({ trim: true })
     compañia_de_seguros: string;
 
     @Prop({ trim: true })
-    genero: string;
+    placa: string;
 
     @Prop({ trim: true })
-    placa: string;
+    licencia: string;
+
+
+    @Prop({ trim: true })
+    matricula_o_tarjeta: string;
+
+    @Prop({ trim: true })
+    factura: string;
+
+
+    @Prop({ trim: true })
+    seguro: string;
+
+    @Prop({ trim: true })
+    tenencias: string;
 
     @Prop({ trim: true })
     enfermedades: string;
@@ -99,34 +137,8 @@ export class Manilla extends Document {
     @Prop({ trim: true })
     fecha_nacimiento_mascota: Date;
 
-    @Prop({ trim: true, default: '' })
-    nombre_portador: string;
-
     @Prop({ trim: true })
-    foto_portador: string;
-
-
-    @Prop({ trim: true })
-    licencia: string;
-
-
-    @Prop({ trim: true })
-    matricula_o_tarjeta: string;
-
-    @Prop({ trim: true })
-    factura: string;
-
-
-    @Prop({ trim: true })
-    seguro: string;
-
-    @Prop({ trim: true })
-    tenencias: string;
-
-    @Prop({ type: Number})
-    numid: number;
-
-
+    nombre_duenio: string;
 
 }
 

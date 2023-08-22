@@ -56,40 +56,48 @@ export class EditManillaDto {
 export class EditManillaMoteroDto extends EditManillaDto {
 
 
+   
     readonly nombre_portador: string;
 
-    // @IsString({ message: "la marca debe contener caracteres validos" })
-    // @IsNotEmpty({ message: "la marca es requerida" })
-    // @ApiProperty({description: "marca de la motocicleta", type: String})  
-    readonly marca: string;
+  
+    readonly documento: string;
 
-    // @IsPositive({ message: "el cilindraje debe ser un numero positivo" })
-    // @IsNumber({}, { message: "el cilindraje debe ser un numero" })
-    // @IsNotEmpty({ message: "el cilindraje es requerido" })
-    readonly cilindraje: number;
+    @IsOptional()
+    readonly fecha_nacimiento: Date;
 
-    // @IsString({ message: "la compañia de seguros debe contener caracteres validos" })
-    // @IsNotEmpty({ message: "la compañia de seguros es requerida" })
-    readonly compañia_de_seguros: string;
+  
+    readonly genero: string; 
 
-    // @IsString({ message: "el genero del portador de la manilla debe contener caracteres validos" })
-    // @IsNotEmpty({ message: "el genero es requerido" })
-    readonly genero: string;
+    @IsOptional()
+    readonly email: string;
 
-    // @IsString({ message: "la placa debe contener caracteres validos" })
-    // @IsNotEmpty({ message: "la placa es requerida" })
-    readonly placa: string;
+   
+    readonly direccion: string;
 
+    readonly telefono: string;
 
-    // @IsString({ message: "el rh debe contener datos validos" })
-    // @IsNotEmpty({ message: "el rh es requerido" })
-    // @ApiProperty({description: "informacion del grupo y tipo sanguineo del portador de la manilla", type: String})  
+  
     readonly rh: string;
 
-    // @IsString({ message: "las alergias caracteres validos" })
-    // @IsNotEmpty({ message: "las alergias son requeridas" })
-    // @ApiProperty({description: "alergias que pueda presentar el portador de la manilla", type: String})  
+   
     readonly alergias: string;
+
+
+
+    @IsOptional()
+    readonly marca: string;
+
+    @IsOptional()
+    readonly cilindraje: number;
+
+    @IsOptional()
+    readonly compañia_de_seguros: string;
+
+    @IsOptional()
+    readonly centro_de_salud: string;   
+
+   
+    readonly placa: string;
 
 
    
@@ -100,32 +108,40 @@ export class EditManillaMoteroDto extends EditManillaDto {
 export class EditManillaAdulto_MayorDto extends EditManillaDto {
 
 
-    // @IsString({ message: "el nombre_portador debe contener datos validos" })
-    // @IsNotEmpty({ message: "el nombre_portador es requerido" })
+ 
     readonly nombre_portador: string;
 
-    // @IsString({ message: "el genero debe contener caracteres validos" })
-    // @IsNotEmpty({ message: "el genero es requerido" })
+    @IsOptional()
+    readonly documento: string;
+
+   
+    readonly fecha_nacimiento: Date;
+
+  
     readonly genero: string;
 
-    // @IsString({ message: "las enfermedades deben contener caracteres validos" })
-    // @IsNotEmpty({ message: "las enfermedades son requeridas" })
-    readonly enfermedades: string;
+    @IsOptional()
+    readonly email: string;
 
-    // @IsString({ message: "las recomendaciones deben contener caracteres validos" })
-    // @IsNotEmpty({ message: "las recomendaciones son requeridas" })
-    readonly recomendaciones: string;
+  
+    readonly direccion: string;
 
-    // @IsString({ message: "el rh debe contener datos validos" })
-    // @IsNotEmpty({ message: "el rh es requerido" })
-    // @ApiProperty({description: "informacion del grupo y tipo sanguineo del portador de la manilla", type: String})  
+
+    readonly telefono: string;    
+  
     readonly rh: string;
 
-    // @IsString({ message: "las alergias caracteres validos" })
-    // @IsNotEmpty({ message: "las alergias son requeridas" })
-    // @ApiProperty({description: "alergias que pueda presentar el portador de la manilla", type: String})  
+   
     readonly alergias: string;
 
+  
+    readonly enfermedades: string;
+
+   
+    readonly centro_de_salud: string;   
+
+   
+    readonly recomendaciones: string;
 
 
 }
@@ -167,21 +183,41 @@ export function AtLeastOneIsRequired(fields: string[], validationOptions?: Valid
 
 export class EditManillaNiñoDto extends EditManillaDto {
 
-
-    // @IsString({ message: "el nombre_portador debe contener datos validos" })
-    // @IsNotEmpty({ message: "el nombre_portador es requerido" })
+   
     readonly nombre_portador: string;
 
-    // @IsString({ message: "el genero debe contener caracteres validos" })
-    // @IsNotEmpty({ message: "el genero es requerido" })
+    @IsOptional()
+    readonly documento: string;
+
+   
+    readonly fecha_nacimiento: Date;
+
+   
     readonly genero: string;
 
-    // @IsString({ message: "las enfermedades deben contener caracteres validos" })
-    // @IsNotEmpty({ message: "las enfermedades son requeridas" })
+    @IsOptional()
+    readonly email: string;
+
+  
+    readonly direccion: string;
+
+  
+    readonly telefono: string;
+
+  
+    readonly rh: string;
+
+    
+   
+    readonly alergias: string;
+
+   
     readonly enfermedades: string;
 
-    // @IsString({ message: "las recomendaciones deben contener caracteres validos" })
-    // @IsNotEmpty({ message: "las recomendaciones son requeridas" })
+    @IsOptional()
+    readonly centro_de_salud: string;   
+
+    @IsOptional()
     readonly recomendaciones: string;
 
     @IsOptional()
@@ -204,40 +240,36 @@ export class EditManillaNiñoDto extends EditManillaDto {
     @AtLeastOneIsRequired(['telefono_padre', 'telefono_madre'])
     atLeastOnePhoneIsRequired: string;
 
-
-    // @IsString({ message: "el rh debe contener datos validos" })
-    // @IsNotEmpty({ message: "el rh es requerido" })
-    // @ApiProperty({description: "informacion del grupo y tipo sanguineo del portador de la manilla", type: String})  
-    readonly rh: string;
-
-    // @IsString({ message: "las alergias caracteres validos" })
-    // @IsNotEmpty({ message: "las alergias son requeridas" })
-    // @ApiProperty({description: "alergias que pueda presentar el portador de la manilla", type: String})  
-    readonly alergias: string;
-
 }
 
 
 export class EditManillaMascotaDto extends EditManillaDto{
 
  
+   
+    readonly nombre_duenio: string;
 
-    // @IsString({ message: "las enfermedades deben contener caracteres validos" })
-    // @IsNotEmpty({ message: "las enfermedades son requeridas" })
-    readonly enfermedades: string;
-
-    // @IsString({ message: "la raza debe contener caracteres validos" })
-    // @IsNotEmpty({ message: "la raza es requerida" })
-    readonly raza: string;
-
-    // @IsString({ message: "el nombre debe contener caracteres validos" })
-    // @IsNotEmpty({ message: "el nombre es requerido" })
+   
     readonly nombre_mascota: string;
 
-    //@IsNotEmpty({message: "la fecha de nacimiento de la mascota es requerida"})
-    //@IsDate()
-    //@Type(() => Date)
+    @IsOptional()
+    readonly email: string;
+
+    readonly direccion: string;
+
+
+    readonly telefono: string; 
+
+    
+    readonly enfermedades: string;      
+
+    @IsOptional()
+    readonly centro_de_salud: string;   
+
     readonly fecha_nacimiento_mascota: Date;
+
+  
+    readonly raza: string;
 
 
 }
