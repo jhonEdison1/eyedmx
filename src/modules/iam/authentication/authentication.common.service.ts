@@ -233,7 +233,7 @@ export class AuthenticationCommonService {
             type: "text",
             description: "Placa de la moto",
             required: true,
-            private: true
+            private: false
 
           },      
           {
