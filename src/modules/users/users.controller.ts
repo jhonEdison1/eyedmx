@@ -33,6 +33,15 @@ export class UsersController {
     return this.usersService.createTaller(payload);
   }
 
+  @Roles(Role.ADMIN)
+  @UseGuards(JwtAuthAccessGuard, RolesGuard)
+  @Get('Kpi')
+  getKpi( @Query('fechaInicio') fechaInicio: string, @Query('fechaFin') fechaFin: string) {
+    return this.usersService.getKpi(fechaInicio, fechaFin);
+  }
+
+
+
 
   @Roles(Role.ADMIN)
   @UseGuards(JwtAuthAccessGuard, RolesGuard)

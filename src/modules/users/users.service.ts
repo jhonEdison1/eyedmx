@@ -585,6 +585,95 @@ export class UsersService {
 
 
 
+  async getKpi(fechaInicial, fechaFinal){
+
+
+    const {fechaInicialFormateada, fechaFinalFormateada} = await this.formatearFechas(fechaInicial, fechaFinal);
+
+    const usuarios = await this.obtenerUsuariosRegistrados(fechaInicialFormateada, fechaFinalFormateada);
+    const manillasPorTipo = await this.manillasService.obtenerManillasPorTipo(fechaInicialFormateada, fechaFinalFormateada);
+    const manillasPorEstado = await this.manillasService.obtenerManillasPorEstado(fechaInicialFormateada, fechaFinalFormateada);
+
+    return {
+      usuarios,
+      manillasPorTipo,
+      manillasPorEstado
+    }
+
+
+
+
+  }
+
+
+
+  async formatearFechas(fechaInicial, fechaFinal){
+
+    const fechaInicialFormateada = new Date(fechaInicial);
+    fechaInicialFormateada.setHours(0,0,0,0);
+
+    const fechaFinalFormateada = new Date(fechaFinal);
+    fechaFinalFormateada.setHours(23,59,59,999);
+
+    return {
+      fechaInicialFormateada,
+      fechaFinalFormateada
+    }
+  }
+
+
+
+  //funcion que me retorna los usuarios registrados en un rango de fechas, y los agrupa por role, menos los que son de tipo admin esos se ignoran
+
+  async obtenerUsuariosRegistrados(fechaInicialFormateada, fechaFinalFormateada){
+
+
+    try {
+
+      
+
+      const usuarios = await this.userModel.aggregate([
+        {
+          $match: {
+            createdAt: {
+              $gte: fechaInicialFormateada,
+              $lte: fechaFinalFormateada
+            }
+          }
+        },
+        {
+          $group: {
+            _id: "$role",
+            count: { $sum: 1 }
+          }
+        },
+        {
+          $project: {
+            _id: 0,
+            role: "$_id",
+            count: 1
+          }
+        }
+      ]);
+
+      //necesito que excluya los usuarios de tipo admin
+
+      const usuariosFiltrados = usuarios.filter(usuario => usuario.role !== Role.ADMIN);
+
+      return usuariosFiltrados;
+
+    } catch (error) {
+      this.errorService.createError(error);
+    }
+
+
+
+
+  }
+  
+
+
+
 
   findAll() {
     return `This action returns all users`;

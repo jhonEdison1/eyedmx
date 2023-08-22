@@ -990,6 +990,79 @@ export class ManillasService {
     }
 
 
+  //funcion que me trae el total de manillas por tipo en un rango de fechas
+
+  async obtenerManillasPorTipo(fechaInicialFormateada, fechaFinalFormateada){
+
+
+    const manillas = await this.manillaModel.aggregate([
+      {
+        $match: {
+          createdAt: {
+            $gte: fechaInicialFormateada,
+            $lte: fechaFinalFormateada
+          }
+        }
+      },
+      {
+        $group: {
+          _id: '$tipo',
+          total: { $sum: 1 }
+          
+        }
+      },
+      {
+        $project: {
+          _id: 0,
+          tipo: '$_id',
+          total: 1
+        }
+      }])
+
+      return manillas;
+        
+
+
+
+
+
+
+
+  }
+
+
+  async obtenerManillasPorEstado(fechaInicialFormateada, fechaFinalFormateada){
+
+    const manillas = await this.manillaModel.aggregate([
+      {
+        $match: {
+          createdAt: {
+            $gte: fechaInicialFormateada,
+            $lte: fechaFinalFormateada
+          }
+        }
+      },
+      {
+        $group: {
+          _id: '$estado',
+          total: { $sum: 1 }
+        }
+      },
+      {
+        $project: {
+          _id: 0,
+          estado: '$_id',
+          total: 1
+        }
+      }])
+
+      return manillas;
+
+
+
+  }
+
+
 
 
 
