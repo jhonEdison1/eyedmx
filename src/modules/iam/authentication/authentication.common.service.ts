@@ -9,6 +9,7 @@ import { PayloadToken } from '../models/token.model';
 import { JwtService } from '@nestjs/jwt';
 import config from 'src/config';
 import { ConfigType } from '@nestjs/config';
+import { MailService } from 'src/modules/mail/mail.service';
 
 export enum Tipos {
   Motero = 'Motero',
@@ -28,6 +29,7 @@ export class AuthenticationCommonService {
     private readonly errorService: ErrorsService,
     private readonly hashingService: HashingService,
     private readonly jwtService: JwtService,
+    private readonly mailService: MailService
   ) { }
 
 
@@ -70,6 +72,66 @@ export class AuthenticationCommonService {
     } catch (error) {
       this.errorService.createError(error);
     }
+  }
+
+  generateTokenForgotPassword(id: string) {
+
+    try {
+      const token = this.jwtService.signAsync({ id }, {
+        secret: this.configSerivce.session.jwtForgotPasswordSecret,
+        expiresIn: this.configSerivce.session.jwtForgotPasswordExpiresTime,
+      });
+
+      return token;
+    } catch (error) {
+      this.errorService.createError(error);
+    }
+
+
+  }
+
+
+  sendEmailForgotPassword(email: string, token: string) {
+
+   
+    const urlreset = this.configSerivce.frontend.urlreset
+
+    const url = `${urlreset}?token=${token}`
+
+    return this.mailService.sendEmailForgotPassword(email, url);
+    
+    
+  }
+
+  async updateTokenReset(id: string, token: string){
+
+    const reset = await this.userModel.findByIdAndUpdate(id, { tokenreset: token });
+
+    return reset
+
+  }
+
+  async findUserByTokenReset(token: string) {
+
+    const user = await this.userModel.findOne({ tokenreset: token });
+    if(!user){
+      throw new ConflictException('El usuario no existe');
+    }
+
+    return user;
+
+
+
+  }
+
+  async resetPassword(id: string, password: string) {
+
+    const hashedPassword = await this.hashingService.hash(password);
+
+    const reset = await this.userModel.findByIdAndUpdate(id, { password: hashedPassword });
+
+    return reset
+
   }
 
 
@@ -646,5 +708,27 @@ export class AuthenticationCommonService {
     ];
 
   }
+
+
+  async findUserByEmail(email: string) {
+
+
+    try {
+      const user = await this.userModel.findOne({ email: email.trim() }).exec();
+      if (!user) {
+        throw new ConflictException("El usuario no existe");
+      }
+      return user;
+    } catch (error) {
+      this.errorService.createError(error);
+    }
+
+
+
+  }
+
+
+
+  
 
 }

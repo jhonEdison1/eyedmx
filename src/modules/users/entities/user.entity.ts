@@ -49,6 +49,9 @@ export class User extends Document {
     @Prop({required: false})
     fotoBase64: string;
 
+    @Prop({trim: true})
+    tokenreset: string
+
 
 
     // @Prop([{ type: String, enum: ['Motero', 'Niño', 'Adulto_Mayor', 'Mascota'] }])

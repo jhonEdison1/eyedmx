@@ -12,11 +12,13 @@ import config from 'src/config';
 import { JwtAccessTokenStrategy } from './strategies/jwt-auth-access.strategy';
 import { AuthenticationService } from './authentication/authentication.service';
 import { JwtRefreshTokenStrategy } from './strategies/jwt-auth-refresh.strategy ';
+import { MailModule } from '../mail/mail.module';
 
 
 @Module({
   imports: [
     ErrorsModule,
+    MailModule,
     MongooseModule.forFeature([
       {
         name: User.name,

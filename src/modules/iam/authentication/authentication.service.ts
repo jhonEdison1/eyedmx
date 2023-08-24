@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { ConflictException, Injectable } from "@nestjs/common";
 import { AuthenticationCommonService } from "./authentication.common.service";
 import { ErrorsService } from "src/modules/errors/errors.service";
 import { SigninPayload } from "../models/signin.model";
@@ -64,6 +64,62 @@ export class AuthenticationService {
         } catch (error) {
             this.errorService.createError(error);
         }
+    }
+
+
+
+
+
+    async forgotPassword(email: string) {
+        try {
+            const user = await this.authcommonService.findUserByEmail(email);
+            if (!user) {
+                throw new Error("El usuario no existe");
+            }
+            const token = await this.authcommonService.generateTokenForgotPassword(user.id);
+            await this.authcommonService.sendEmailForgotPassword(user.email, token); 
+
+            await this.authcommonService.updateTokenReset(user.id, token)
+
+            
+            
+            
+            return {
+                message: "Se ha enviado un correo con el codigo de verificacion"
+            };
+        } catch (error) {
+            this.errorService.createError(error);
+        }
+    }
+
+
+    async resetPassword(token: string, password: string) {
+
+        try {
+
+            if(!token || !password  || token === "" || password === ""  || token === undefined || password === undefined || token === null || password === null){
+                throw new ConflictException("Faltan datos");
+
+            }
+
+            const user = await this.authcommonService.findUserByTokenReset(token);
+            if (!user) {
+                throw new Error("El usuario no existe");
+            }
+
+            await this.authcommonService.resetPassword(user.id, password);
+
+            await this.authcommonService.updateTokenReset(user.id, null)
+
+            return {
+                message: "Se ha cambiado la contraseña"
+            };
+
+        } catch (error) {
+            this.errorService.createError(error);
+        }
+
+
     }
 
 

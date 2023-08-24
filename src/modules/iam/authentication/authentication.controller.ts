@@ -6,6 +6,7 @@ import { LocalAuthGuard } from '../guards/local-auth.guard';
 import { User } from 'src/modules/users/entities/user.entity';
 import { AuthenticationService } from './authentication.service';
 import { JwtAuthRefreshGuard } from '../guards/jwt-auth-refresh.guard';
+import { ResetPasswordDto } from './dto/reset-passwor.dto';
 
 @ApiTags("Auth")
 @Controller("authentication")
@@ -18,6 +19,8 @@ export class AuthenticationController {
     ) { }
 
 
+
+
     @UseGuards(LocalAuthGuard)
     @Post("signin")
     async signIn(@Req() req: Request) {
@@ -26,6 +29,16 @@ export class AuthenticationController {
   
       return await this.authService.signIn(user/*, tfaCode*/);
       
+    }
+
+    @Get("forgotpassword")
+    async forgotPassword(@Query("email") email: string) {
+      return await this.authService.forgotPassword(email);
+    }
+
+    @Post("resetpassword")
+    async resetPassword(@Body() body: ResetPasswordDto) {
+      return await this.authService.resetPassword(body.token, body.password);
     }
 
     

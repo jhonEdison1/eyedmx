@@ -26,6 +26,23 @@ export class MailService {
         
       }
 
+
+      async sendEmailForgotPassword(email: string, url: string){
+
+       
+
+        let name = 'forgotpassword';
+        await this.mailerService.sendMail({
+          to: email, // list of receivers
+          subject: 'Recuperar Contraseña',
+          template: name, // `.hbs` extension is appended automatically
+          context: { // ✏️ filling curly brackets with content
+            url: url,
+          },
+        });
+
+      }
+
       async sendPulseraEnviada(email: string, nameuser: string){
 
         let name = 'pulseraenviada';

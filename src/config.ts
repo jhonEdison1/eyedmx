@@ -17,10 +17,13 @@ export default registerAs("config", () => {
             jwtAccessTokenExpiresTime: process.env.JWT_ACCESS_EXPIRES_TIME,
             jwtRefreshTokenSecret: process.env.JWT_REFRESH_SECRET,
             jwtRefreshTokenExpiresTime: process.env.JWT_REFRESH_EXPIRES_TIME,
+            jwtForgotPasswordSecret: process.env.JWT_FORGOT_PASSWORD_SECRET,
+            jwtForgotPasswordExpiresTime: process.env.JWT_FORGOT_PASSWORD_EXPIRES_TIME,
         },
         frontend: {
             url: process.env.FRONTEND_URL,
             urlinfo: process.env.URL_INFO,
+            urlreset: process.env.URL_RESET
         },
         s3: {
             bucket: process.env.AWS_BUCKET_NAME,
