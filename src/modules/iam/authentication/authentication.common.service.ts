@@ -252,7 +252,7 @@ export class AuthenticationCommonService {
             name: "alergias",
             type: "text",
             description: "Alergias del portador de la pulsera",
-            required: false,
+            required: true,
             private: false
           },                    
           {
@@ -421,7 +421,7 @@ export class AuthenticationCommonService {
             name: "alergias",
             type: "text",
             description: "Alergias del portador de la pulsera",
-            required: false,
+            required: true,
             private: false
           },  
           {
@@ -442,7 +442,7 @@ export class AuthenticationCommonService {
             name: "recomendaciones",
             type: "textarea",
             description: "Recomendaciones del adulto mayor",
-            required: false,
+            required: true,
             private : false
           },      
           {
@@ -532,7 +532,7 @@ export class AuthenticationCommonService {
             name: "alergias",
             type: "text",
             description: "Alergias del portador de la pulsera",
-            required: false,
+            required: true,
             private: false
 
           },                   
@@ -540,7 +540,7 @@ export class AuthenticationCommonService {
             name: "enfermedades",
             type: "text",
             description: "Enfermedades del niño",
-            required: false,
+            required: true,
             private: false
           },
           {
@@ -673,7 +673,7 @@ export class AuthenticationCommonService {
               name: "raza",
               type: "text",
               description: "Raza de la mascota",
-              required: false,
+              required: true,
               private: false
             },            
             

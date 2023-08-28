@@ -219,7 +219,7 @@ export class ManillaNiñoDto extends CreateManillaDto {
     @IsOptional()
     readonly documento: string;
 
-    @IsNotEmpty({message: "la fecha de nacimiento del portador de la pulsera es requerida"})
+    @IsOptional()
     readonly fecha_nacimiento: Date;
 
     @IsString({ message: "el genero debe contener caracteres validos" })
@@ -306,8 +306,7 @@ export class ManillaMascotaDto extends CreateManillaDto{
     @IsNotEmpty({ message: "el telefono es requerido" })
     readonly telefono: string; 
 
-    @IsString({ message: "las enfermedades deben contener caracteres validos" })
-    @IsNotEmpty({ message: "las enfermedades son requeridas" })
+    @IsOptional()
     readonly enfermedades: string;      
 
     @IsOptional()
@@ -316,6 +315,7 @@ export class ManillaMascotaDto extends CreateManillaDto{
     //@IsNotEmpty({message: "la fecha de nacimiento de la mascota es requerida"})
     //@IsDate()
     //@Type(() => Date)
+    @IsOptional()
     readonly fecha_nacimiento_mascota: Date;
 
     @IsString({ message: "la raza debe contener caracteres validos" })
