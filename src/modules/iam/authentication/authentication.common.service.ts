@@ -12,7 +12,7 @@ import { ConfigType } from '@nestjs/config';
 import { MailService } from 'src/modules/mail/mail.service';
 
 export enum Tipos {
-  Motero = 'Motero',
+  Motero = 'Motociclista',
   Adulto_Mayor = 'Adulto_Mayor',
   Niño = 'Niño',
   Mascota = 'Mascota'
@@ -691,7 +691,7 @@ export class AuthenticationCommonService {
     return [
       {
         name: Tipos.Motero,
-        description: "Motero"
+        description: "Motociclista"
       },
       {
         name: Tipos.Adulto_Mayor,
