@@ -141,6 +141,14 @@ export class ManillasController {
   }
 
 
+  @Roles(Role.ADMIN)
+  @UseGuards(JwtAuthAccessGuard, RolesGuard)
+  @Get('funcionPrueba')
+  funcionPrueba() {
+    return this.manillasService.funcionPrueba();
+  }
+
+
 
 
   @Delete(':id')

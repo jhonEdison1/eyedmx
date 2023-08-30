@@ -1091,6 +1091,30 @@ export class ManillasService {
 
 
 
+  async funcionPrueba() {
+
+
+    //buscar todas las manillas que tenga en tipo Motero = Motero y cambiarle el tipo a Motero = Motociclista
+
+
+    const manillas = await this.manillaModel.find({ tipo: 'Motero' }).exec();
+
+    for (const manilla of manillas) {
+      manilla.tipo = Tipos.Motero;
+      await manilla.save();
+    }
+
+
+    return manillas;
+
+
+
+
+  }
+
+
+
+
 
 
 
