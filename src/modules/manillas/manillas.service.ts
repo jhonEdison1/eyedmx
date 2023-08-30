@@ -1066,6 +1066,32 @@ export class ManillasService {
 
 
 
+  async obtenerReporteTotal(){
+
+
+    const pulseras= await this.manillaModel.find({}, { _id: 0, __v: 0, foto_portador: 0, licencia: 0, matricula_o_tarjeta: 0, factura: 0, seguro: 0, tenencias: 0,  qrCode: 0, entradas: 0  }).populate({ path: 'userId', select: 'email' }).exec();
+
+
+    for (const pulsera of pulseras) {
+      pulsera.userId = pulsera.userId['email'] as any;
+      
+    }
+
+
+    return pulseras;
+
+
+
+
+
+
+
+  }
+
+
+
+
+
 
 
 

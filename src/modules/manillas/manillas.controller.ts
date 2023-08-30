@@ -129,8 +129,15 @@ export class ManillasController {
   crearEntrada(@Param('placa') placa: string, @Body() body: CreateEntradaDto, @Request() req ) {
 
     return this.manillasService.crearEntradaManilla(placa, body, req.user.id);
+  }
 
 
+
+  @Roles(Role.ADMIN)
+  @UseGuards(JwtAuthAccessGuard, RolesGuard)
+  @Get('ObtenerReporteTotal')
+  obtenerReporteTotal() {
+    return this.manillasService.obtenerReporteTotal();
   }
 
 
