@@ -38,6 +38,11 @@ export default registerAs("config", () => {
             pass: process.env.MAIL_PASS,
             from: process.env.MAIL_FROM
         },
+        stripe: {
+            secretKey: process.env.STRIPE_SK,
+            publicKey: process.env.STRIPE_PK,
+            currency: process.env.STRIPE_CURRENCY
+        },
 
     }
 

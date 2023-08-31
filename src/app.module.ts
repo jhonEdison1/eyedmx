@@ -10,6 +10,7 @@ import { UsersModule } from './modules/users/users.module';
 import { IamModule } from './modules/iam/iam.module';
 import { ErrorsModule } from './modules/errors/errors.module';
 import { ManillasModule } from './modules/manillas/manillas.module';
+import { PagosModule } from './modules/pagos/pagos.module';
 
 @Module({
   imports: [
@@ -26,7 +27,8 @@ import { ManillasModule } from './modules/manillas/manillas.module';
     UsersModule,
     ErrorsModule,
     IamModule,
-    ManillasModule
+    ManillasModule,
+    PagosModule
   ],
   controllers: [AppController],
   providers: [AppService],
