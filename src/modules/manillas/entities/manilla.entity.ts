@@ -2,6 +2,7 @@ import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import  { Document, Types } from "mongoose";
 import { User } from "src/modules/users/entities/user.entity";
 import { Tipos } from "src/modules/iam/authentication/authentication.common.service";
+import { Pago } from "src/modules/pagos/entities/pago.entity";
 
 
 
@@ -43,6 +44,11 @@ export class Manilla extends Document {
     //estado de la manilla
     @Prop({ default: estadoManilla.Solicitada })
     estado: estadoManilla;
+
+
+   
+    @Prop({ type: Types.ObjectId, ref: 'Pago' , default: null, nullable: true })
+    pagoId: Pago;
 
 
     @Prop({ trim: true })

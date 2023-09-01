@@ -133,6 +133,14 @@ export class ManillasController {
 
 
 
+  @UseGuards(JwtAuthAccessGuard)
+  @Patch('actualizarPago/:id')
+  actualizarPago(@Param('id') id: string, @Query('pagoId') pagoId: string,) {
+    return this.manillasService.actualizarPago(id, pagoId);
+  }
+
+
+
   @Roles(Role.ADMIN)
   @UseGuards(JwtAuthAccessGuard, RolesGuard)
   @Get('ObtenerReporteTotal')
@@ -142,10 +150,7 @@ export class ManillasController {
 
 
  
-  @Get('funcionPrueba')
-  funcionPrueba() {
-    return this.manillasService.funcionPrueba();
-  }
+  
 
 
 

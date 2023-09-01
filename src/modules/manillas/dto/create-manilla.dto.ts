@@ -50,6 +50,11 @@ export class CreateManillaDto {
 
 
 
+    @IsOptional()
+    pagoId: string;
+
+
+
    
 
 }
