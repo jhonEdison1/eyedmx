@@ -1,5 +1,6 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import { Types } from "mongoose";
+import { Manilla } from "src/modules/manillas/entities/manilla.entity";
 import { User } from "src/modules/users/entities/user.entity";
 
 
@@ -40,6 +41,10 @@ export class Pago {
 
     @Prop({ trim: true, nullable: true, default: null })
     stripeId: string; 
+
+
+    @Prop({type: Types.ObjectId, ref: 'Manilla'})
+    manillaId: Manilla;
 }
 
 
