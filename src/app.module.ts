@@ -11,6 +11,7 @@ import { IamModule } from './modules/iam/iam.module';
 import { ErrorsModule } from './modules/errors/errors.module';
 import { ManillasModule } from './modules/manillas/manillas.module';
 import { PagosModule } from './modules/pagos/pagos.module';
+import { TiposModule } from './modules/tipos/tipos.module';
 
 @Module({
   imports: [
@@ -28,7 +29,8 @@ import { PagosModule } from './modules/pagos/pagos.module';
     ErrorsModule,
     IamModule,
     ManillasModule,
-    PagosModule
+    PagosModule,
+    TiposModule
   ],
   controllers: [AppController],
   providers: [AppService],
