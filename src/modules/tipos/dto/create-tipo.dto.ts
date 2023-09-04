@@ -12,6 +12,10 @@ export class CreateTipoDto {
     @IsIn(Object.values(Tipos))
     nombre: string;
 
+
+    @IsNotEmpty()
+    description: string;
+
     @IsNotEmpty()
     @IsNumber()
     @IsPositive()

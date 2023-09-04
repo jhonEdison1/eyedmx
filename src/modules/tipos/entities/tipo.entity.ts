@@ -14,6 +14,10 @@ export class Tipo extends Document {
     nombre: Tipos;
 
     @Prop({required: true, trim: true})
+    description: string;
+
+
+    @Prop({required: true, trim: true})
     precio: number;
 }
 

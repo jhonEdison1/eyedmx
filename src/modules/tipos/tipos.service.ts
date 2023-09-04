@@ -41,14 +41,21 @@ export class TiposService {
 
   async findOne(id: String) {
     const tipo = await this.tipoModel.findById(id);
+    if(!tipo){
+      throw new ConflictException('El tipo no existe');
+    }
     return tipo;
   }
 
   async update(id: String, updateTipoDto: UpdateTipoDto) {
 
     const tipo = await this.tipoModel.findById(id);
+    if(!tipo){
+      throw new ConflictException('El tipo no existe');
+    }
 
     tipo.precio = updateTipoDto.precio;
+    tipo.description = updateTipoDto.description;
 
     return tipo.save();
 
