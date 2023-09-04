@@ -10,7 +10,7 @@ export class CreateTipoDto {
 
     @IsNotEmpty()
     @IsIn(Object.values(Tipos))
-    nombre: string;
+    name: string;
 
 
     @IsNotEmpty()

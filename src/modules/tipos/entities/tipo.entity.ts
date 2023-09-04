@@ -11,7 +11,7 @@ import { Tipos } from "src/modules/iam/authentication/authentication.common.serv
 export class Tipo extends Document {
 
     @Prop({required: true, trim: true})
-    nombre: Tipos;
+    name: Tipos;
 
     @Prop({required: true, trim: true})
     description: string;

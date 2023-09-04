@@ -20,7 +20,7 @@ export class TiposService {
 
   async create(createTipoDto: CreateTipoDto) {
     
-    const exist = await this.existByNombre(createTipoDto.nombre);
+    const exist = await this.existByNombre(createTipoDto.name);
     if (exist) {
       throw new ConflictException('El tipo ya existe');
     }
@@ -30,7 +30,7 @@ export class TiposService {
 
 
   async existByNombre(nombre: String) {
-    const tipo = await this.tipoModel.findOne({ nombre: nombre });
+    const tipo = await this.tipoModel.findOne({ name: nombre });
     return tipo;
   }
 
