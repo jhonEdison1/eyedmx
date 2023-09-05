@@ -476,13 +476,29 @@ export class ManillasService {
   }
 
 
+  async changeEstadoPago(id: string) {
+
+    const manilla = await this.manillaModel.findById(id).exec();
+
+    if(!manilla){
+      throw new ConflictException('No se encontro la manilla')      
+    }
+
+    await this.manillaModel.findByIdAndUpdate(id, { estadoPago: true }).exec();
+
+    return
+
+
+  }
+
+
 
   async findSolicitudes(params?: FilterManillaDto) {
     //obtener todas las manillas que tenga el estado Solicitada paginadas con el limit y offset de params
 
     const [manillas, totalDocuments] = await Promise.all([
       this.manillaModel
-        .find({ estado: estadoManilla.Solicitada })
+        .find({ estado: estadoManilla.Solicitada, estadoPago: true })
         .skip(params.offset)
         .limit(params.limit)
         .populate({ path: 'userId', select: 'name' })
@@ -888,7 +904,7 @@ export class ManillasService {
 
   async aceptarTodasLasManillas(): Promise<{ aceptadas: any[], errores: string[] }> {
 
-    const manillas = await this.manillaModel.find({ estado: estadoManilla.Solicitada }).exec();
+    const manillas = await this.manillaModel.find({ estado: estadoManilla.Solicitada, estadoPago: true }).exec();
 
     if (!manillas) {
       throw new NotFoundException('No existen pulseras solicitadas');

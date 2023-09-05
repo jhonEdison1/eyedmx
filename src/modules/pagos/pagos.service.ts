@@ -132,7 +132,11 @@ export class PagosService {
 
         const status = detailStripe.status.includes('succe') ? 'success' : 'fail';
 
-        await this.pagoModel.findByIdAndUpdate(id, { status }).exec();
+        await this.pagoModel.findByIdAndUpdate(id, { estado: status }).exec();
+
+        await this.manillasService.changeEstadoPago(pago.manillaId.toString());
+
+
 
 
         return detailStripe;

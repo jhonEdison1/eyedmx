@@ -56,6 +56,10 @@ export class Manilla extends Document {
     otros: Object
 
 
+    @Prop({ default: false })
+    estadoPago: boolean;
+
+
     @Prop({ trim: true })
     entradas: Array<any>;
 
