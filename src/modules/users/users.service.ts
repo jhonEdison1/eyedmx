@@ -276,7 +276,7 @@ export class UsersService {
     const [users, totalDocuments] = await Promise.all([
       this.userModel
         .find(filters)
-        .skip(offset)
+        .skip(offset * limit)
         .limit(limit)
         .exec(),
       this.userModel.countDocuments(filters).exec(),
@@ -309,7 +309,7 @@ export class UsersService {
     const [talleres, totalDocuments] = await Promise.all([
       this.userModel
         .find(filters)
-        .skip(offset)
+        .skip(offset * limit)
         .limit(limit)
         .exec(),
       this.userModel.countDocuments(filters).exec(),
@@ -344,7 +344,7 @@ export class UsersService {
     const [talleres, totalDocuments] = await Promise.all([
       this.userModel
         .find(filters)
-        .skip(offset)
+        .skip(offset * limit)
         .limit(limit)
         .exec(),
       this.userModel.countDocuments(filters).exec(),
@@ -379,7 +379,7 @@ export class UsersService {
     const [talleres, totalDocuments] = await Promise.all([
       this.userModel
         .find(filters)
-        .skip(offset)
+        .skip(offset * limit)
         .limit(limit)
         .exec(),
       this.userModel.countDocuments(filters).exec(),

@@ -186,12 +186,20 @@ export class PagosService {
 
   async getFilter(filter: FilterPagoDto) {
 
+    const {limit, offset} = filter;
+
+    console.log(limit, offset)
+
     const pagos = await this.pagoModel.find({ estado: filter.estado, metodo: filter.metodo })
       .populate({ path: 'userId', select: 'email name' })
-      .populate({ path: 'manillaId', select: 'tipo estado nombre_portador numid' })
-      .skip(filter.offset)
-      .limit(filter.limit)
+      .populate({ path: 'manillaId', select: 'tipo estado nombre_portador numid foto_portador' })
+      .skip(offset * limit)
+      .limit(limit)
       .exec()
+
+
+
+  
 
 
     const total = await this.pagoModel.countDocuments({ estado: filter.estado, metodo: filter.metodo }).exec();

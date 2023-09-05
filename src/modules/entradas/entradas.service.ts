@@ -49,7 +49,7 @@ export class EntradasService {
         };
       }     
     }
-    const entradas = await this.entradaModel.find(filters).populate({path: 'taller', select: 'name'}).skip(offset).limit(limit);
+    const entradas = await this.entradaModel.find(filters).populate({path: 'taller', select: 'name'}).skip(offset * limit).limit(limit);
 
     const totalDocuments = await this.entradaModel.countDocuments(filters).exec();
     

@@ -499,7 +499,7 @@ export class ManillasService {
     const [manillas, totalDocuments] = await Promise.all([
       this.manillaModel
         .find({ estado: estadoManilla.Solicitada, estadoPago: true })
-        .skip(params.offset)
+        .skip(params.offset * params.limit)
         .limit(params.limit)
         .populate({ path: 'userId', select: 'name' })
         .populate({ path: 'pagoId', select: 'estado', options: { retainNullValues : true} })
@@ -529,7 +529,7 @@ export class ManillasService {
     const [manillas, totalDocuments] = await Promise.all([
       this.manillaModel
         .find({ estado: estadoManilla.Aceptada, createdAt: { $gte: horaInicio, $lte: horaFin } })
-        .skip(params.offset)
+        .skip(params.offset * params.limit)
         .limit(params.limit)
         .populate({ path: 'userId', select: 'name' })
         .populate({ path: 'pagoId', select: 'estado', options: { retainNullValues : true} })
@@ -543,7 +543,7 @@ export class ManillasService {
     const [manillasResagadas, totalDocumentsResagadas] = await Promise.all([
       this.manillaModel
         .find({ estado: estadoManilla.Aceptada, createdAt: { $lt: horaInicio } })
-        .skip(params.offset)
+        .skip(params.offset  * params.limit)
         .limit(params.limit)
         .populate({ path: 'userId', select: 'name' })
         .exec(),
@@ -619,7 +619,7 @@ export class ManillasService {
     const [manillas, totalDocuments] = await Promise.all([
       this.manillaModel
         .find(filters)
-        .skip(offset)
+        .skip(offset * limit)
         .limit(limit)
         .populate({ path: 'userId', select: 'name' })
         .populate({ path: 'pagoId', select: 'estado', options: { retainNullValues : true} })
