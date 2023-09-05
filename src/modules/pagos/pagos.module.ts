@@ -6,13 +6,15 @@ import { Pago, PagoSchema } from './entities/pago.entity';
 import { MongooseModule } from '@nestjs/mongoose';
 import { IamModule } from '../iam/iam.module';
 import { StripeService } from './stripe.service';
+import { ManillasModule } from '../manillas/manillas.module';
 
 
 @Module({
   imports: [
     ConfigModule,
     MongooseModule.forFeature([{ name: Pago.name, schema: PagoSchema }]),
-    IamModule
+    IamModule,
+    ManillasModule
 
   ],
   controllers: [PagosController],

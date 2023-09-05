@@ -9,6 +9,7 @@ import { Model } from 'mongoose';
 import { StripeService } from './stripe.service';
 import { th } from 'date-fns/locale';
 import { EstadoPagoDto } from './dto/update-estado-pago.dto';
+import { ManillasService } from '../manillas/manillas.service';
 
 
 @Injectable()
@@ -18,7 +19,8 @@ export class PagosService {
   constructor(
     @Inject(config.KEY) private readonly configSerivce: ConfigType<typeof config>,
     @InjectModel(Pago.name) private readonly pagoModel: Model<Pago>,
-    private readonly stripeService: StripeService
+    private readonly stripeService: StripeService,
+    private readonly manillasService: ManillasService
 
   ) {
 
@@ -29,8 +31,34 @@ export class PagosService {
   async create(createPagoDto: CreatePagoDto) {
 
 
-    const nuevoPago = await new this.pagoModel(createPagoDto);
-    return nuevoPago.save();
+    const nuevoPago = await new this.pagoModel(createPagoDto); 
+    await nuevoPago.save();
+
+    await this.manillasService.actualizarPago(createPagoDto.manillaId, nuevoPago._id.toString());
+
+    return nuevoPago;
+
+
+
+  }
+
+
+  async findPagobyManilla(id: string) {
+
+    const pago = await this.pagoModel.findOne({ manillaId: id }, { __v: 0, userId: 0, monto: 0}).exec();
+
+
+    if(!pago){
+      return null;
+    }
+
+    return pago;
+
+  
+
+   
+
+
 
 
 

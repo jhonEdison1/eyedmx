@@ -8,13 +8,15 @@ import { ConfigModule } from '@nestjs/config';
 import { EntradasModule } from '../entradas/entradas.module';
 import { MailModule } from '../mail/mail.module';
 
+
 @Module({
   imports: [
     ConfigModule,   
     MongooseModule.forFeature([{ name: Manilla.name, schema: ManillaSchema }]),
     IamModule,
     EntradasModule,
-    MailModule   
+    MailModule
+    
 
   ],  
   controllers: [ManillasController],

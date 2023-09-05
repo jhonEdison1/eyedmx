@@ -25,6 +25,7 @@ import * as sharp from 'sharp';
 
 
 
+
 @Injectable()
 export class ManillasService {
 
@@ -36,7 +37,7 @@ export class ManillasService {
     @InjectModel(Manilla.name) private readonly manillaModel: Model<Manilla>,
     private readonly entradaService: EntradasService,
     private readonly mailService: MailService
-
+  
 
   ) {
     this.s3 = new AWS.S3({
@@ -545,7 +546,7 @@ export class ManillasService {
   async findById(id: number) {
     try {
       //const manilla = await this.manillaModel.findById(id).populate({ path: 'userId', select: 'name' })
-      const manilla = await this.manillaModel.findOne({ numid: id }).populate({ path: 'userId', select: 'name' }).populate({ path: 'pagoId', select: 'estado', options: { retainNullValues : true} })
+      const manilla = await this.manillaModel.findOne({ numid: id }).populate({ path: 'userId', select: 'name' }).populate({ path: 'pagoId', select: 'estado metodo', options: { retainNullValues : true} })
       if (!manilla) {
         throw new NotFoundException('Pulsera no encontrada');
       }
@@ -554,6 +555,12 @@ export class ManillasService {
         manilla.entradas = await this.entradaService.findByPlaca(manilla.placa);
 
       }
+
+      // const pago = await this.pagosService.findPagobyManilla(manilla._id.toString());
+
+      // const retornar = {...manilla, pago: pago}  
+
+      // console.log(retornar.pago)
 
 
 
@@ -1114,7 +1121,7 @@ export class ManillasService {
 
      await this.manillaModel.findByIdAndUpdate(id, { pagoId: idPago }).exec();
 
-     const manillaupdate = await this.manillaModel.findById(id).populate({ path: 'pagoId', select: 'estado' }).exec()
+     const manillaupdate = await this.manillaModel.findById(id).populate({ path: 'pagoId', select: 'estado metodo' }).exec()
 
 
     return{
