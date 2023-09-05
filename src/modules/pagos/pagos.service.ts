@@ -4,9 +4,11 @@ import { UpdatePagoDto } from './dto/update-pago.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { ConfigType } from '@nestjs/config';
 import config from 'src/config';
-import { Pago, metodoPago } from './entities/pago.entity';
+import { Pago, estadoPago, metodoPago } from './entities/pago.entity';
 import { Model } from 'mongoose';
 import { StripeService } from './stripe.service';
+import { th } from 'date-fns/locale';
+import { EstadoPagoDto } from './dto/update-estado-pago.dto';
 
 
 @Injectable()
@@ -116,6 +118,32 @@ export class PagosService {
 
       throw new ConflictException('No se pudo Procesar el pago ' + error.message)
 
+    }
+
+
+  }
+
+
+
+  async actualizarPagoEfectivo(id: string, estado: EstadoPagoDto) {
+
+    const pago = await this.pagoModel.findById(id).exec();
+
+    if (!pago) {
+      throw new NotFoundException('No se encontro el La intencion de pago')
+    }
+
+    if(pago.estado === estado.estado){
+      throw new ConflictException('El estado enviado es el mismo que el actual')
+    }
+
+    if (pago.metodo === metodoPago.Efectivo) {
+      await this.pagoModel.findByIdAndUpdate(id, { estado: estado.estado }).exec();
+
+      return { message: 'Se actualizo el estado del pago' }
+
+    }else{
+      throw new ConflictException('No se pudo Procesar el pago ' + 'Metodo de pago no soportado')
     }
 
 

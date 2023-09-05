@@ -1,9 +1,14 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Query } from '@nestjs/common';
 import { PagosService } from './pagos.service';
 import { CreatePagoDto } from './dto/create-pago.dto';
 import { UpdatePagoDto } from './dto/update-pago.dto';
 import { JwtAuthAccessGuard } from '../iam/guards/jwt-auth.guard';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiQuery, ApiTags } from '@nestjs/swagger';
+import { Roles } from '../iam/decorators';
+import { Role } from '../iam/models/roles.model';
+import { RolesGuard } from '../iam/guards/roles.guard';
+import { estadoPago } from './entities/pago.entity';
+import { EstadoPagoDto } from './dto/update-estado-pago.dto';
 
 @ApiTags("pagos")
 @Controller('pagos')
@@ -47,6 +52,16 @@ export class PagosController {
   confirmar(@Param('id') id: string) {
     return this.pagosService.confirmar(id);
   }
+
+  @Roles(Role.ADMIN)
+  @UseGuards(JwtAuthAccessGuard, RolesGuard)
+  @Patch('actualizarPagoEfectivo/:id')
+  actualizarPagoEfectivo(@Param('id') id: string, @Body() estado: EstadoPagoDto) {
+    console.log('estado', estado)
+    return this.pagosService.actualizarPagoEfectivo(id, estado);
+  }
+  
+
 
 
   

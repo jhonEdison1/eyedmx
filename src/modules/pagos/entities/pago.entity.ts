@@ -31,12 +31,17 @@ export class Pago {
         trim: true,
         validate: {
           validator: (value) => Object.values(metodoPago).includes(value),
-          message: props => `${props.value} is not a valid payment method 1`,
+          message: props => `${props.value} is not a valid payment method `,
         },
       })
     metodo: metodoPago;
 
-    @Prop({ default: estadoPago.wait, required: true })
+    @Prop({ default: estadoPago.wait, required: true, 
+      validate: {
+        validator: (value) => Object.values(estadoPago).includes(value),
+        message: props => `${props.value} is not a valid payment status`,
+      },
+     })
     estado: estadoPago;
 
     @Prop({ trim: true, nullable: true, default: null })

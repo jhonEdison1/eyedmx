@@ -10,6 +10,7 @@ import { Pago } from "src/modules/pagos/entities/pago.entity";
 
 
 
+
 export enum estadoManilla {
     Solicitada = 'Solicitada',
     Aceptada = 'Aceptada',
@@ -49,6 +50,10 @@ export class Manilla extends Document {
    
     @Prop({ type: Types.ObjectId, ref: 'Pago' , default: null, nullable: true })
     pagoId: Pago;
+
+
+    @Prop({type: Object})
+    otros: Object
 
 
     @Prop({ trim: true })

@@ -1,6 +1,6 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Request, Query } from '@nestjs/common';
 import { ManillasService } from './manillas.service';
-import {CreateManillaDto } from './dto/create-manilla.dto';
+import { CreateManillaDto } from './dto/create-manilla.dto';
 import { EditManillaDto, UpdateManillaDto } from './dto/update-manilla.dto';
 import { ApiTags } from '@nestjs/swagger';
 import { JwtAuthAccessGuard } from '../iam/guards/jwt-auth.guard';
@@ -16,11 +16,11 @@ import { estadoManilla } from './entities/manilla.entity';
 @ApiTags("manillas")
 @Controller('manillas')
 export class ManillasController {
-  constructor(private readonly manillasService: ManillasService) {}
+  constructor(private readonly manillasService: ManillasService) { }
 
   @Post('solicitar')
   @UseGuards(JwtAuthAccessGuard)
-  create(@Body() createManillaDto: CreateManillaDto,  @Request() req) {    
+  create(@Body() createManillaDto: CreateManillaDto, @Request() req) {
     return this.manillasService.createManilla(createManillaDto, req.user.id);
   }
 
@@ -36,7 +36,7 @@ export class ManillasController {
   @UseGuards(JwtAuthAccessGuard, RolesGuard)
   @Get('solicitudes')
   findSolicitudes(@Query() params?: FilterManillaDto) {
-   return this.manillasService.findSolicitudes(params);
+    return this.manillasService.findSolicitudes(params);
   }
 
   @Roles(Role.ADMIN)
@@ -45,7 +45,7 @@ export class ManillasController {
   findAceptadas(@Query() params?: FilterManillaDto) {
     return this.manillasService.findAceptadasHoy(params);
   }
-  
+
   @Roles(Role.ADMIN)
   @UseGuards(JwtAuthAccessGuard, RolesGuard)
   @Get('findAll')
@@ -87,7 +87,7 @@ export class ManillasController {
   enviarVarias(@Body() body: IdsAprobarDto, @Query('estado') estado: estadoManilla) {
     return this.manillasService.cambiarestadoVarias(body.ids, estado);
   }
- 
+
 
 
 
@@ -97,7 +97,7 @@ export class ManillasController {
   aprobarVarias(@Body() body: IdsAprobarDto) {
     return this.manillasService.aceptarVariasManillas(body.ids);
   }
-  
+
   @Get('findById/:id')
   findOne(@Param('id') id: number) {
     return this.manillasService.findById(id);
@@ -126,7 +126,7 @@ export class ManillasController {
   @Roles(Role.TALLER)
   @UseGuards(JwtAuthAccessGuard, RolesGuard)
   @Post('crearEntrada/:placa')
-  crearEntrada(@Param('placa') placa: string, @Body() body: CreateEntradaDto, @Request() req ) {
+  crearEntrada(@Param('placa') placa: string, @Body() body: CreateEntradaDto, @Request() req) {
 
     return this.manillasService.crearEntradaManilla(placa, body, req.user.id);
   }
@@ -150,7 +150,19 @@ export class ManillasController {
 
 
  
+
+
+
+  @UseGuards(JwtAuthAccessGuard)
+  @Get('getManillaByIdPago')
+  getManillaByIdPago(@Query('pagoId') pagoId: string) {
+    return this.manillasService.getManillaByIdPago(pagoId);
+  }
   
+
+
+
+
 
 
 

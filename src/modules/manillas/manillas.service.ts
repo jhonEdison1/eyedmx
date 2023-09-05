@@ -1129,6 +1129,26 @@ export class ManillasService {
 
 
 
+  async getManillaByIdPago(idPago: string) {
+
+    const manilla = await this.manillaModel.findOne({ pagoId: idPago }).populate({ path: 'pagoId', select: 'estado metodo' }).exec()
+
+    if(!manilla){
+      throw new NotFoundException('No existe la manilla');
+    }
+
+
+    return manilla;
+
+
+
+
+
+
+  }
+
+
+
 
 
 
