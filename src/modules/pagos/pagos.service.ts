@@ -192,7 +192,7 @@ export class PagosService {
 
     const pagos = await this.pagoModel.find({ estado: filter.estado, metodo: filter.metodo })
       .populate({ path: 'userId', select: 'email name' })
-      .populate({ path: 'manillaId', select: 'tipo estado nombre_portador numid foto_portador' })
+      .populate({ path: 'manillaId', select: 'tipo estado nombre_portador numid foto_portador nombre_mascota' })
       .skip(offset * limit)
       .limit(limit)
       .exec()
