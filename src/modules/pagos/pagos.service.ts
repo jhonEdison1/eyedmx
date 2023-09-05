@@ -32,6 +32,12 @@ export class PagosService {
   async create(createPagoDto: CreatePagoDto) {
 
 
+    const existpagoByManilla = await this.findPagobyManilla(createPagoDto.manillaId);
+    if(existpagoByManilla){
+      throw new ConflictException('Ya existe un pago para esta manilla')
+    }
+
+
     const nuevoPago = await new this.pagoModel(createPagoDto);
     await nuevoPago.save();
 
@@ -42,6 +48,9 @@ export class PagosService {
 
 
   }
+
+
+
 
 
   async findPagobyManilla(id: string) {
@@ -188,7 +197,7 @@ export class PagosService {
 
     const {limit, offset} = filter;
 
-    console.log(limit, offset)
+    
 
     const pagos = await this.pagoModel.find({ estado: filter.estado, metodo: filter.metodo })
       .populate({ path: 'userId', select: 'email name' })
