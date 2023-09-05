@@ -194,7 +194,10 @@ export class PagosService {
       .exec()
 
 
-    return pagos;
+    const total = await this.pagoModel.countDocuments({ estado: filter.estado, metodo: filter.metodo }).exec();
+
+
+    return { pagos, total }
 
   }
 
