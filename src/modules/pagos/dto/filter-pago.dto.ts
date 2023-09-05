@@ -1,4 +1,4 @@
-import { IsIn, IsNotEmpty } from "class-validator";
+import { IsIn, IsNotEmpty, IsNumber, IsPositive, Min } from "class-validator";
 import { estadoPago, metodoPago } from "../entities/pago.entity";
 
 
@@ -12,4 +12,14 @@ export class FilterPagoDto{
     @IsIn(Object.values(estadoPago))
     estado: string;
 
+    @IsNumber()
+    @Min(0)
+    offset: number;
+
+    @IsNumber()
+    @IsPositive()
+    @Min(1)
+    limit: number;
+
 }
+

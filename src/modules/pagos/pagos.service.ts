@@ -32,7 +32,7 @@ export class PagosService {
   async create(createPagoDto: CreatePagoDto) {
 
 
-    const nuevoPago = await new this.pagoModel(createPagoDto); 
+    const nuevoPago = await new this.pagoModel(createPagoDto);
     await nuevoPago.save();
 
     await this.manillasService.actualizarPago(createPagoDto.manillaId, nuevoPago._id.toString());
@@ -46,18 +46,18 @@ export class PagosService {
 
   async findPagobyManilla(id: string) {
 
-    const pago = await this.pagoModel.findOne({ manillaId: id }, { __v: 0, userId: 0, monto: 0}).exec();
+    const pago = await this.pagoModel.findOne({ manillaId: id }, { __v: 0, userId: 0, monto: 0 }).exec();
 
 
-    if(!pago){
+    if (!pago) {
       return null;
     }
 
     return pago;
 
-  
 
-   
+
+
 
 
 
@@ -128,7 +128,7 @@ export class PagosService {
 
         const detailStripe = await this.stripeService.getPaymentDetail(pago.stripeId);
 
-      
+
 
 
         const status = detailStripe.status.includes('succe') ? 'success' : 'fail';
@@ -166,7 +166,7 @@ export class PagosService {
       throw new NotFoundException('No se encontro el La intencion de pago')
     }
 
-    if(pago.estado === estado.estado){
+    if (pago.estado === estado.estado) {
       throw new ConflictException('El estado enviado es el mismo que el actual')
     }
 
@@ -176,7 +176,7 @@ export class PagosService {
 
       return { message: 'Se actualizo el estado del pago' }
 
-    }else{
+    } else {
       throw new ConflictException('No se pudo Procesar el pago ' + 'Metodo de pago no soportado')
     }
 
@@ -184,11 +184,15 @@ export class PagosService {
   }
 
 
-  async getFilter(filter: FilterPagoDto){
+  async getFilter(filter: FilterPagoDto) {
 
-    const pagos = await this.pagoModel.find({estado: filter.estado, metodo: filter.metodo})
-    .populate({path: 'userId', select: 'email'})
-    .populate({path: 'manillaId', select: 'tipo estado'})
+    const pagos = await this.pagoModel.find({ estado: filter.estado, metodo: filter.metodo })
+      .populate({ path: 'userId', select: 'email name' })
+      .populate({ path: 'manillaId', select: 'tipo estado nombre_portador numid' })
+      .skip(filter.offset)
+      .limit(filter.limit)
+      .exec()
+
 
     return pagos;
 
