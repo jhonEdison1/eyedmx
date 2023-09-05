@@ -504,7 +504,7 @@ export class ManillasService {
         .populate({ path: 'userId', select: 'name' })
         .populate({ path: 'pagoId', select: 'estado', options: { retainNullValues : true} })
         .exec(),
-      this.manillaModel.countDocuments({ estado: estadoManilla.Solicitada }).exec(),
+      this.manillaModel.countDocuments({ estado: estadoManilla.Solicitada, estadoPago: true }).exec(),
     ]);
 
     return {
