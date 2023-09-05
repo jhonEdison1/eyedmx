@@ -9,6 +9,7 @@ import { Role } from '../iam/models/roles.model';
 import { RolesGuard } from '../iam/guards/roles.guard';
 import { estadoPago } from './entities/pago.entity';
 import { EstadoPagoDto } from './dto/update-estado-pago.dto';
+import { FilterPagoDto } from './dto/filter-pago.dto';
 
 @ApiTags("pagos")
 @Controller('pagos')
@@ -59,6 +60,15 @@ export class PagosController {
   actualizarPagoEfectivo(@Param('id') id: string, @Body() estado: EstadoPagoDto) {
     console.log('estado', estado)
     return this.pagosService.actualizarPagoEfectivo(id, estado);
+  }
+
+
+  @Roles(Role.ADMIN)
+  @UseGuards(JwtAuthAccessGuard, RolesGuard)
+  @Get('filter')
+  getFilter(@Query() filter: FilterPagoDto){
+    return this.pagosService.getFilter(filter);
+
   }
   
 

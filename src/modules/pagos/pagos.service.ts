@@ -10,6 +10,7 @@ import { StripeService } from './stripe.service';
 import { th } from 'date-fns/locale';
 import { EstadoPagoDto } from './dto/update-estado-pago.dto';
 import { ManillasService } from '../manillas/manillas.service';
+import { FilterPagoDto } from './dto/filter-pago.dto';
 
 
 @Injectable()
@@ -179,6 +180,17 @@ export class PagosService {
       throw new ConflictException('No se pudo Procesar el pago ' + 'Metodo de pago no soportado')
     }
 
+
+  }
+
+
+  async getFilter(filter: FilterPagoDto){
+
+    const pagos = await this.pagoModel.find({estado: filter.estado, metodo: filter.metodo})
+    .populate({path: 'userId', select: 'email'})
+    .populate({path: 'manillaId', select: 'tipo estado'})
+
+    return pagos;
 
   }
 
