@@ -435,6 +435,9 @@ export class ManillasService {
     const uploadFolderPath = 'portador'; // Carpeta base en S3
     const fileName = `portador/${id}/${field}`; // Nombre de archivo
 
+
+    console.log(fileName, extension)
+
     const s3Params: AWS.S3.PutObjectRequest = {
       Bucket: this.configSerivce.s3.bucket,
       Key: fileName + '.' + extension,
@@ -460,6 +463,8 @@ export class ManillasService {
       // });
 
       const urlfoto = uploadedObject.Location
+
+      console.log('urlfoto', urlfoto)
 
 
       //return `https://${this.configService.s3.bucket}.s3.${this.configService.s3.region}.amazonaws.com/${fileName}`;
