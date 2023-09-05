@@ -49,6 +49,10 @@ export class EditManillaDto {
      tenencias: string;
 
 
+     @IsOptional()
+     otros: object;
+
+
 }
 
 
