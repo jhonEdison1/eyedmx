@@ -171,6 +171,7 @@ export class PagosService {
 
     if (pago.metodo === metodoPago.Efectivo) {
       await this.pagoModel.findByIdAndUpdate(id, { estado: estado.estado }).exec();
+      await this.manillasService.changeEstadoPago(pago.manillaId.toString());
 
       return { message: 'Se actualizo el estado del pago' }
 
