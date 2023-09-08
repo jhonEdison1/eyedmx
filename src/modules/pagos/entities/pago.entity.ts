@@ -48,8 +48,11 @@ export class Pago {
     stripeId: string; 
 
 
-    @Prop({type: Types.ObjectId, ref: 'Manilla'})
-    manillaId: Manilla;
+    // @Prop({type: Types.ObjectId, ref: 'Manilla'})
+    // manillaId: Manilla;
+
+    @Prop({type: [{type: Types.ObjectId, ref: 'Manilla'}]})
+    manillasId: Manilla[];
 }
 
 

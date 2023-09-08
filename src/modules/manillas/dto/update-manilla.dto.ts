@@ -236,13 +236,13 @@ export class EditManillaNiñoDto extends EditManillaDto {
     @IsOptional()
     readonly telefono_madre: string;
 
-    //@IsNotEmpty()
-    @AtLeastOneIsRequired(['nombre_padre', 'nombre_madre'])
-    atLeastOneNameIsRequired: string;
+    // //@IsNotEmpty()
+    // @AtLeastOneIsRequired(['nombre_padre', 'nombre_madre'])
+    // atLeastOneNameIsRequired: string;
 
-    //@IsNotEmpty()
-    @AtLeastOneIsRequired(['telefono_padre', 'telefono_madre'])
-    atLeastOnePhoneIsRequired: string;
+    // //@IsNotEmpty()
+    // @AtLeastOneIsRequired(['telefono_padre', 'telefono_madre'])
+    // atLeastOnePhoneIsRequired: string;
 
 }
 

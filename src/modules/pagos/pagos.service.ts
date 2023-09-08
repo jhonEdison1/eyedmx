@@ -32,16 +32,30 @@ export class PagosService {
   async create(createPagoDto: CreatePagoDto) {
 
 
-    const existpagoByManilla = await this.findPagobyManilla(createPagoDto.manillaId);
-    if(existpagoByManilla){
-      throw new ConflictException('Ya existe un pago para esta manilla')
-    }
+
+    for (const manilla of createPagoDto.manillasId) {
+      const existpagoByManilla = await this.findPagobyManilla(manilla);
+      if(existpagoByManilla){
+        throw new ConflictException('Ya existe un pago para esta manilla')
+      }
+    }   
+    // const existpagoByManilla = await this.findPagobyManilla(createPagoDto.manillaId);
+    // if(existpagoByManilla){
+    //   throw new ConflictException('Ya existe un pago para esta manilla')
+    // }
 
 
     const nuevoPago = await new this.pagoModel(createPagoDto);
     await nuevoPago.save();
 
-    await this.manillasService.actualizarPago(createPagoDto.manillaId, nuevoPago._id.toString());
+
+    for (const manilla of createPagoDto.manillasId) {
+      await this.manillasService.actualizarPago(manilla, nuevoPago._id.toString());
+    }
+      
+    
+
+    // await this.manillasService.actualizarPago(createPagoDto.manillaId, nuevoPago._id.toString());
 
     return nuevoPago;
 
@@ -55,8 +69,9 @@ export class PagosService {
 
   async findPagobyManilla(id: string) {
 
-    const pago = await this.pagoModel.findOne({ manillaId: id }, { __v: 0, userId: 0, monto: 0 }).exec();
+    // const pago = await this.pagoModel.findOne({ manillaId: id }, { __v: 0, userId: 0, monto: 0 }).exec();
 
+    const pago = await this.pagoModel.findOne({ manillasId: id }, { __v: 0, userId: 0, monto: 0 }).exec();
 
     if (!pago) {
       return null;
@@ -64,13 +79,7 @@ export class PagosService {
 
     return pago;
 
-
-
-
-
-
-
-
+    
 
   }
 
@@ -144,7 +153,13 @@ export class PagosService {
 
         await this.pagoModel.findByIdAndUpdate(id, { estado: status }).exec();
 
-        await this.manillasService.changeEstadoPago(pago.manillaId.toString());
+        for (const manilla of pago.manillasId) {
+          await this.manillasService.changeEstadoPago(manilla.toString());
+        }
+          
+        
+
+       //await this.manillasService.changeEstadoPago(pago.manillaId.toString());
 
 
 
@@ -181,7 +196,13 @@ export class PagosService {
 
     if (pago.metodo === metodoPago.Efectivo) {
       await this.pagoModel.findByIdAndUpdate(id, { estado: estado.estado }).exec();
-      await this.manillasService.changeEstadoPago(pago.manillaId.toString());
+
+      for (const manilla of pago.manillasId) {
+        await this.manillasService.changeEstadoPago(manilla.toString());
+      }
+        
+      
+     // await this.manillasService.changeEstadoPago(pago.manillaId.toString());
 
       return { message: 'Se actualizo el estado del pago' }
 
@@ -201,7 +222,8 @@ export class PagosService {
 
     const pagos = await this.pagoModel.find({ estado: filter.estado, metodo: filter.metodo })
       .populate({ path: 'userId', select: 'email name' })
-      .populate({ path: 'manillaId', select: 'tipo estado nombre_portador numid foto_portador nombre_mascota' })
+      .populate({ path: 'manillasId', select: 'tipo estado' })
+      //.populate({ path: 'manillaId', select: 'tipo estado nombre_portador numid foto_portador nombre_mascota' })
       .skip(offset * limit)
       .limit(limit)
       .exec()

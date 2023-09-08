@@ -22,9 +22,11 @@ export class CreatePagoDto {
     @IsOptional()
     stripeId: string;
 
-    @IsNotEmpty()
-    @IsMongoId()
-    manillaId: string;
+    // @IsNotEmpty()
+    // @IsMongoId()
+    // manillaId: string;
+
+    manillasId: string[];
 
 
 
