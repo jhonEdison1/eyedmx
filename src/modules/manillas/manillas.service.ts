@@ -37,7 +37,7 @@ export class ManillasService {
     @InjectModel(Manilla.name) private readonly manillaModel: Model<Manilla>,
     private readonly entradaService: EntradasService,
     private readonly mailService: MailService
-  
+
 
   ) {
     this.s3 = new AWS.S3({
@@ -270,6 +270,46 @@ export class ManillasService {
     return newManilla;
   }
 
+
+
+  async solicitarVarias(createManillaDto: CreateManillaDto[], userId: string) {
+
+   
+
+    // Validar el objeto recibido utilizando las decoraciones de class-validator
+   
+
+   
+    const manillas = [];
+    for (let i = 0; i < createManillaDto.length; i++) {
+
+
+      // const errors = await validate(createManillaDto[i]);
+      // if (errors.length > 0) {
+      //   console.log('entre')
+      //   throw new ConflictException('Datos inválidos');
+      // }
+
+      if (createManillaDto[i].userId !== userId) {
+        throw new UnauthorizedException('No tiene permisos para crear pulseras para otro usuario');
+      }
+
+      let manilla = await this.createManilla(createManillaDto[i], userId);
+      manillas.push(manilla);
+    }
+
+    return manillas;
+  }
+
+
+
+
+
+
+
+
+
+
   async editManilla(id: string, editManillaDto: EditManillaDto, userId: string) {
 
     //validar que exista la manilla y que el usuario que la solicita sea el mismo que la creo
@@ -480,8 +520,8 @@ export class ManillasService {
 
     const manilla = await this.manillaModel.findById(id).exec();
 
-    if(!manilla){
-      throw new ConflictException('No se encontro la manilla')      
+    if (!manilla) {
+      throw new ConflictException('No se encontro la manilla')
     }
 
     await this.manillaModel.findByIdAndUpdate(id, { estadoPago: true }).exec();
@@ -502,7 +542,7 @@ export class ManillasService {
         .skip(params.offset * params.limit)
         .limit(params.limit)
         .populate({ path: 'userId', select: 'name' })
-        .populate({ path: 'pagoId', select: 'estado', options: { retainNullValues : true} })
+        .populate({ path: 'pagoId', select: 'estado', options: { retainNullValues: true } })
         .exec(),
       this.manillaModel.countDocuments({ estado: estadoManilla.Solicitada, estadoPago: true }).exec(),
     ]);
@@ -532,7 +572,7 @@ export class ManillasService {
         .skip(params.offset * params.limit)
         .limit(params.limit)
         .populate({ path: 'userId', select: 'name' })
-        .populate({ path: 'pagoId', select: 'estado', options: { retainNullValues : true} })
+        .populate({ path: 'pagoId', select: 'estado', options: { retainNullValues: true } })
         .exec(),
       this.manillaModel.countDocuments({ estado: estadoManilla.Aceptada, createdAt: { $gte: horaInicio, $lte: horaFin } }).exec(),
     ]);
@@ -543,7 +583,7 @@ export class ManillasService {
     const [manillasResagadas, totalDocumentsResagadas] = await Promise.all([
       this.manillaModel
         .find({ estado: estadoManilla.Aceptada, createdAt: { $lt: horaInicio } })
-        .skip(params.offset  * params.limit)
+        .skip(params.offset * params.limit)
         .limit(params.limit)
         .populate({ path: 'userId', select: 'name' })
         .exec(),
@@ -567,7 +607,7 @@ export class ManillasService {
   async findById(id: number) {
     try {
       //const manilla = await this.manillaModel.findById(id).populate({ path: 'userId', select: 'name' })
-      const manilla = await this.manillaModel.findOne({ numid: id }).populate({ path: 'userId', select: 'name' }).populate({ path: 'pagoId', select: 'estado metodo', options: { retainNullValues : true} })
+      const manilla = await this.manillaModel.findOne({ numid: id }).populate({ path: 'userId', select: 'name' }).populate({ path: 'pagoId', select: 'estado metodo', options: { retainNullValues: true } })
       if (!manilla) {
         throw new NotFoundException('Pulsera no encontrada');
       }
@@ -622,7 +662,7 @@ export class ManillasService {
         .skip(offset * limit)
         .limit(limit)
         .populate({ path: 'userId', select: 'name' })
-        .populate({ path: 'pagoId', select: 'estado', options: { retainNullValues : true} })
+        .populate({ path: 'pagoId', select: 'estado', options: { retainNullValues: true } })
         .exec(),
       this.manillaModel.countDocuments(filters).exec(),
     ]);
@@ -1124,28 +1164,28 @@ export class ManillasService {
 
   async actualizarPago(id: string, idPago: string) {
 
-    if(!idPago || idPago == null || idPago == undefined){
+    if (!idPago || idPago == null || idPago == undefined) {
       throw new ConflictException('No se recibio el id del pago');
     }
 
     const manilla = await this.manillaModel.findById(id).exec();
 
-    if(!manilla){
+    if (!manilla) {
       throw new NotFoundException('No existe la manilla');
     }
 
-    if(manilla.pagoId != null){
+    if (manilla.pagoId != null) {
       throw new ConflictException('el pago ya fue realizado');
     }
 
-   
-
-     await this.manillaModel.findByIdAndUpdate(id, { pagoId: idPago }).exec();
-
-     const manillaupdate = await this.manillaModel.findById(id).populate({ path: 'pagoId', select: 'estado metodo' }).exec()
 
 
-    return{
+    await this.manillaModel.findByIdAndUpdate(id, { pagoId: idPago }).exec();
+
+    const manillaupdate = await this.manillaModel.findById(id).populate({ path: 'pagoId', select: 'estado metodo' }).exec()
+
+
+    return {
       message: 'Pago actualizado satisfactoriamente',
       manilla: manillaupdate
 
@@ -1161,7 +1201,7 @@ export class ManillasService {
 
     const manilla = await this.manillaModel.findOne({ pagoId: idPago }).populate({ path: 'pagoId', select: 'estado metodo' }).exec()
 
-    if(!manilla){
+    if (!manilla) {
       throw new NotFoundException('No existe la manilla');
     }
 

@@ -24,6 +24,19 @@ export class ManillasController {
     return this.manillasService.createManilla(createManillaDto, req.user.id);
   }
 
+
+  @Post('solicitarVarias')
+  @UseGuards(JwtAuthAccessGuard)
+  createVarias(@Body('manillas') createManillaDto: CreateManillaDto[], @Request() req) {
+
+   
+    return this.manillasService.solicitarVarias(createManillaDto, req.user.id);
+  }
+
+
+
+
+
   @Post('update/:id')
   @UseGuards(JwtAuthAccessGuard)
   updateManilla(@Param('id') id: string, @Body() editManilla: EditManillaDto, @Request() req) {

@@ -43,16 +43,16 @@ export class CreateUserDto {
     @ApiProperty({description: "Dirección del usuario", type: String})
     direccion: string;
 
-    @IsString({message: "El documento debe contener caracteres válidos"})
-    @IsNotEmpty({message: "El documento es requerido"})
-    @ApiProperty({description: "Documento del usuario", type: String})
-    documento: string;
+    // @IsString({message: "El documento debe contener caracteres válidos"})
+    // @IsNotEmpty({message: "El documento es requerido"})
+    // @ApiProperty({description: "Documento del usuario", type: String})
+    // documento: string;
 
-    @IsNotEmpty({message: "la fecha de nacimiento es requerida"})
-    @IsDate()
-    @Type(() => Date)
-    @ApiProperty({description: "Fecha de nacimiento del usuario", type: Date})
-    fecha_nacimiento: Date;
+    // @IsNotEmpty({message: "la fecha de nacimiento es requerida"})
+    // @IsDate()
+    // @Type(() => Date)
+    // @ApiProperty({description: "Fecha de nacimiento del usuario", type: Date})
+    // fecha_nacimiento: Date;
 
     // @IsArray()
     // @ArrayNotEmpty()

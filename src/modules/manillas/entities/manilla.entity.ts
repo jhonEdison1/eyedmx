@@ -47,6 +47,10 @@ export class Manilla extends Document {
     estado: estadoManilla;
 
 
+    @Prop({ trim: true })
+    color: string;
+
+
    
     @Prop({ type: Types.ObjectId, ref: 'Pago' , default: null, nullable: true })
     pagoId: Pago;

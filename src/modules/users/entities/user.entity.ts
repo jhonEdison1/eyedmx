@@ -34,11 +34,11 @@ export class User extends Document {
     @Prop({ required: true })
     direccion: string;
 
-    @Prop({ /*required: true*/ })
-    documento: string;
+    // @Prop({ /*required: true*/ })
+    // documento: string;
 
-    @Prop({ /*required: true*/ })
-    fecha_nacimiento: Date; 
+    // @Prop({ /*required: true*/ })
+    // fecha_nacimiento: Date; 
     
     @Prop({default: true})
     aceptado: Boolean;
