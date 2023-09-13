@@ -135,6 +135,21 @@ export class AuthenticationCommonService {
   }
 
 
+  async existUser(email){
+    const existUser = await this.userModel.findOne({email: email.trim()}).exec();
+
+    if(!existUser){
+      return false
+
+    }
+
+    return true
+
+
+
+  }
+
+
 
 
 

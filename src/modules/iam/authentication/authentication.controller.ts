@@ -31,6 +31,15 @@ export class AuthenticationController {
       
     }
 
+
+    @Get('existUser')
+    async existUser(@Query('email') email: string) {
+      return await this.authenticationCommonService.existUser(email);
+
+    }
+
+
+
     @Get("forgotpassword")
     async forgotPassword(@Query("email") email: string) {
       return await this.authService.forgotPassword(email);
