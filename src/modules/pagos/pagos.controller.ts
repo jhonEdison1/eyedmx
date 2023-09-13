@@ -61,7 +61,7 @@ export class PagosController {
   @UseGuards(JwtAuthAccessGuard, RolesGuard)
   @Patch('actualizarPagoEfectivo/:id')
   actualizarPagoEfectivo(@Param('id') id: string, @Body() estado: EstadoPagoDto) {
-    console.log('estado', estado)
+    
     return this.pagosService.actualizarPagoEfectivo(id, estado);
   }
 

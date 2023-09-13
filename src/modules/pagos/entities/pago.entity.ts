@@ -59,6 +59,10 @@ export class Pago {
     otros: Object
 
 
+    @Prop({trim: true, required: false})
+    ordenId: string
+
+
 
 }
 
