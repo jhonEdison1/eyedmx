@@ -29,5 +29,8 @@ export class CreatePagoDto {
     manillasId: string[];
 
 
+    @IsOptional()
+    otros: object
+
 
 }

@@ -273,31 +273,14 @@ export class ManillasService {
 
 
   async solicitarVarias(createManillaDto: CreateManillaDto[], userId: string) {
-
-   
-
-    // Validar el objeto recibido utilizando las decoraciones de class-validator
-   
-
-   
     const manillas = [];
     for (let i = 0; i < createManillaDto.length; i++) {
-
-
-      // const errors = await validate(createManillaDto[i]);
-      // if (errors.length > 0) {
-      //   console.log('entre')
-      //   throw new ConflictException('Datos inválidos');
-      // }
-
       if (createManillaDto[i].userId !== userId) {
         throw new UnauthorizedException('No tiene permisos para crear pulseras para otro usuario');
       }
-
       let manilla = await this.createManilla(createManillaDto[i], userId);
       manillas.push(manilla);
     }
-
     return manillas;
   }
 

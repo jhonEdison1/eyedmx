@@ -48,6 +48,9 @@ export class PagosController {
   }
 
 
+ // @Get('')
+
+
   @Patch('confirmar/:id')
   @UseGuards(JwtAuthAccessGuard)
   confirmar(@Param('id') id: string) {

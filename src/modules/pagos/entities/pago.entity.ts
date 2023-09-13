@@ -53,6 +53,13 @@ export class Pago {
 
     @Prop({type: [{type: Types.ObjectId, ref: 'Manilla'}]})
     manillasId: Manilla[];
+
+
+    @Prop({type: Object})
+    otros: Object
+
+
+
 }
 
 
