@@ -5,7 +5,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { ConfigType } from '@nestjs/config';
 import config from 'src/config';
 import { Pago, estadoPago, metodoPago } from './entities/pago.entity';
-import { Model } from 'mongoose';
+import { FilterQuery, Model } from 'mongoose';
 import { StripeService } from './stripe.service';
 import { th } from 'date-fns/locale';
 import { EstadoPagoDto } from './dto/update-estado-pago.dto';
@@ -216,11 +216,32 @@ export class PagosService {
 
   async getFilter(filter: FilterPagoDto) {
 
-    const {limit, offset} = filter;
+    const {limit, offset, estado, metodo} = filter;
+
+
+    const filters: FilterQuery<Pago> = {  };
+   // const { limit, offset, name } = params;
+
+    /** Si existen parámetros entonces aplicamos filtros de búsqueda */
+    if (filter) {
+      if (estado) {
+        filters.estado = {
+          $regex: estado,
+          $options: "i",
+        };
+      }
+      if (metodo) {
+        filters.metodo = {
+          $regex: metodo,
+          $options: "i",
+        };
+      }
+
+    }
 
     
 
-    const pagos = await this.pagoModel.find(/*{ estado: filter.estado, metodo: filter.metodo }*/)
+    const pagos = await this.pagoModel.find(filters)
       .populate({ path: 'userId', select: 'email name' })
       .populate({ path: 'manillasId' })
       //.populate({ path: 'manillaId', select: 'tipo estado nombre_portador numid foto_portador nombre_mascota' })
@@ -233,7 +254,7 @@ export class PagosService {
   
 
 
-    const total = await this.pagoModel.countDocuments(/*{ estado: filter.estado, metodo: filter.metodo }*/).exec();
+    const total = await this.pagoModel.countDocuments(filters).exec();
 
 
     return { pagos, total }
