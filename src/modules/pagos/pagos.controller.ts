@@ -10,6 +10,7 @@ import { RolesGuard } from '../iam/guards/roles.guard';
 import { estadoPago } from './entities/pago.entity';
 import { EstadoPagoDto } from './dto/update-estado-pago.dto';
 import { FilterPagoDto } from './dto/filter-pago.dto';
+import { OtrosPagoDto } from './dto/otros-pago.dto';
 
 @ApiTags("pagos")
 @Controller('pagos')
@@ -72,6 +73,14 @@ export class PagosController {
   getFilter(@Query() filter: FilterPagoDto){
     return this.pagosService.getFilter(filter);
 
+  }
+
+
+
+  @Patch('actualizarIntento/:id')
+  @UseGuards(JwtAuthAccessGuard)
+  updateIntento(@Param('id') id: string, @Body() updatePagoDto: OtrosPagoDto) {
+    return this.pagosService.updateIntento(id, updatePagoDto);
   }
   
 

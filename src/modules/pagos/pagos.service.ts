@@ -11,6 +11,7 @@ import { th } from 'date-fns/locale';
 import { EstadoPagoDto } from './dto/update-estado-pago.dto';
 import { ManillasService } from '../manillas/manillas.service';
 import { FilterPagoDto } from './dto/filter-pago.dto';
+import { OtrosPagoDto } from './dto/otros-pago.dto';
 
 
 @Injectable()
@@ -258,6 +259,23 @@ export class PagosService {
 
 
     return { pagos, total }
+
+  }
+
+
+  async updateIntento(id: string, updatePagoDto: OtrosPagoDto) {
+
+    const pago = await this.pagoModel.findById(id).exec();
+    if(!pago){
+      throw new NotFoundException('No se encontro el La intencion de pago')
+    }
+
+    pago.otros = updatePagoDto.otros;
+
+    await pago.save();
+
+    return pago;
+
 
   }
 
