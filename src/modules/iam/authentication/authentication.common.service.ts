@@ -220,6 +220,14 @@ export class AuthenticationCommonService {
             private: false
           },
           {
+            name: "color",
+            type: "select",
+            description: "color  de la pulsera",
+            opciones: ["Azul", "Blanco", "Rojo", "Negro"],
+            required: true,
+            private: false
+          },
+          {
             name: "email",
             type: "email",
             description: "Email del portador de la pulsera",
@@ -374,6 +382,14 @@ export class AuthenticationCommonService {
             private: true
           },
           {
+            name: "color",
+            type: "select",
+            description: "color  de la pulsera",
+            opciones: ["Azul", "Blanco", "Rojo", "Negro"],
+            required: true,
+            private: false
+          },
+          {
             name: "fecha_nacimiento",
             type: "Date",
             description: "Fecha de nacimiento del portador de la pulsera",
@@ -484,6 +500,14 @@ export class AuthenticationCommonService {
             description: "Documento del portador de la pulsera",
             required: false,
             private: true
+          },
+          {
+            name: "color",
+            type: "select",
+            description: "color  de la pulsera",
+            opciones: ["Azul", "Blanco", "Rojo", "Negro"],
+            required: true,
+            private: false
           },
           {
             name: "fecha_nacimiento",
@@ -626,6 +650,14 @@ export class AuthenticationCommonService {
               type: "text",
               description: "Nombre de la mascota",
               required: true
+            },
+            {
+              name: "color",
+              type: "select",
+              description: "color  de la pulsera",
+              opciones: ["Azul", "Blanco", "Rojo", "Negro"],
+              required: true,
+              private: false
             },
             {
               name: "email",
