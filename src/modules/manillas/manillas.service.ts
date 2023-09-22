@@ -17,6 +17,12 @@ import { EntradasService } from '../entradas/entradas.service';
 import { CreateEntradaDto } from '../entradas/dto/create-entrada.dto';
 import { MailService } from '../mail/mail.service';
 import * as sharp from 'sharp';
+import { ConvertioService } from '../convertio/convertio.service';
+
+
+
+
+
 
 
 
@@ -36,7 +42,8 @@ export class ManillasService {
     @Inject(config.KEY) private readonly configSerivce: ConfigType<typeof config>,
     @InjectModel(Manilla.name) private readonly manillaModel: Model<Manilla>,
     private readonly entradaService: EntradasService,
-    private readonly mailService: MailService
+    private readonly mailService: MailService,
+    private readonly convertioService: ConvertioService
 
 
   ) {
@@ -668,6 +675,115 @@ export class ManillasService {
     return estados;
   }
 
+  // async aceptarManilla(id: string) {
+  //   try {
+  //     const exist = await this.manillaModel.findById(id).exec();
+
+  //     if (!exist) {
+  //       throw new NotFoundException('No existe la manilla');
+  //     }
+
+  //     const estado = exist.estado;
+  //     if ([estadoManilla.Aceptada, estadoManilla.Entregada, estadoManilla.Rechazada, estadoManilla.Enviada].includes(estado)) {
+  //       throw new ConflictException(`La manilla ya fue ${estado}`);
+  //     }
+
+
+  //     const idnum = exist.numid;
+
+  //     const urlFront = this.configSerivce.frontend.url;
+  //     const urlInfo = this.configSerivce.frontend.urlinfo;
+  //     const url = `${urlFront}/${urlInfo}/${idnum}`;
+
+  //     const qrData = url;
+  //     const qrOptions = { type: 'png', errorCorrectionLevel: 'high', scale: 8 };     
+  //     const qrCodeSvg = await qr.toString(qrData, qrOptions);
+
+  //     // Guardar el archivo SVG en disco (opcional)
+  //     //fs.writeFileSync(`manilla_${id}.png`, qrCodeSvg);
+
+  //     // Aquí, subir el SVG a S3 (implementar esta funcionalidad)
+  //     const uploadFolderPath = 'uploads';
+  //     const currentDate = new Date();
+  //     const formattedDate = format(currentDate, 'yyyy-MM-dd');
+  //     const dailyFolderPath = `${uploadFolderPath}/${formattedDate}`;
+  //     const fileName = `manilla_${id}.svg`;
+  //     //const fileName = `manilla_${id}.png`;
+
+  //     // Subir el archivo SVG al S3
+  //     const s3Params: AWS.S3.PutObjectRequest = {
+  //       Bucket: this.configSerivce.s3.bucket,
+  //       Key: `${dailyFolderPath}/${fileName}`,
+  //       Body: qrCodeSvg,
+  //       ContentType: 'image/svg+xml', // Establecer el tipo de contenido correcto
+  //       // ContentType: 'image/png'
+  //     };
+
+
+
+
+  //     const uploadedObject = await this.s3.upload(s3Params).promise();
+  //     const urlqr = uploadedObject.Location
+
+
+
+
+
+
+
+  //     // const urlqr = this.s3.getSignedUrl('getObject', {
+  //     //   Bucket: this.configSerivce.s3.bucket,
+  //     //   Key: `${dailyFolderPath}/${fileName}`
+
+  //     // });
+
+  //     const imgPng = await this.svgToPng(qrCodeSvg);
+
+  //     const params = {
+  //       Bucket: this.configSerivce.s3.bucket,
+  //       Key: `${dailyFolderPath}/${fileName}.png`,
+  //       Body: imgPng,
+  //       ContentType: 'image/png',
+  //     };
+
+  //     const uploadedObjectPng = await this.s3.upload(params).promise();
+
+  //     const urlpng = uploadedObjectPng.Location
+
+
+
+
+
+  //     await exist.populate({ path: 'userId', select: 'name email' })
+
+  //     const email = exist.userId.email;
+  //     const name = exist.userId.name;
+
+
+
+
+  //     await this.mailService.sendQrCodeEmail(email, urlpng, name);
+
+
+
+
+  //     exist.estado = estadoManilla.Aceptada;
+  //     exist.qrCode = urlqr;
+  //     //exist.qrdxf = urldxf;
+  //     const manilla = await exist.save();
+
+  //     return {
+  //       message: 'Manilla aceptada satisfactoriamente',
+  //       manilla,
+  //       //qrCodeSvg,
+  //     };
+  //   } catch (error) {
+  //     throw new ConflictException('No se pudo aceptar la manilla: ' + error.message);
+  //   }
+  // }
+
+
+
   async aceptarManilla(id: string) {
     try {
       const exist = await this.manillaModel.findById(id).exec();
@@ -690,8 +806,10 @@ export class ManillasService {
 
       const qrData = url;
       const qrOptions = { type: 'svg', errorCorrectionLevel: 'high', scale: 8 };
-      //const qrOptions = { type: 'png', errorCorrectionLevel: 'high', scale: 8 };
       const qrCodeSvg = await qr.toString(qrData, qrOptions);
+
+
+      const imgPng = await this.svgToPng(qrCodeSvg);
 
       // Guardar el archivo SVG en disco (opcional)
       //fs.writeFileSync(`manilla_${id}.png`, qrCodeSvg);
@@ -701,348 +819,360 @@ export class ManillasService {
       const currentDate = new Date();
       const formattedDate = format(currentDate, 'yyyy-MM-dd');
       const dailyFolderPath = `${uploadFolderPath}/${formattedDate}`;
-      const fileName = `manilla_${id}.svg`;
+      const fileName = `manilla_${id}.png`;
       //const fileName = `manilla_${id}.png`;
 
       // Subir el archivo SVG al S3
       const s3Params: AWS.S3.PutObjectRequest = {
         Bucket: this.configSerivce.s3.bucket,
         Key: `${dailyFolderPath}/${fileName}`,
-        Body: qrCodeSvg,
-        ContentType: 'image/svg+xml', // Establecer el tipo de contenido correcto
-        // ContentType: 'image/png'
+        Body: imgPng,
+        //ContentType: 'image/svg+xml', // Establecer el tipo de contenido correcto
+        ContentType: 'image/png'
       };
-
-
-
+      // const imgPng = await this.svgToPng(qrCodeSvg);
 
       const uploadedObject = await this.s3.upload(s3Params).promise();
       const urlqr = uploadedObject.Location
 
+      //convertio usando la api de convertio
 
+      const respuestaConvertio = await this.convertioService.newConversion(urlqr);
+      if (respuestaConvertio.status !== 'ok') {
+        console.log('entro al 1 if')
+        throw new ConflictException('No se pudo aceptar la manilla, error al convertir el qr a dxf')
+      }
+      let status = 'convert'     
 
+      while (status == 'convert') {
+        const statusConvertio = await this.convertioService.getConversionStatus(respuestaConvertio.data.id);
 
+        console.log('step ',statusConvertio.data.step, ' step_percent', statusConvertio.data.step_percent )
+      
 
+        if (statusConvertio.data.step === 'finish') {
+          status = 'finish'
+       
+        }
 
+        // Pausa durante un período de tiempo antes de la siguiente consulta (puedes ajustar este valor)
+        //await this.sleep(5000); // Esperar 5 segundos antes de la siguiente consulta
+      }
+    //const statusConvertio = await this.convertioService.getConversionStatus(respuestaConvertio.data.id);
+    const dataConvertio = await this.convertioService.getConversionData(respuestaConvertio.data.id); 
 
-      // const urlqr = this.s3.getSignedUrl('getObject', {
-      //   Bucket: this.configSerivce.s3.bucket,
-      //   Key: `${dailyFolderPath}/${fileName}`
-
-      // });
-
-      const imgPng = await this.svgToPng(qrCodeSvg);
-
-      const params = {
-        Bucket: this.configSerivce.s3.bucket,
-        Key: `${dailyFolderPath}/${fileName}.png`,
-        Body: imgPng,
-        ContentType: 'image/png',
-      };
-
-      const uploadedObjectPng = await this.s3.upload(params).promise();
-
-      const urlpng = uploadedObjectPng.Location
-
-
-
-
-
-      await exist.populate({ path: 'userId', select: 'name email' })
-
-      const email = exist.userId.email;
-      const name = exist.userId.name;
-
-
-
-
-      await this.mailService.sendQrCodeEmail(email, urlpng, name);
-
-
-
-
-      exist.estado = estadoManilla.Aceptada;
-      exist.qrCode = urlqr;
-      //exist.qrdxf = urldxf;
-      const manilla = await exist.save();
-
-      return {
-        message: 'Manilla aceptada satisfactoriamente',
-        manilla,
-        //qrCodeSvg,
-      };
-    } catch (error) {
-      throw new ConflictException('No se pudo aceptar la manilla: ' + error.message);
-    }
-  }
-
-  async enviarManilla(id: string) {
-
-    const exist = await this.manillaModel.findById(id).exec();
-
-    if (!exist) {
-      throw new NotFoundException('No existe la manilla');
+    if (dataConvertio.status !== 'ok') {
+      console.log('entro al 2 if')
+      throw new ConflictException('no se pudo aceptar la manilla, error al obtener el dxf')
     }
 
-    const estado = exist.estado;
-    if ([estadoManilla.Entregada, estadoManilla.Rechazada, estadoManilla.Enviada].includes(estado)) {
-      throw new ConflictException(`La manilla ya fue ${estado}`);
-    }
+    const base64 = await dataConvertio.data.content;  
 
-    exist.estado = estadoManilla.Enviada;
+    const buffer = Buffer.from(base64, 'base64');   
 
-    const manilla = await exist.save();
+    //subir el base 64 que es un dxf a s3
 
-    return {
-      message: 'Manilla enviada satisfactoriamente',
-      manilla,
+    const fileNamedxf = `manilla_${id}.dxf`;
+
+    const params = {
+      Bucket: this.configSerivce.s3.bucket,
+      Key: `${dailyFolderPath}/${fileNamedxf}`,
+      Body: buffer,
+      //ContentType: 'application/dxf',
     };
 
+    const uploadedObjectDxf = await this.s3.upload(params).promise();   
 
-  }
-
-  //cambiar el estado de la manilla a enviada o entregada, basicamente la misma funcion que enviarManilla solo que ahora recibe el estado por parametro para no tener que crear otra funcion
-
-  async cambiarEstadoManilla(id: string, estado: estadoManilla) {
-
-    //verificar que el estado sea valido
-
-    if (![estadoManilla.Entregada, estadoManilla.Enviada, estadoManilla.Rechazada].includes(estado)) {
-      throw new ConflictException(`El estado ${estado} no es valido`);
-    }
-
-    const exist = await this.manillaModel.findById(id).exec();
-
-    if (!exist) {
-      throw new NotFoundException('No existe la manilla');
-    }
-
-    const estadoActual = exist.estado;
-
-    if (estadoActual === estado) {
-      throw new ConflictException(`La manilla ya fue ${estado}`);
-    }
-
-    exist.estado = estado;
-    await exist.save();
-
-    //si el estado es entregada o enviada entonces enviar el correo
+    const urldxf = uploadedObjectDxf.Location  
     await exist.populate({ path: 'userId', select: 'name email' })
 
     const email = exist.userId.email;
     const name = exist.userId.name;
 
-    if ([estadoManilla.Enviada].includes(estado)) {
-      await this.mailService.sendPulseraEnviada(email, name);
-    } else if ([estadoManilla.Entregada].includes(estado)) {
-      await this.mailService.sendPulseraEntregada(email, name);
-    }
-
-
-
+    await this.mailService.sendQrCodeEmail(email, urlqr, name);
+    exist.estado = estadoManilla.Aceptada;
+    exist.qrCode = urlqr;
+    exist.qrdxf = urldxf;
+    const manilla = await exist.save();
 
     return {
-      message: 'Estado de la pulsera cambiado satisfactoriamente',
-      manilla: exist,
+      message: 'Manilla aceptada satisfactoriamente',
+      manilla,
+      //qrCodeSvg,
     };
+  } catch(error) {
+    throw new ConflictException('No se pudo aceptar la manilla: ' + error.message + error);
+  }
+}
+
+
+  async enviarManilla(id: string) {
+
+  const exist = await this.manillaModel.findById(id).exec();
+
+  if (!exist) {
+    throw new NotFoundException('No existe la manilla');
+  }
+
+  const estado = exist.estado;
+  if ([estadoManilla.Entregada, estadoManilla.Rechazada, estadoManilla.Enviada].includes(estado)) {
+    throw new ConflictException(`La manilla ya fue ${estado}`);
+  }
+
+  exist.estado = estadoManilla.Enviada;
+
+  const manilla = await exist.save();
+
+  return {
+    message: 'Manilla enviada satisfactoriamente',
+    manilla,
+  };
+
+
+}
+
+  //cambiar el estado de la manilla a enviada o entregada, basicamente la misma funcion que enviarManilla solo que ahora recibe el estado por parametro para no tener que crear otra funcion
+
+  async cambiarEstadoManilla(id: string, estado: estadoManilla) {
+
+  //verificar que el estado sea valido
+
+  if (![estadoManilla.Entregada, estadoManilla.Enviada, estadoManilla.Rechazada].includes(estado)) {
+    throw new ConflictException(`El estado ${estado} no es valido`);
+  }
+
+  const exist = await this.manillaModel.findById(id).exec();
+
+  if (!exist) {
+    throw new NotFoundException('No existe la manilla');
+  }
+
+  const estadoActual = exist.estado;
+
+  if (estadoActual === estado) {
+    throw new ConflictException(`La manilla ya fue ${estado}`);
+  }
+
+  exist.estado = estado;
+  await exist.save();
+
+  //si el estado es entregada o enviada entonces enviar el correo
+  await exist.populate({ path: 'userId', select: 'name email' })
+
+  const email = exist.userId.email;
+  const name = exist.userId.name;
+
+  if ([estadoManilla.Enviada].includes(estado)) {
+    await this.mailService.sendPulseraEnviada(email, name);
+  } else if ([estadoManilla.Entregada].includes(estado)) {
+    await this.mailService.sendPulseraEntregada(email, name);
   }
 
 
 
 
-  async svgToPng(svgXml: string,): Promise<Buffer> {
-    const width = 500
+  return {
+    message: 'Estado de la pulsera cambiado satisfactoriamente',
+    manilla: exist,
+  };
+}
+
+
+
+
+  async svgToPng(svgXml: string,): Promise < Buffer > {
+  const width = 500
     const height = 500
 
 
     const pngBuffer = await sharp(Buffer.from(svgXml))
-      .resize(width, height)  // Agrega esta línea para redimensionar la imagen
-      .toFormat('png')
-      .toBuffer();
+    .resize(width, height)  // Agrega esta línea para redimensionar la imagen
+    .toFormat('png')
+    .toBuffer();
 
-    return pngBuffer;
-  }
+  return pngBuffer;
+}
 
   //funcion para traer el ultimo numId de el ultimo registro de manilla
 
   async findLastNumId() {
 
-    const lastManilla = await this.manillaModel.findOne().sort({ numid: -1 }).exec();
+  const lastManilla = await this.manillaModel.findOne().sort({ numid: -1 }).exec();
 
-    if (!lastManilla) {
-      return 0;
-    }
-
-    return lastManilla.numid;
-
-
+  if (!lastManilla) {
+    return 0;
   }
 
+  return lastManilla.numid;
+
+
+}
 
 
 
 
-  async cambiarestadoVarias(ids: string[], estado: estadoManilla): Promise<{ manillas: any[], errores: string[] }> {
-    const manillas: any[] = [];
-    const errores: string[] = [];
 
-    for (const id of ids) {
-      try {
-        const manilla = await this.cambiarEstadoManilla(id, estado);
-        manillas.push(manilla.manilla);
-      } catch (error) {
-        errores.push(`Error al enviar la Pulsera ${id}: ${error.message}`);
-      }
+  async cambiarestadoVarias(ids: string[], estado: estadoManilla): Promise < { manillas: any[], errores: string[] } > {
+  const manillas: any[] = [];
+  const errores: string[] = [];
+
+  for(const id of ids) {
+    try {
+      const manilla = await this.cambiarEstadoManilla(id, estado);
+      manillas.push(manilla.manilla);
+    } catch (error) {
+      errores.push(`Error al enviar la Pulsera ${id}: ${error.message}`);
     }
+  }
 
     return {
-      manillas,
-      errores,
-    };
-  }
+    manillas,
+    errores,
+  };
+}
 
 
 
 
-  async aceptarVariasManillas(ids: string[]): Promise<{ aceptadas: any[], errores: string[] }> {
-    const aceptadas: any[] = [];
-    const errores: string[] = [];
+  async aceptarVariasManillas(ids: string[]): Promise < { aceptadas: any[], errores: string[] } > {
+  const aceptadas: any[] = [];
+  const errores: string[] = [];
 
-    for (const id of ids) {
-      try {
-        const manilla = await this.aceptarManilla(id);
-        aceptadas.push(manilla.manilla);
-      } catch (error) {
-        errores.push(`Error al aceptar la Pulsera ${id}: ${error.message}`);
-      }
+  for(const id of ids) {
+    try {
+      const manilla = await this.aceptarManilla(id);
+      aceptadas.push(manilla.manilla);
+    } catch (error) {
+      errores.push(`Error al aceptar la Pulsera ${id}: ${error.message}`);
     }
+  }
 
     return {
-      aceptadas,
-      errores,
-    };
+    aceptadas,
+    errores,
+  };
+}
+
+
+
+  async aceptarTodasLasManillas(): Promise < { aceptadas: any[], errores: string[] } > {
+
+  const manillas = await this.manillaModel.find({ estado: estadoManilla.Solicitada, estadoPago: true }).exec();
+
+  if(!manillas) {
+    throw new NotFoundException('No existen pulseras solicitadas');
   }
-
-
-
-  async aceptarTodasLasManillas(): Promise<{ aceptadas: any[], errores: string[] }> {
-
-    const manillas = await this.manillaModel.find({ estado: estadoManilla.Solicitada, estadoPago: true }).exec();
-
-    if (!manillas) {
-      throw new NotFoundException('No existen pulseras solicitadas');
-    }
 
     const ids = manillas.map((manilla) => manilla._id.toString());
 
-    const aceptadas = await this.aceptarVariasManillas(ids);
+  const aceptadas = await this.aceptarVariasManillas(ids);
 
-    return aceptadas;
+  return aceptadas;
 
-  }
-
-
+}
 
 
 
 
 
 
-  async obtenerMisManillasAgrupadasPorTipo(userId: string, params?: FilterManillaDto) {
-
-    // const filters: FilterQuery<Manilla> = {};
-    // const { limit, offset } = params;
-
-    // console.log(offset, limit)
-
-    try {
-      const misManillas =
-        await this.manillaModel.aggregate([
-          { $match: { userId: userId } },
-          { $group: { _id: '$tipo', manillas: { $push: '$$ROOT' }, } },
-        ])
-
-      //const misManillas = await this.manillaModel.find({ userId: userId }).skip(offset).limit(limit).exec();
-
-      const totalDocuments = await this.manillaModel.countDocuments({ userId: userId }).exec();
 
 
-      return {
-        misManillas
-      }
+  async obtenerMisManillasAgrupadasPorTipo(userId: string, params ?: FilterManillaDto) {
+
+  // const filters: FilterQuery<Manilla> = {};
+  // const { limit, offset } = params;
+
+  // console.log(offset, limit)
+
+  try {
+    const misManillas =
+      await this.manillaModel.aggregate([
+        { $match: { userId: userId } },
+        { $group: { _id: '$tipo', manillas: { $push: '$$ROOT' }, } },
+      ])
+
+    //const misManillas = await this.manillaModel.find({ userId: userId }).skip(offset).limit(limit).exec();
+
+    const totalDocuments = await this.manillaModel.countDocuments({ userId: userId }).exec();
 
 
-
-    } catch (error) {
-      throw new ConflictException('Error al obtener las pulseras agrupadas por tipo' + error.message);
+    return {
+      misManillas
     }
+
+
+
+  } catch (error) {
+    throw new ConflictException('Error al obtener las pulseras agrupadas por tipo' + error.message);
   }
+}
 
 
 
   async obtenerInfoMotoPorPlaca(placa: string, tallerid: string) {
 
-    const manilla = await this.manillaModel.findOne({ placa: placa }).populate({ path: 'userId', select: 'name' })
+  const manilla = await this.manillaModel.findOne({ placa: placa }).populate({ path: 'userId', select: 'name' })
 
-    if (!manilla) {
-      throw new NotFoundException('No existe ninguna pulsera asociada a la placa proporcionada');
-    }
-
-    const entradas = await this.entradaService.findByPlacaAndTaller(placa, tallerid);
-
-
-    const infoRetorno = {
-
-      placa: manilla.placa,
-      marca: manilla.marca,
-      cilindraje: manilla.cilindraje,
-      conductor: manilla.userId.name,
-      entradas: entradas,
-
-    }
-    return infoRetorno;
+  if (!manilla) {
+    throw new NotFoundException('No existe ninguna pulsera asociada a la placa proporcionada');
   }
+
+  const entradas = await this.entradaService.findByPlacaAndTaller(placa, tallerid);
+
+
+  const infoRetorno = {
+
+    placa: manilla.placa,
+    marca: manilla.marca,
+    cilindraje: manilla.cilindraje,
+    conductor: manilla.userId.name,
+    entradas: entradas,
+
+  }
+  return infoRetorno;
+}
 
 
   async crearEntradaManilla(placa: string, createEntradaManillaDto: CreateEntradaDto, userId: string) {
 
-    const manilla = await (await this.manillaModel.findOne({ placa: placa }).populate({ path: 'userId', select: 'name' }))
+  const manilla = await (await this.manillaModel.findOne({ placa: placa }).populate({ path: 'userId', select: 'name' }))
 
-    if (!manilla) {
-      throw new NotFoundException('No existe ninguna pulsera asociada a la placa proporcionada');
-    }
-
-    const entrada = {
-      taller: userId,
-      observaciones: createEntradaManillaDto.observaciones,
-      placa: placa,
-      manilla: manilla._id
-    }
-
-    console.log('entrada', entrada)
-    const entradaCreada = await this.entradaService.create(entrada);
-
-    const entradas = await this.entradaService.findByPlacaAndTaller(placa, userId);
-
-
-
-    const infoRetorno = {
-
-      placa: manilla.placa,
-      marca: manilla.marca,
-      cilindraje: manilla.cilindraje,
-      conductor: manilla.userId.name,
-      entradas: entradas
-    }
-
-
-    return infoRetorno;
-
-
-
-
-
+  if (!manilla) {
+    throw new NotFoundException('No existe ninguna pulsera asociada a la placa proporcionada');
   }
+
+  const entrada = {
+    taller: userId,
+    observaciones: createEntradaManillaDto.observaciones,
+    placa: placa,
+    manilla: manilla._id
+  }
+
+  console.log('entrada', entrada)
+  const entradaCreada = await this.entradaService.create(entrada);
+
+  const entradas = await this.entradaService.findByPlacaAndTaller(placa, userId);
+
+
+
+  const infoRetorno = {
+
+    placa: manilla.placa,
+    marca: manilla.marca,
+    cilindraje: manilla.cilindraje,
+    conductor: manilla.userId.name,
+    entradas: entradas
+  }
+
+
+  return infoRetorno;
+
+
+
+
+
+}
 
 
   //funcion que me trae el total de manillas por tipo en un rango de fechas
@@ -1050,72 +1180,72 @@ export class ManillasService {
   async obtenerManillasPorTipo(fechaInicialFormateada, fechaFinalFormateada) {
 
 
-    const manillas = await this.manillaModel.aggregate([
-      {
-        $match: {
-          createdAt: {
-            $gte: fechaInicialFormateada,
-            $lte: fechaFinalFormateada
-          }
+  const manillas = await this.manillaModel.aggregate([
+    {
+      $match: {
+        createdAt: {
+          $gte: fechaInicialFormateada,
+          $lte: fechaFinalFormateada
         }
-      },
-      {
-        $group: {
-          _id: '$tipo',
-          total: { $sum: 1 }
+      }
+    },
+    {
+      $group: {
+        _id: '$tipo',
+        total: { $sum: 1 }
 
-        }
-      },
-      {
-        $project: {
-          _id: 0,
-          tipo: '$_id',
-          total: 1
-        }
-      }])
+      }
+    },
+    {
+      $project: {
+        _id: 0,
+        tipo: '$_id',
+        total: 1
+      }
+    }])
 
-    return manillas;
-
-
-
+  return manillas;
 
 
 
 
 
-  }
+
+
+
+}
 
 
   async obtenerManillasPorEstado(fechaInicialFormateada, fechaFinalFormateada) {
 
-    const manillas = await this.manillaModel.aggregate([
-      {
-        $match: {
-          createdAt: {
-            $gte: fechaInicialFormateada,
-            $lte: fechaFinalFormateada
-          }
+  const manillas = await this.manillaModel.aggregate([
+    {
+      $match: {
+        createdAt: {
+          $gte: fechaInicialFormateada,
+          $lte: fechaFinalFormateada
         }
-      },
-      {
-        $group: {
-          _id: '$estado',
-          total: { $sum: 1 }
-        }
-      },
-      {
-        $project: {
-          _id: 0,
-          estado: '$_id',
-          total: 1
-        }
-      }])
+      }
+    },
+    {
+      $group: {
+        _id: '$estado',
+        total: { $sum: 1 }
+      }
+    },
+    {
+      $project: {
+        _id: 0,
+        estado: '$_id',
+        total: 1
+      }
+    }])
 
-    return manillas;
+  return manillas;
 
 
 
-  }
+}
 
 
 
@@ -1124,81 +1254,79 @@ export class ManillasService {
   async obtenerReporteTotal() {
 
 
-    const pulseras = await this.manillaModel.find({}, { _id: 0, __v: 0, foto_portador: 0, licencia: 0, matricula_o_tarjeta: 0, factura: 0, seguro: 0, tenencias: 0, qrCode: 0, entradas: 0 }).populate({ path: 'userId', select: 'email' }).exec();
+  const pulseras = await this.manillaModel.find({}, { _id: 0, __v: 0, foto_portador: 0, licencia: 0, matricula_o_tarjeta: 0, factura: 0, seguro: 0, tenencias: 0, qrCode: 0, entradas: 0 }).populate({ path: 'userId', select: 'email' }).exec();
 
 
-    for (const pulsera of pulseras) {
-      pulsera.userId = pulsera.userId['email'] as any;
-
-    }
-
-
-    return pulseras;
-
-
-
-
-
-
+  for (const pulsera of pulseras) {
+    pulsera.userId = pulsera.userId['email'] as any;
 
   }
+
+
+  return pulseras;
+
+
+
+
+
+
+
+}
 
 
 
   async actualizarPago(id: string, idPago: string) {
 
-    if (!idPago || idPago == null || idPago == undefined) {
-      throw new ConflictException('No se recibio el id del pago');
-    }
+  if (!idPago || idPago == null || idPago == undefined) {
+    throw new ConflictException('No se recibio el id del pago');
+  }
 
-    const manilla = await this.manillaModel.findById(id).exec();
+  const manilla = await this.manillaModel.findById(id).exec();
 
-    if (!manilla) {
-      throw new NotFoundException('No existe la manilla');
-    }
+  if (!manilla) {
+    throw new NotFoundException('No existe la manilla');
+  }
 
-    if (manilla.pagoId != null) {
-      throw new ConflictException('el pago ya fue realizado');
-    }
-
-
-
-    await this.manillaModel.findByIdAndUpdate(id, { pagoId: idPago }).exec();
-
-    const manillaupdate = await this.manillaModel.findById(id).populate({ path: 'pagoId', select: 'estado metodo' }).exec()
+  if (manilla.pagoId != null) {
+    throw new ConflictException('el pago ya fue realizado');
+  }
 
 
-    return {
-      message: 'Pago actualizado satisfactoriamente',
-      manilla: manillaupdate
 
-    }
+  await this.manillaModel.findByIdAndUpdate(id, { pagoId: idPago }).exec();
+
+  const manillaupdate = await this.manillaModel.findById(id).populate({ path: 'pagoId', select: 'estado metodo' }).exec()
 
 
+  return {
+    message: 'Pago actualizado satisfactoriamente',
+    manilla: manillaupdate
 
   }
+
+
+
+}
 
 
 
   async getManillaByIdPago(idPago: string) {
 
-    const manilla = await this.manillaModel.findOne({ pagoId: idPago }).populate({ path: 'pagoId', select: 'estado metodo' }).exec()
+  const manilla = await this.manillaModel.findOne({ pagoId: idPago }).populate({ path: 'pagoId', select: 'estado metodo' }).exec()
 
-    if (!manilla) {
-      throw new NotFoundException('No existe la manilla');
-    }
-
-
-    return manilla;
-
-
-
-
-
-
+  if (!manilla) {
+    throw new NotFoundException('No existe la manilla');
   }
 
 
+  return manilla;
+
+
+
+
+
+
+}
 
 
 
@@ -1213,17 +1341,19 @@ export class ManillasService {
 
 
 
-  findOne(id: number) {
-    return `This action returns a #${id} manilla`;
-  }
 
-  update(id: number, updateManillaDto: UpdateManillaDto) {
-    return `This action updates a #${id} manilla`;
-  }
 
-  remove(id: number) {
-    return `This action removes a #${id} manilla`;
-  }
+findOne(id: number) {
+  return `This action returns a #${id} manilla`;
+}
+
+update(id: number, updateManillaDto: UpdateManillaDto) {
+  return `This action updates a #${id} manilla`;
+}
+
+remove(id: number) {
+  return `This action removes a #${id} manilla`;
+}
 
 
 

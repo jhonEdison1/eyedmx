@@ -43,6 +43,10 @@ export default registerAs("config", () => {
             publicKey: process.env.STRIPE_PK,
             currency: process.env.STRIPE_CURRENCY
         },
+        convertio: {
+            apiKey: process.env.CONVERTIO_API_KEY,
+            url : process.env.CONVERTIO_URL
+        },
 
     }
 

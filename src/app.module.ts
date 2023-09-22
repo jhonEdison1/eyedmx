@@ -12,6 +12,8 @@ import { ErrorsModule } from './modules/errors/errors.module';
 import { ManillasModule } from './modules/manillas/manillas.module';
 import { PagosModule } from './modules/pagos/pagos.module';
 import { TiposModule } from './modules/tipos/tipos.module';
+import { ConvertioModule } from './modules/convertio/convertio.module';
+import { ParametrosModule } from './modules/parametros/parametros.module';
 
 @Module({
   imports: [
@@ -30,7 +32,9 @@ import { TiposModule } from './modules/tipos/tipos.module';
     IamModule,
     ManillasModule,
     PagosModule,
-    TiposModule
+    TiposModule,
+    ConvertioModule,
+    ParametrosModule
   ],
   controllers: [AppController],
   providers: [AppService],

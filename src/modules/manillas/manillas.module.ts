@@ -7,6 +7,7 @@ import { IamModule } from '../iam/iam.module';
 import { ConfigModule } from '@nestjs/config';
 import { EntradasModule } from '../entradas/entradas.module';
 import { MailModule } from '../mail/mail.module';
+import { ConvertioModule } from '../convertio/convertio.module';
 
 
 @Module({
@@ -15,7 +16,9 @@ import { MailModule } from '../mail/mail.module';
     MongooseModule.forFeature([{ name: Manilla.name, schema: ManillaSchema }]),
     IamModule,
     EntradasModule,
-    MailModule
+    MailModule,
+    ConvertioModule
+
     
 
   ],  

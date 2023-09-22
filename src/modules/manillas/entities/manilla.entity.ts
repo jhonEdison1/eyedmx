@@ -39,6 +39,9 @@ export class Manilla extends Document {
     @Prop({ trim: true })
     qrCode: string;
 
+    @Prop({ trim: true })
+    qrdxf: string;
+
     @Prop({ type: Number})
     numid: number;
     
