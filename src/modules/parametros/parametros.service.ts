@@ -23,7 +23,7 @@ export class ParametrosService {
 
   async create(createParametroDto: CreateParametroDto) {
 
-    const exist = await this.findOneByName(createParametroDto.nombre)
+    const exist = await this.existeParametro(createParametroDto.nombre)
     if(exist){
       throw new ConflictException('ya existe un parametro con ese nombre')
     }
@@ -32,6 +32,16 @@ export class ParametrosService {
 
     const parametro = await new this.parametroModel(createParametroDto);
     return parametro.save();   
+  }
+
+
+  async existeParametro(nombre:string){
+    const parametro =await this.parametroModel.findOne({nombre: nombre})
+    if(parametro){
+      return true
+    }else{
+      return false
+    }
   }
 
 
