@@ -84,4 +84,22 @@ export class ConvertioService {
     }
 
 
+
+    async balance(){
+
+        const apiKey =await  this.parametrosService.findOneByName('apikeyconvertio')
+
+        const url = this.configSerivce.convertio.url + '/balance';
+
+        const response = await this.httpService.axiosRef.post(url, {
+            apikey: apiKey,  
+        });
+
+        return response.data;
+
+
+
+    }
+
+
 }
