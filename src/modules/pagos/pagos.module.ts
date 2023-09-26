@@ -7,6 +7,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { IamModule } from '../iam/iam.module';
 import { StripeService } from './stripe.service';
 import { ManillasModule } from '../manillas/manillas.module';
+import { TiposModule } from '../tipos/tipos.module';
 
 
 @Module({
@@ -14,7 +15,8 @@ import { ManillasModule } from '../manillas/manillas.module';
     ConfigModule,
     MongooseModule.forFeature([{ name: Pago.name, schema: PagoSchema }]),
     IamModule,
-    ManillasModule
+    ManillasModule,
+    TiposModule
 
   ],
   controllers: [PagosController],

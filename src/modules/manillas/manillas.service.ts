@@ -294,6 +294,22 @@ export class ManillasService {
 
 
 
+  async getTipoPorIdManilla(id: string) {
+
+    const manilla = await this.manillaModel.findById(id).exec()
+
+    if(!manilla){
+       throw new ConflictException('No existe la manilla')      
+    }
+
+    return manilla.tipo
+
+
+  }
+
+
+
+
 
 
 

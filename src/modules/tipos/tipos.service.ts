@@ -34,6 +34,13 @@ export class TiposService {
     return tipo;
   }
 
+
+
+  async getPrecioPorTipo(nombre: String) {
+    const tipo = await this.tipoModel.findOne({ name: nombre });
+    return tipo.precio;
+  }
+
   async findAll() {
     const tipos = await this.tipoModel.find();
     return tipos;

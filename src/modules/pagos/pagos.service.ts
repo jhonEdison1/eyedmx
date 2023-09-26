@@ -12,6 +12,7 @@ import { EstadoPagoDto } from './dto/update-estado-pago.dto';
 import { ManillasService } from '../manillas/manillas.service';
 import { FilterPagoDto } from './dto/filter-pago.dto';
 import { OtrosPagoDto } from './dto/otros-pago.dto';
+import { TiposService } from '../tipos/tipos.service';
 
 
 @Injectable()
@@ -22,7 +23,8 @@ export class PagosService {
     @Inject(config.KEY) private readonly configSerivce: ConfigType<typeof config>,
     @InjectModel(Pago.name) private readonly pagoModel: Model<Pago>,
     private readonly stripeService: StripeService,
-    private readonly manillasService: ManillasService
+    private readonly manillasService: ManillasService,
+    private readonly tiposService: TiposService
 
   ) {
 
@@ -33,35 +35,46 @@ export class PagosService {
   async create(createPagoDto: CreatePagoDto) {
 
 
+    const tiposPorManilla = []
+    const precioPorManilla = []
 
     for (const manilla of createPagoDto.manillasId) {
       const existpagoByManilla = await this.findPagobyManilla(manilla);
       if(existpagoByManilla){
         throw new ConflictException('Ya existe un pago para esta manilla')
       }
-    }   
-    // const existpagoByManilla = await this.findPagobyManilla(createPagoDto.manillaId);
-    // if(existpagoByManilla){
-    //   throw new ConflictException('Ya existe un pago para esta manilla')
-    // }
+
+      let tipo = await this.manillasService.getTipoPorIdManilla(manilla);
+      tiposPorManilla.push(tipo);
+    } 
+
+
+    for (const tipo of tiposPorManilla) {
+      const precio = await this.tiposService.getPrecioPorTipo(tipo);
+      precioPorManilla.push(precio);      
+    }
+
+    //sumar los precios
+
+    const monto = precioPorManilla.reduce((a, b) => a + b, 0);
+
+
+    createPagoDto.monto = monto;
+
+
+
+    
+    
 
 
     const nuevoPago = await new this.pagoModel(createPagoDto);
     await nuevoPago.save();
-
-
     for (const manilla of createPagoDto.manillasId) {
       await this.manillasService.actualizarPago(manilla, nuevoPago._id.toString());
-    }
-      
-    
-
-    // await this.manillasService.actualizarPago(createPagoDto.manillaId, nuevoPago._id.toString());
+    } 
+   
 
     return nuevoPago;
-
-
-
   }
 
 
