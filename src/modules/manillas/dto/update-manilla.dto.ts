@@ -30,27 +30,32 @@ export class EditManillaDto {
     // @IsString({ message: "la foto_portador debe contener datos validos" })
     // @IsNotEmpty({ message: "la foto_portador es requerida" })
     // @ApiProperty({description: "foto del portador de la manilla", type: String})
-     foto_portador: string;
+    foto_portador: string;
 
 
     @IsOptional()
-     licencia: string;
+    licencia: string;
 
     @IsOptional()
-     matricula_o_tarjeta: string;
+    matricula_o_tarjeta: string;
 
     @IsOptional()
-     factura: string;
+    factura: string;
 
     @IsOptional()
-     seguro: string;
+    seguro: string;
 
     @IsOptional()
-     tenencias: string;
+    tenencias: string;
 
+    @IsOptional()
+     historia_clinica: string;
 
-     @IsOptional()
-     otros: object;
+    @IsOptional()
+     archivos: string;
+
+    @IsOptional()
+    otros: object;
 
 
 }
@@ -60,30 +65,30 @@ export class EditManillaDto {
 export class EditManillaMoteroDto extends EditManillaDto {
 
 
-   
+
     readonly nombre_portador: string;
 
-  
+
     readonly documento: string;
 
     @IsOptional()
     readonly fecha_nacimiento: Date;
 
-  
-    readonly genero: string; 
+
+    readonly genero: string;
 
     @IsOptional()
     readonly email: string;
 
-   
+
     readonly direccion: string;
 
     readonly telefono: string;
 
-  
+
     readonly rh: string;
 
-   
+
     readonly alergias: string;
 
 
@@ -98,13 +103,13 @@ export class EditManillaMoteroDto extends EditManillaDto {
     readonly compañia_de_seguros: string;
 
     @IsOptional()
-    readonly centro_de_salud: string;   
+    readonly centro_de_salud: string;
 
-   
+
     readonly placa: string;
 
 
-   
+
 
 }
 
@@ -112,39 +117,39 @@ export class EditManillaMoteroDto extends EditManillaDto {
 export class EditManillaAdulto_MayorDto extends EditManillaDto {
 
 
- 
+
     readonly nombre_portador: string;
 
     @IsOptional()
     readonly documento: string;
 
-   
+
     readonly fecha_nacimiento: Date;
 
-  
+
     readonly genero: string;
 
     @IsOptional()
     readonly email: string;
 
-  
+
     readonly direccion: string;
 
 
-    readonly telefono: string;    
-  
+    readonly telefono: string;
+
     readonly rh: string;
 
-   
+
     readonly alergias: string;
 
-  
+
     readonly enfermedades: string;
 
-   
-    readonly centro_de_salud: string;   
 
-   
+    readonly centro_de_salud: string;
+
+
     readonly recomendaciones: string;
 
 
@@ -187,39 +192,39 @@ export function AtLeastOneIsRequired(fields: string[], validationOptions?: Valid
 
 export class EditManillaNiñoDto extends EditManillaDto {
 
-   
+
     readonly nombre_portador: string;
 
     @IsOptional()
     readonly documento: string;
 
-   
+
     readonly fecha_nacimiento: Date;
 
-   
+
     readonly genero: string;
 
     @IsOptional()
     readonly email: string;
 
-  
+
     readonly direccion: string;
 
-  
+
     readonly telefono: string;
 
-  
+
     readonly rh: string;
 
-    
-   
+
+
     readonly alergias: string;
 
-   
+
     readonly enfermedades: string;
 
     @IsOptional()
-    readonly centro_de_salud: string;   
+    readonly centro_de_salud: string;
 
     @IsOptional()
     readonly recomendaciones: string;
@@ -247,13 +252,13 @@ export class EditManillaNiñoDto extends EditManillaDto {
 }
 
 
-export class EditManillaMascotaDto extends EditManillaDto{
+export class EditManillaMascotaDto extends EditManillaDto {
 
- 
-   
+
+
     readonly nombre_duenio: string;
 
-   
+
     readonly nombre_mascota: string;
 
     @IsOptional()
@@ -262,19 +267,70 @@ export class EditManillaMascotaDto extends EditManillaDto{
     readonly direccion: string;
 
 
-    readonly telefono: string; 
+    readonly telefono: string;
 
-    
-    readonly enfermedades: string;      
+
+    readonly enfermedades: string;
 
     @IsOptional()
-    readonly centro_de_salud: string;   
+    readonly centro_de_salud: string;
 
     readonly fecha_nacimiento_mascota: Date;
 
-  
+
     readonly raza: string;
 
 
 }
+
+
+
+export class EditManillaDeportistaDto extends EditManillaDto {
+
+
+
+    readonly nombre_portador: string;
+
+
+    readonly documento: string;
+
+    @IsOptional()
+    readonly fecha_nacimiento: Date;
+
+
+    readonly genero: string;
+
+    @IsOptional()
+    readonly email: string;
+
+
+    readonly direccion: string;
+
+    readonly telefono: string;
+
+
+    readonly rh: string;
+
+
+    readonly alergias: string;
+
+
+
+    @IsOptional()
+    readonly deporte: string;
+
+
+    @IsOptional()
+    readonly compañia_de_seguros: string;
+
+    @IsOptional()
+    readonly centro_de_salud: string;
+
+
+
+
+
+
+}
+
 

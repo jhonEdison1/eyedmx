@@ -162,6 +162,16 @@ export class Manilla extends Document {
     @Prop({ trim: true })
     nombre_duenio: string;
 
+
+    @Prop({ trim: true })
+    deporte: string;
+
+    @Prop({ trim: true })
+    historia_clinica: string;
+
+    @Prop({ trim: true })
+    archivos: string;
+
 }
 
 

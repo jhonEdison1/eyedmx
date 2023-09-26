@@ -15,7 +15,8 @@ export enum Tipos {
   Motero = 'Motociclista',
   Adulto_Mayor = 'Adulto_Mayor',
   Niño = 'Niño',
-  Mascota = 'Mascota'
+  Mascota = 'Mascota',
+  Deportista = 'Deportista'
 }
 
 
@@ -654,7 +655,7 @@ export class AuthenticationCommonService {
             {
               name: "color",
               type: "select",
-              description: "color  de la pulsera",
+              description: "color  de la placa",
               opciones: ["Azul", "Blanco", "Rojo", "Negro"],
               required: true,
               private: false
@@ -662,21 +663,21 @@ export class AuthenticationCommonService {
             {
               name: "email",
               type: "email",
-              description: "Email del portador de la pulsera",
+              description: "Email del dueño",
               required: false,
               private: true
             },
             {
               name: "direccion",
               type: "text",
-              description: "Direccion del portador de la pulsera",
+              description: "Direccion del portador de la placa",
               required: true,
               private: true
             },
             {
               name: "telefono",
               type: "telefono",
-              description: "Telefono del portador de la pulsera",
+              description: "Telefono del dueño",
               required: true,
               private: false
             },
@@ -727,11 +728,149 @@ export class AuthenticationCommonService {
             {
               name: "foto_portador",
               type: "file",
-              description: "Foto del portador de la pulsera",
+              description: "Foto del portador de la placa",
               required: true,
               private: false
             },
           ];
+          break;
+          case Tipos.Deportista:
+            return [
+              {
+                name: "nombre_portador",
+                type: "text",
+                description: "Nombre del portador de la pulsera",
+                required: true,
+                private: false
+              },
+              {
+                name: "documento",
+                type: "text",
+                description: "Documento del portador de la pulsera",
+                required: true,
+                private: true
+              },
+              {
+                name: "fecha_nacimiento",
+                type: "Date",
+                description: "Fecha de nacimiento del portador de la pulsera",
+                required: false,
+                private: true
+              },
+              {
+                name: "genero",
+                type: "select",
+                description: "Genero del portador de la pulsera",
+                opciones: ["Masculino", "Femenino", "Otro"],
+                required: true,
+                private: false
+              },
+              {
+                name: "color",
+                type: "select",
+                description: "color  de la pulsera",
+                opciones: ["Azul", "Blanco", "Rojo", "Negro"],
+                required: true,
+                private: false
+              },
+              {
+                name: "email",
+                type: "email",
+                description: "Email del portador de la pulsera",
+                required: false,
+                private: true
+              },
+              {
+                name: "direccion",
+                type: "text",
+                description: "Direccion del portador de la pulsera",
+                required: true,
+                private: true
+              },
+              {
+                name: "telefono",
+                type: "telefono",
+                description: "Telefono del portador de la pulsera",
+                required: true,
+                private: false
+              },
+              {
+                name: "contacto_de_emergencia",
+                type: "text",
+                description: "Contacto de emergencia",
+                required: true,
+                private: false
+              },
+              {
+                name: "telefono_de_emergencia",
+                type: "telefono",
+                description: "Telefono de emergencia",
+                required: true,
+                private: false
+              },
+              {
+                name: "rh",
+                type: "select",
+                description: "Rh del portador de la pulsera",
+                opciones: ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"],
+                required: true,
+                private: false
+    
+              },
+              {
+                name: "alergias",
+                type: "text",
+                description: "Alergias del portador de la pulsera",
+                required: true,
+                private: false
+              },
+              {
+                name: "foto_portador",
+                type: "file",
+                description: "Foto del portador de la pulsera",
+                required: false,
+                private: false
+              }, 
+              {
+                name: "centro_de_salud",
+                type: "text",
+                description: "Centro de salud",
+                required: false,
+                private: false
+              },
+              {
+                name: "compañia_de_seguros",
+                type: "text",
+                description: "Compañia de seguros",
+                required: true,
+                private: false
+              }, 
+              {
+                name: "deporte",
+                type: "text",
+                description: "Tipo de deporte que practica",
+                required: true,
+                private: false
+    
+              },      
+              {
+                name: "historia_clinica",
+                type: "file",
+                description: "Historia clinica",
+                required: false,
+                private: true
+    
+              },
+              {
+                name: "archivos",
+                type: "file",
+                description: "archivos",
+                required: false,
+                private: true
+    
+              }
+            ];
+            break
     }
   }
   getTypes() {
@@ -751,6 +890,10 @@ export class AuthenticationCommonService {
       {
         name: Tipos.Mascota,
         description: "Mascota"
+      },
+      {
+        name: Tipos.Deportista,
+        description: "Deportista"
       }
     ];
 

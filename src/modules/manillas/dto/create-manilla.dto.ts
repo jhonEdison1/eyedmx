@@ -54,6 +54,13 @@ export class CreateManillaDto {
     readonly tenencias: string;
 
 
+    @IsOptional()
+    readonly historia_clinica: string;
+
+    @IsOptional()
+    readonly archivos: string;
+
+
 
     @IsOptional()
     pagoId: string;
@@ -367,6 +374,70 @@ export class ManillaMascotaDto extends CreateManillaDto{
 
 
 
+
+}
+
+
+
+
+export class ManillaDeportistaDto extends CreateManillaDto {
+
+    // @IsString({ message: "el nombre_portador debe contener datos validos" })
+    // @IsNotEmpty({ message: "el nombre_portador es requerido" })
+    @IsOptional()
+    readonly nombre_portador: string;
+
+    // @IsString({ message: "el diocumento debe contener datos validos" })
+    // @IsNotEmpty({ message: "el documento es requerido" })
+    @IsOptional()
+    readonly documento: string;
+
+    @IsOptional()
+    readonly fecha_nacimiento: Date;
+
+    // @IsString({ message: "el genero del portador de la pulsera debe contener caracteres validos" })
+    // @IsNotEmpty({ message: "el genero es requerido" })
+    @IsOptional()
+    readonly genero: string; 
+
+    @IsOptional()
+    readonly email: string;
+
+    // @IsString({ message: "la direccion debe contener caracteres validos" })
+    // @IsNotEmpty({ message: "la direccion es requerida" })
+    @IsOptional()
+    readonly direccion: string;
+
+    // @IsPhoneNumber('MX', { message: "el telefono debe contener caracteres validos" })
+    // @IsNotEmpty({ message: "el telefono es requerido" })
+    @IsOptional()
+    readonly telefono: string;
+
+    // @IsString({ message: "el rh debe contener datos validos" })
+    // @IsNotEmpty({ message: "el rh es requerido" })
+    // @ApiProperty({description: "informacion del grupo y tipo sanguineo del portador de la pulsera", type: String})  
+    @IsOptional()
+    readonly rh: string;
+
+    // @IsString({ message: "las alergias caracteres validos" })
+    // @IsNotEmpty({ message: "las alergias son requeridas" })
+    // @ApiProperty({description: "alergias que pueda presentar el portador de la pulsera", type: String})  
+    @IsOptional()
+    readonly alergias: string;
+
+
+    @IsOptional()
+    readonly deporte: string;
+   
+
+    @IsOptional()
+    readonly compañia_de_seguros: string;
+
+    @IsOptional()
+    readonly centro_de_salud: string;  
+
+
+   
 
 }
 
