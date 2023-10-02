@@ -229,6 +229,14 @@ export class AuthenticationCommonService {
             private: false
           },
           {
+            name: "diseño",
+            type: "select",
+            description: "diseño  de la pulsera",
+            opciones: ["Tipo Pulsera", "Tipo Reloj"],
+            required: true,
+            private: false
+          },
+          {
             name: "email",
             type: "email",
             description: "Email del portador de la pulsera",
@@ -391,6 +399,14 @@ export class AuthenticationCommonService {
             private: false
           },
           {
+            name: "diseño",
+            type: "select",
+            description: "diseño  de la pulsera",
+            opciones: ["Tipo Pulsera", "Tipo Reloj"],
+            required: true,
+            private: false
+          },
+          {
             name: "fecha_nacimiento",
             type: "Date",
             description: "Fecha de nacimiento del portador de la pulsera",
@@ -507,6 +523,14 @@ export class AuthenticationCommonService {
             type: "select",
             description: "color  de la pulsera",
             opciones: ["Azul", "Blanco", "Rojo", "Negro"],
+            required: true,
+            private: false
+          },
+          {
+            name: "diseño",
+            type: "select",
+            description: "diseño  de la pulsera",
+            opciones: ["Tipo Pulsera", "Tipo Reloj"],
             required: true,
             private: false
           },
@@ -661,6 +685,14 @@ export class AuthenticationCommonService {
               private: false
             },
             {
+              name: "diseño",
+              type: "select",
+              description: "diseño  de la pulsera",
+              opciones: ["Tipo Pulsera", "Tipo Reloj"],
+              required: true,
+              private: false
+            },
+            {
               name: "email",
               type: "email",
               description: "Email del dueño",
@@ -770,6 +802,14 @@ export class AuthenticationCommonService {
                 type: "select",
                 description: "color  de la pulsera",
                 opciones: ["Azul", "Blanco", "Rojo", "Negro"],
+                required: true,
+                private: false
+              },
+              {
+                name: "diseño",
+                type: "select",
+                description: "diseño  de la pulsera",
+                opciones: ["Tipo Pulsera", "Tipo Reloj"],
                 required: true,
                 private: false
               },

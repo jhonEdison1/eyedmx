@@ -37,6 +37,9 @@ export class CreateManillaDto {
     @IsOptional()
     color : string;
 
+    @IsOptional()
+    diseño : string;
+
 
     @IsOptional()
     readonly licencia: string;
