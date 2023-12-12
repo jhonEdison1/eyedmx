@@ -188,7 +188,7 @@ export class AuthenticationCommonService {
           {
             name: 'documento',
             type: 'text',
-            description: 'Documento del portador de la pulsera',
+            description: 'Número de identificación del portador de la pulsera',
             required: true,
             private: true,
           },
@@ -365,7 +365,7 @@ export class AuthenticationCommonService {
           {
             name: 'documento',
             type: 'text',
-            description: 'Documento del portador de la pulsera',
+            description: 'Número de identificación del portador de la pulsera',
             required: false,
             private: true,
           },
@@ -492,7 +492,7 @@ export class AuthenticationCommonService {
           {
             name: 'documento',
             type: 'text',
-            description: 'Documento del portador de la pulsera',
+            description: 'Número de identificación del portador de la pulsera',
             required: false,
             private: true,
           },
@@ -751,7 +751,7 @@ export class AuthenticationCommonService {
           {
             name: 'documento',
             type: 'text',
-            description: 'Documento del portador de la pulsera',
+            description: 'Número de identificación del portador de la pulsera',
             required: true,
             private: true,
           },
