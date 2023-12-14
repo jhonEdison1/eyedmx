@@ -668,14 +668,14 @@ export class AuthenticationCommonService {
           {
             name: 'direccion',
             type: 'text',
-            description: 'Direccion de la Mascota',
+            description: 'Dirección de la Mascota',
             required: true,
             private: true,
           },
           {
             name: 'telefono',
             type: 'telefono',
-            description: 'Telefono del dueño',
+            description: 'Teléfono del dueño',
             required: true,
             private: false,
           },
