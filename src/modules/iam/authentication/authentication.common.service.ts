@@ -732,7 +732,7 @@ export class AuthenticationCommonService {
           {
             name: 'diseño',
             type: 'image',
-            description: 'Tipo de Collar',
+            description: 'Tipo de Placa',
             opciones: ['Collar'],
             required: true,
             private: false,
