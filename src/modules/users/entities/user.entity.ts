@@ -34,8 +34,8 @@ export class User extends Document {
     @Prop({ required: true })
     direccion: string;
 
-    // @Prop({ /*required: true*/ })
-    // documento: string;
+    @Prop({ required: false, trim:true })
+    distribuidor: string;
 
     // @Prop({ /*required: true*/ })
     // fecha_nacimiento: Date; 

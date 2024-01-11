@@ -176,6 +176,8 @@ export class Manilla extends Document {
     @Prop({ trim: true })
     archivos: string;
 
+    @Prop({ trim: true })
+    distribuidor: string;
 }
 
 
