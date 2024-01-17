@@ -124,7 +124,7 @@ export class AuthenticationCommonService {
 
   async existUser(email) {
     const existUser = await this.userModel
-      .findOne({ email: email.trim() })
+      .findOne({ email: {'$regex' : `^${email.trim()}$`, '$options' : 'i'} })
       .exec();
 
     if (!existUser) {
@@ -138,7 +138,7 @@ export class AuthenticationCommonService {
     try {
       /** Buscamos los datos del usuario */
       const user = await this.userModel
-        .findOne({ email: payload.email.trim() })
+        .findOne({ email: {'$regex' : `^${payload.email.trim()}$`, '$options' : 'i'} })
         .exec();
 
       /** Si el usuario no existe enviamos una excepcion */
