@@ -909,7 +909,7 @@ export class AuthenticationCommonService {
 
   async findUserByEmail(email: string) {
     try {
-      const user = await this.userModel.findOne({ email: email.trim() }).exec();
+      const user = await this.userModel.findOne({ email: {'$regex' : `^${email.trim()}$`, '$options' : 'i'} }).exec();
       if (!user) {
         throw new ConflictException('El usuario no existe');
       }
