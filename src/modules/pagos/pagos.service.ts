@@ -292,6 +292,33 @@ export class PagosService {
 
   }
 
+  async cambiarEstadoOMetodo(id: string, cambios: EstadoPagoDto) {
+
+    const pago = await this.pagoModel.findById(id).exec();
+    if(!pago){
+      throw new NotFoundException('No se encontro el La intencion de pago')
+    }
+
+    if(pago.estado === cambios.estado && pago.metodo === cambios.metodo){
+      throw new ConflictException('No se realizaron cambios')
+    }
+
+    if(pago.estado !== cambios.estado){
+      pago.estado = cambios.estado;
+    }
+
+    if(pago.metodo !== cambios.metodo){
+      pago.metodo = cambios.metodo;
+    }
+
+    await pago.save();
+    for (const manilla of pago.manillasId){
+      await this.manillasService.changeEstadoPago(manilla.toString());
+    }
+
+    return {message: 'Se realizaron los cambios', pago}
+  }
+
 
 
 

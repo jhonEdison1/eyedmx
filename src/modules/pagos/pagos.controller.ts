@@ -66,6 +66,13 @@ export class PagosController {
     return this.pagosService.actualizarPagoEfectivo(id, estado);
   }
 
+  @Roles(Role.ADMIN)
+  @Patch('cambiarEstadoOMetodo/:id')
+  @UseGuards(JwtAuthAccessGuard, RolesGuard)
+  cambiarEstadoOMetodo(@Param('id') id: string, @Body() cambios: EstadoPagoDto) {
+    return this.pagosService.cambiarEstadoOMetodo(id, cambios);
+  }
+
 
   @Roles(Role.ADMIN)
   @UseGuards(JwtAuthAccessGuard, RolesGuard)
