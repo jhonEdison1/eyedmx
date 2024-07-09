@@ -304,11 +304,11 @@ export class PagosService {
     }
 
     if(pago.estado !== cambios.estado){
-      pago.estado = cambios.estado;
+      pago.estado = cambios.estado as estadoPago;
     }
 
     if(pago.metodo !== cambios.metodo){
-      pago.metodo = cambios.metodo;
+      pago.metodo = cambios.metodo as metodoPago;
     }
 
     await pago.save();
