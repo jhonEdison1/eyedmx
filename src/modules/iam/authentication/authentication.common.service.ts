@@ -654,7 +654,7 @@ export class AuthenticationCommonService {
             name: 'color',
             type: 'select',
             description: 'Color de la placa',
-            opciones: ['Azul', 'Blanco', 'Rojo', 'Negro'],
+            opciones: ['Plateado'/*, 'Blanco', 'Rojo', 'Negro'*/],
             required: true,
             private: false,
           },
